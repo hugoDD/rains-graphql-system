@@ -1,0 +1,18 @@
+type UserConfig {
+	userId: ID!
+	theme: String
+	layout: String
+	multiPage: String
+	fixSiderbar: String
+	fixHeader: String
+	color: String
+}
+input UserConfigCondition {
+	userId: ID!
+	theme: String
+	layout: String
+	multiPage: String
+	fixSiderbar: String
+	fixHeader: String
+	color: String
+}

@@ -1,0 +1,52 @@
+type Dept {
+	#部门ID 
+	deptId: ID!
+	#上级部门ID 
+	parentId: Int
+	#部门名称 
+	deptName: String
+	#排序 
+	orderNum: Float
+	#创建时间 
+	createTime: Date
+	#修改时间 
+	modifyTime: Date
+	id: ID
+	pId: ID
+	title: String
+	key: String
+	value: String
+}
+input DeptCondition {
+	#部门ID 
+	deptId: ID
+	#上级部门ID 
+	parentId: Int
+	#部门名称 
+	deptName: String
+	#排序 
+	orderNum: Float
+	#创建时间 
+	createTime: Date
+	#修改时间 
+	modifyTime: Date
+
+	createTimeFrom: String
+	createTimeTo:  String
+}
+type Depts {
+    data: [Dept!]!
+    total: Int
+}
+extend type Query {
+	deptDetail(entity: DeptCondition): Dept
+	deptPage(page: QueryRequest,condition: DeptCondition): Depts
+
+	}
+extend type Mutation {
+	addDept(entity: DeptCondition): Dept
+	updateDept(entity: DeptCondition): Dept
+	deleteDepts(deptIds: [String!]!): Boolean
+	deptExport(entity: DeptCondition,page: QueryRequest):Boolean
+
+}

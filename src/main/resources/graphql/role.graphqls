@@ -1,0 +1,45 @@
+
+type Roles {
+	data: [Role!]!
+	total: Int
+}
+
+type Role {
+	roleId: ID!
+	roleName: String
+	remark: String
+	createTime: Date
+	modifyTime: Date
+	menuIds:[String]
+
+}
+input RoleCondition {
+	roleId: ID
+	roleName: String
+	remark: String
+	createTime: Date
+	modifyTime: Date
+	createTimeFrom:String
+	createTimeTo:String
+	menuIds: [String]
+}
+
+
+extend type Query {
+	#获取角色详细信息
+	roleDetail(roleName: String!): Role
+	#获取角色分页
+	rolePage(page: QueryRequest,role: RoleCondition): Roles
+
+}
+
+extend type Mutation {
+	#增加角色
+	addRole(role: RoleCondition): Role
+	#更新角色属性与用户关系、菜单关系
+	updateRole(role: RoleCondition): Role
+	#删除用户
+	deleteRoles(roleIds: [String!]!): Boolean
+	roleExport(page: QueryRequest,role: RoleCondition):Boolean
+
+}

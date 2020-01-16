@@ -1,0 +1,80 @@
+type GeneratorConfig {
+	id: ID!
+	author: String
+	basePackage: String
+	entityPackage: String
+	mapperPackage: String
+	mapperXmlPackage: String
+	servicePackage: String
+	serviceImplPackage: String
+	controllerPackage: String
+	isTrim: String
+	trimValue: String
+	javaPath: String
+	resourcesPath: String
+	date: String
+	tableName: String
+	tableComment: String
+	className: String
+}
+
+type Table{
+	
+	# 名称
+	 name: String
+	# 备注
+	remark: String
+	# 数据量（行）
+	 dataRows: Int
+	# 创建时间
+	createTime: String
+	# 修改时间
+    updateTime: String
+}
+
+type Column {
+	#名称
+	name: String
+	#是否为主键
+	 isKey: Boolean
+	#类型
+	type: String
+ 	# 注释
+	remark: String
+	#属性名称
+	field: String
+}
+input GeneratorConfigCondition{
+	id: ID
+	author: String
+	basePackage: String
+	entityPackage: String
+	mapperPackage: String
+	mapperXmlPackage: String
+	servicePackage: String
+	serviceImplPackage: String
+	controllerPackage: String
+	isTrim: String
+	trimValue: String
+	javaPath: String
+	resourcesPath: String
+	date: String
+	tableName: String
+	tableComment: String
+	className: String
+}
+
+type Tables{
+	data: [Table!]!
+	total: Int
+}
+
+
+extend type Query {
+	generatorConfig:GeneratorConfig
+	tablesInfo(tableName:String,dataBase:String,page: QueryRequest): Tables
+}
+extend type Mutation {
+	updateGeneratorConfig(condition: GeneratorConfigCondition): GeneratorConfig
+	generate(database:String,name:String,remark:String): Boolean
+}

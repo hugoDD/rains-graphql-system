@@ -1,0 +1,82 @@
+type User {
+    userId: ID!
+    username: String
+    password: String
+    deptId: Int
+    deptName: String
+    email: String
+    mobile: String
+    status: String
+    createTime: Date
+    modifyTime: Date
+    lastLoginTime: Date
+    sex: String
+    description: String
+    avatar: String
+    userDetail : User
+    roles:[Role!]!
+    routers:[Router!]!
+    visitData:VisitData
+    permissions: [String!]!
+}
+
+type Users {
+    data: [User!]!
+    total: Int
+}
+
+input UserCondition {
+    userId: ID
+    roleId:ID
+    username: String
+    password: String
+    deptId: Int
+    deptName: String
+    email: String
+    mobile: String
+    status: String
+    createTime: Date
+    modifyTime: Date
+    lastLoginTime: Date
+    sex: String
+    description: String
+    avatar: String
+
+    createTimeFrom: String
+    createTimeTo: String
+
+
+}
+
+
+
+extend type Query {
+    #获取用户详细信息
+    detail(username: String!): User
+    #获取用户分页
+    userPage(page: QueryRequest,user: UserCondition): Users
+    #检查用户名与密码
+    checkPassword(username: String!,password: String!):Boolean
+}
+
+extend type Mutation {
+    #增加用户
+    addUser(user: UserCondition): User
+    #更新用户属性与角色关系、权限
+    updateUser(user: UserCondition): User
+    #更新用户profile
+    updateProfile(user: UserCondition): User
+    #更新用户头像
+    updateAvatar(username: String!,avatar:String!): Boolean
+    #更新用户密码
+    updatePassword(username: String!,password: String!): Boolean
+    #根据用户名，重置用户密码
+    resetPassword(usernames: [String!]!): Boolean
+    #删除用户
+    deleteUsers(userIds: [String!]!): Boolean
+
+    #更新用户配置
+    updateUserConfig(userConfig: UserConfigCondition): UserConfig
+
+    userExport(page: QueryRequest,user: UserCondition):Boolean
+}

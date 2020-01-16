@@ -1,0 +1,8 @@
+{
+  "pageNum":1,
+  "pageSize":10,
+  "sortField":null,
+  "sortOrder":null,
+  "filter":"id=123141",
+  "opt":"delete"
+}

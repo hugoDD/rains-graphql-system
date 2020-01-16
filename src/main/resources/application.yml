@@ -1,0 +1,101 @@
+server:
+  port: 9527
+
+graphql:
+  servlet:
+    exception-handlers-enabled: true
+graphiql:
+  headers:
+    Authorization: "b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070fb8ecbc97e6cdd6e46f6f14fe36f2979f9662e7046d04e194c1de772b074916d05928c33b7dbaf5e1ca93fe523a3d9be196ee7f8de4d694549e3f9339cb5c62ae2a02589d6fc6ea5aca37d3959e1e7f5ba1f2599920afe0a389ea3fe04e2ab6dcab0ba3a333c9111"
+
+jetcache:
+  statIntervalMinutes: 300000
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+  remote:
+    default:
+      type: redis.springdata
+      keyConvertor: fastjson
+      defaultExpireInMillis: 10000
+      keyPrefix: spring-data-redis
+
+spring:
+  application:
+    name: graphql sys
+  datasource:
+    username: root
+    password: 123456
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://localhost:3306/rains?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    #url: jdbc:mysql://172.26.223.28:3306/dmsx?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    hikari:
+      pool-name: GRAPHQL_HikariCP
+      minimum-idle: 5 #最小空闲连接数量
+      idle-timeout: 180000 #空闲连接存活最大时间，默认600000（10分钟）
+      maximum-pool-size: 10 #连接池最大连接数，默认是10
+      auto-commit: true  #此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      max-lifetime: 1800000 #此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      connection-timeout: 30000 #数据库连接超时时间,默认30秒，即30000
+      connection-test-query: SELECT 1
+
+  aop:
+    proxy-target-class: true
+
+  messages:
+    encoding: utf-8
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        # 连接池中的最大空闲连接 默认8
+        max-idle: 8
+        # 连接池中的最小空闲连接 默认0
+        min-idle: 0
+        # 连接池最大连接数 默认8 ，负数表示没有限制
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认-1
+        max-wait: -1
+    timeout: 30000
+
+#  main:
+#    lazy-initialization: false
+
+#mybatis plus 设置
+mybatis-plus:
+  type-aliases-package: com.rains.graphql.system.domain
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['httptrace', 'metrics']
+
+
+rains:
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  # 单次最大批量入库数量
+  max:
+    batch:
+      insert:
+        num: 1000
+  shiro:
+    # token有效期，单位秒
+    jwtTimeOut: 3600
