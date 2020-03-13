@@ -97,8 +97,8 @@ enum Order {
 
 input Pagination {
     # pageNum starts in 1, the default is 1.
-    pageNum: Int  = 10
-    pageSize: Int = 1
+    pageNum: Int  = 1
+    pageSize: Int = 10
     # default false
     needTotal: Boolean
 }
@@ -107,8 +107,8 @@ input QueryRequest {
 
 
     # pageNum starts in 1, the default is 1.
-    pageNum: Int = 10
-    pageSize: Int = 1
+    pageNum: Int = 1
+    pageSize: Int = 10
 
     sortField: String
     sortOrder: String = "desc"
@@ -116,6 +116,8 @@ input QueryRequest {
     filter: String
     opt: String
     ids:[ID]
+    datas:[Object]
+    child:Object
 }
 
 enum Language {

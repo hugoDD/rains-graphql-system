@@ -22,7 +22,7 @@ public class JWTUtilTest {
         String token = JWT.create()
                 .withClaim("username", username)
                 .sign(algorithm);
-
+        System.out.println("pwd: "+secret);
         System.out.println("before token:"+token);
         String encryptToken = SysUtil.encryptToken(token);
         System.out.println("encryptToken: "+encryptToken);

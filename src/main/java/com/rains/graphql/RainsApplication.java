@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableMethodCache(basePackages = "cc.mrbird.febs")
+@EnableMethodCache(basePackages = "comX.rains.graphql.system")
 @EnableCreateCacheAnnotation
 //@EnableScheduling
 @EnableAsync

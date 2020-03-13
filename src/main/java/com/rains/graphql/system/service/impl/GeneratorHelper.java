@@ -33,8 +33,23 @@ import java.util.Objects;
 public class GeneratorHelper {
 
     private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface) {
-        String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
+
+        String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath()+
                 packageConvertPath(configure.getBasePackage() + "." + packagePath);
+        if (serviceInterface) {
+            filePath += "I";
+        }
+        filePath += configure.getClassName() + suffix;
+        return filePath;
+    }
+
+    private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface,boolean isResource) {
+        String filePath = GeneratorConstant.TEMP_PATH +configure.getJavaPath() +
+                packageConvertPath(configure.getBasePackage() + "." + packagePath);
+        if(isResource){
+            filePath =  GeneratorConstant.TEMP_PATH +configure.getResourcesPath() +"/"+ packagePath+"/";
+        }
+
         if (serviceInterface) {
             filePath += "I";
         }
@@ -55,7 +70,7 @@ public class GeneratorHelper {
         data.put("hasDate", false);
         data.put("hasBigDecimal", false);
         columns.forEach(c -> {
-            c.setField(SysUtil.camelToUnderscore(StringUtils.lowerCase(c.getName())));
+            c.setField(SysUtil.underlineToCamel(StringUtils.lowerCase(c.getName())));
             try {
             if (StringUtils.containsAny(c.getType(), "date", "datetime", "timestamp")) {
                     data.put("hasDate", true);
@@ -103,13 +118,42 @@ public class GeneratorHelper {
         generateFileByTemplate(templateName, controllerFile, toJSONObject(configure));
     }
 
+    public void generateGraphQLQueryFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.GRAPHQLQUERY_FILE_SUFFIX;
+
+       // String path = getFilePath(configure, configure.getControllerPackage(), suffix, false);
+        String path = getFilePath(configure, "query", suffix, false);
+        String templateName = GeneratorConstant.GRAPHQLQUERY_TEMPLATE;
+        File queryFile = new File(path);
+        generateFileByTemplate(templateName, queryFile, toJSONObject(configure));
+    }
+
+    public void generateGraphQLMutationFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.GRAPHQLMUTATION_FILE_SUFFIX;
+        String path = getFilePath(configure, "mutation", suffix, false);
+        String templateName = GeneratorConstant.GRAPHQLMUTATION_TEMPLATE;
+        File mutationFile = new File(path);
+        generateFileByTemplate(templateName, mutationFile, toJSONObject(configure));
+    }
+
+    public void generateGraphQLFile(List<Column> columns, GeneratorConfig configure) throws Exception {
+        String suffix = GeneratorConstant.GRAPHQL_FILE_SUFFIX;
+        String path = getFilePath(configure, "graphql", suffix, false,true);
+        String templateName = GeneratorConstant.GRAPHQL_TEMPLATE;
+        File qlFile = new File(path);
+        JSONObject data = toJSONObject(configure);
+        columns.forEach(c -> c.setField(SysUtil.underlineToCamel(StringUtils.lowerCase(c.getName()))));
+        data.put("columns", columns);
+        generateFileByTemplate(templateName, qlFile, data);
+    }
+
     public void generateMapperXmlFile(List<Column> columns, GeneratorConfig configure) throws Exception {
         String suffix = GeneratorConstant.MAPPERXML_FILE_SUFFIX;
-        String path = getFilePath(configure, configure.getMapperXmlPackage(), suffix, false);
+        String path = getFilePath(configure, configure.getMapperXmlPackage(), suffix, false,true);
         String templateName = GeneratorConstant.MAPPERXML_TEMPLATE;
         File mapperXmlFile = new File(path);
         JSONObject data = toJSONObject(configure);
-        columns.forEach(c -> c.setField(SysUtil.camelToUnderscore(StringUtils.lowerCase(c.getName()))));
+        columns.forEach(c -> c.setField(SysUtil.underlineToCamel(StringUtils.lowerCase(c.getName()))));
         data.put("columns", columns);
         generateFileByTemplate(templateName, mapperXmlFile, data);
     }

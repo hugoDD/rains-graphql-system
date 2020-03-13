@@ -13,10 +13,19 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.expression.MethodBasedEvaluationContext;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.Expression;
+import org.springframework.expression.common.TemplateParserContext;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * AOP 记录用户操作日志
@@ -28,6 +37,9 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class LogAspect {
+    private final SpelExpressionParser parser = new SpelExpressionParser();
+    private final ParameterNameDiscoverer paramNameDiscoverer = new DefaultParameterNameDiscoverer();
+    private final TemplateParserContext templateParserContext = new TemplateParserContext("[","]");
 
     @Autowired
     private RainsGraphqlProperties rainsGraphqlProperties;
@@ -44,6 +56,8 @@ public class LogAspect {
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
         long beginTime = System.currentTimeMillis();
+
+
         // 执行方法
         result = point.proceed();
         // 获取 request
@@ -53,6 +67,8 @@ public class LogAspect {
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
         if (rainsGraphqlProperties.isOpenAopLog()) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            Method method = signature.getMethod();
             // 保存日志
             String token = (String) SecurityUtils.getSubject().getPrincipal();
             String username = "";
@@ -64,6 +80,13 @@ public class LogAspect {
             log.setUsername(username);
             log.setIp(ip);
             log.setTime(time);
+            com.rains.graphql.common.annotation.Log logAnnotation = method.getAnnotation(com.rains.graphql.common.annotation.Log.class);
+            if (logAnnotation != null) {
+                EvaluationContext evaluationContext = new MethodBasedEvaluationContext(null, signature.getMethod(), point.getArgs(), paramNameDiscoverer);
+                Expression expression = this.parser.parseExpression(logAnnotation.value(), templateParserContext);
+                // 注解上的描述
+                log.setOperation(expression.getValue(evaluationContext, String.class));
+            }
             logService.saveLog(point, log);
         }
         return result;

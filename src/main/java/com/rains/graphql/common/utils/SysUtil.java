@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -40,7 +42,13 @@ public class SysUtil {
      * @return 用户信息
      */
     public static String getCurrentUserName() {
+        if(SecurityUtils.getSubject()==null){
+            return "none";
+        }
         String token = (String) SecurityUtils.getSubject().getPrincipal();
+        if(com.rains.graphql.common.utils.StringUtils.isEmpty(token)){
+            return "none";
+        }
         String username = JWTUtil.getUsername(token);
 
         return  username;
@@ -101,16 +109,36 @@ public class SysUtil {
     }
 
     /**
-     * 封装前端分页表格所需数据
+     * 字符串第一个字母大写
      *
-     * @param pageInfo pageInfo
-     * @return Map<String, Object>
+     * @param str 被处理的字符串
+     * @return 首字母大写后的字符串
      */
-    public static Map<String, Object> getDataTable(IPage<?> pageInfo) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("rows", pageInfo.getRecords());
-        data.put("total", pageInfo.getTotal());
-        return data;
+    public static String capitalize(final String str) {
+        return com.baomidou.mybatisplus.core.toolkit.StringUtils.capitalize(str);
+    }
+
+    public static String underlineToCamel(final String str){
+        return com.baomidou.mybatisplus.core.toolkit.StringUtils.underlineToCamel(str);
+    }
+
+    public static String underlineToCamelCapitalize(final String str){
+       String param =com.baomidou.mybatisplus.core.toolkit.StringUtils.underlineToCamel(str);
+        return com.baomidou.mybatisplus.core.toolkit.StringUtils.capitalize(param);
+    }
+
+    public static Class<?> getActualTypeArgument(Class clazz) {
+        Class<?> entitiClass = null;
+        Type genericSuperclass = clazz.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType) {
+            Type[] actualTypeArguments = ((ParameterizedType) genericSuperclass)
+                    .getActualTypeArguments();
+            if (actualTypeArguments != null && actualTypeArguments.length > 0) {
+                entitiClass = (Class<?>) actualTypeArguments[0];
+            }
+        }
+
+        return entitiClass;
     }
 
 }

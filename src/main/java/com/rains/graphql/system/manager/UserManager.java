@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 封装一些和 User相关的业务操作
@@ -74,7 +75,7 @@ public class UserManager {
      */
     public Set<String> getUserPermissions(String username) {
         List<Menu> permissionList =this.menuService.findUserPermissions(username);
-        return permissionList.stream().map(Menu::getPerms).collect(Collectors.toSet());
+        return permissionList.stream().map(Menu::getPerms).flatMap(e-> Stream.of(e.split(","))).collect(Collectors.toSet());
     }
 
     /**

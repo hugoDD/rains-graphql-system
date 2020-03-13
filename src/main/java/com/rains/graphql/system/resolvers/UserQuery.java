@@ -1,4 +1,4 @@
-//package cc.mrbird.febs.system.resolvers;
+package com.rains.graphql.system.resolvers;//package cc.mrbird.febs.system.resolvers;
 //
 //import cc.mrbird.febs.common.annotation.Log;
 //import cc.mrbird.febs.common.controller.BaseController;

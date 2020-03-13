@@ -1,5 +1,6 @@
 package ${basePackage}.${entityPackage};
 
+import java.io.Serializable;
 <#if hasDate = true>
 import java.util.Date;
 </#if>
@@ -21,7 +22,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  */
 @Data
 @TableName("${tableName}")
-public class ${className} {
+public class ${className} implements Serializable{
 
     <#if columns??>
         <#list columns as column>

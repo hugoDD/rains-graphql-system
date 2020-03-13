@@ -14,7 +14,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +52,13 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
     @Override
     @Transactional
+    @Async
     public void saveLoginLog(LoginLog loginLog) {
         loginLog.setLoginTime(new Date());
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
-        String ip = IPUtil.getIpAddr(request);
-        loginLog.setIp(ip);
-        loginLog.setLocation(AddressUtil.getCityInfo(ip));
+        UserAgent userAgent= UserAgent.parseUserAgentString(loginLog.getSystem());
+        loginLog.setLocation(AddressUtil.getCityInfo(loginLog.getIp()));
+        loginLog.setBrowser(userAgent.getBrowser().getName()+" "+userAgent.getBrowserVersion().getVersion());
+        loginLog.setSystem(userAgent.getOperatingSystem().getName());
         this.save(loginLog);
     }
 

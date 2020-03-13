@@ -9,14 +9,11 @@ import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.system.dao.LogMapper;
 import com.rains.graphql.system.domain.Log;
 import com.rains.graphql.system.service.LogService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,11 +85,7 @@ public class LogServiceImpl extends BaseService<LogMapper, Log> implements LogSe
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        com.rains.graphql.common.annotation.Log logAnnotation = method.getAnnotation(com.rains.graphql.common.annotation.Log.class);
-        if (logAnnotation != null) {
-            // 注解上的描述
-            log.setOperation(logAnnotation.value());
-        }
+
         // 请求的类名
         String className = joinPoint.getTarget().getClass().getName();
         // 请求的方法名

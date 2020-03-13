@@ -30,7 +30,7 @@ spring:
     password: 123456
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://localhost:3306/rains?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:p6spy:mysql://localhost:3306/febs?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     #url: jdbc:mysql://172.26.223.28:3306/dmsx?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     hikari:
       pool-name: GRAPHQL_HikariCP
@@ -53,9 +53,9 @@ spring:
     time-zone: GMT+8
 
   redis:
-    host: localhost
+    host: 172.26.223.109
     port: 6379
-    password:
+    password: mp123
     lettuce:
       pool:
         # 连接池中的最大空闲连接 默认8
@@ -73,7 +73,7 @@ spring:
 
 #mybatis plus 设置
 mybatis-plus:
-  type-aliases-package: com.rains.graphql.system.domain
+  type-aliases-package: com.rains.graphql.system.domain,com.rains.graphql.tool.entity
   mapper-locations: classpath:mapper/*/*.xml
   configuration:
     jdbc-type-for-null: null

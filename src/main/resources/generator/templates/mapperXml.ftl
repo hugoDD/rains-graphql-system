@@ -6,9 +6,9 @@
         <#if columns??>
         <#list columns as column>
             <#if column.isKey = true>
-        <id column="${column.name}" jdbcType="${column.type}" property="${column.field?uncap_first}"/>
+        <id column="${column.name}" jdbcType="${column.type?upper_case}" property="${column.field?uncap_first}"/>
             <#else>
-        <result column="${column.name}" jdbcType="${column.type}" property="${column.field?uncap_first}"/>
+        <result column="${column.name}" jdbcType="${column.type?upper_case}" property="${column.field?uncap_first}"/>
             </#if>
         </#list>
         </#if>

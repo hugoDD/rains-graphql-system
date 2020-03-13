@@ -4,6 +4,11 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Data
 public class QueryRequest<T> implements Serializable {
@@ -20,11 +25,30 @@ public class QueryRequest<T> implements Serializable {
     /**
      * query,update,insert,delete,export
      */
-    private String opt="query";
+    private String opt = "query";
 
-    private String[] ids;
+    private Long[] ids;
 
     private T data;
+
+    private Object[] datas;
+
+    private List<T> batchdatas;
+
+    private Map<String, QueryRequest> child;
+
+    private Consumer<QueryRequest> consumer;
+
+    public QueryRequest opt(String opt,Consumer<QueryRequest<T>> c) {
+        optMap.merge(opt, c, (a, b) -> a.andThen(b));
+        return this;
+    }
+
+    public void execute() {
+         optMap.get(this.opt).accept(this);
+    }
+
+    private Map<String, Consumer<QueryRequest<T>>> optMap = new ConcurrentHashMap<>();
 
 
 }

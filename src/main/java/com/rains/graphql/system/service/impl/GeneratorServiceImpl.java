@@ -37,6 +37,7 @@ public class GeneratorServiceImpl implements GeneratorService {
 
     @Override
     public List<Column> getColumns(String databaseType, String schemaName, String tableName) {
+
         return generatorMapper.getColumns(databaseType, schemaName, tableName);
     }
 }

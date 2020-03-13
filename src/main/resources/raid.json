@@ -1,0 +1,24 @@
+{
+  "label": "单选框组",
+  "tag": "el-radio-group",
+  "tagIcon": "radio",
+  "defaultValue": "undefined",
+  "span": 24,
+  "labelWidth": null,
+  "style": {},
+  "optionType": "default",
+  "border": false,
+  "size": "medium",
+  "disabled": false,
+  "required": true,
+  "options": [{
+    "label": "选项一",
+    "value": 1
+  }, {
+    "label": "选项二",
+    "value": 2
+  }],
+  "regList": [],
+  "changeTag": true,
+  "document": "https://element.eleme.cn/#/zh-CN/component/radio"
+}

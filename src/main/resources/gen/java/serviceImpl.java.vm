@@ -1,0 +1,21 @@
+package ${packageName}.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ${packageName}.mapper.${ClassName}Mapper;
+import ${packageName}.domain.${ClassName};
+import ${packageName}.service.I${ClassName}Service;
+
+/**
+ * ${functionName}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+@Transactional
+public class ${ClassName}ServiceImpl extends BaseService<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
+
+}

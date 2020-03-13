@@ -1,5 +1,7 @@
 package com.rains.graphql.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.utils.MD5Util;
@@ -64,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = new User();
         user.setLastLoginTime(new Date());
 
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+        this.baseMapper.update(user, new LambdaUpdateWrapper<User>().eq(User::getUsername, username));
 
 
     }

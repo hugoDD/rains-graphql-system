@@ -1,8 +1,14 @@
 {
-  "pageNum":1,
-  "pageSize":10,
-  "sortField":null,
-  "sortOrder":null,
-  "filter":"id=123141",
-  "opt":"delete"
+  "formRef": "elForm",
+  "formModel": "formData",
+  "size": "medium",
+  "labelPosition": "right",
+  "labelWidth": 100,
+  "formRules": "rules",
+  "gutter": 15,
+  "disabled": false,
+  "span": 24,
+  "formBtns": true
 }
+
+

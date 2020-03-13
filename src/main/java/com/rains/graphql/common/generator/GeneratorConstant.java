@@ -41,6 +41,9 @@ public class GeneratorConstant {
      * controller文件类型后缀
      */
     public static final String CONTROLLER_FILE_SUFFIX = "Controller.java";
+    public static final String GRAPHQLQUERY_FILE_SUFFIX = "Query.java";
+    public static final String GRAPHQLMUTATION_FILE_SUFFIX = "Mutation.java";
+    public static final String GRAPHQL_FILE_SUFFIX = ".graphqls";
     /**
      * mapper xml文件类型后缀
      */
@@ -65,6 +68,9 @@ public class GeneratorConstant {
      * controller接口模板
      */
     public static final String CONTROLLER_TEMPLATE = "controller.ftl";
+    public static final String GRAPHQLQUERY_TEMPLATE = "GraphQLQueryResolver.ftl";
+    public static final String GRAPHQLMUTATION_TEMPLATE = "GraphQLMutationResolver.ftl";
+    public static final String GRAPHQL_TEMPLATE = "graphql.ftl";
     /**
      * mapper xml接口模板
      */

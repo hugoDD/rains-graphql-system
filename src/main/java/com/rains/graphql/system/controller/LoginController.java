@@ -6,6 +6,7 @@ import com.rains.graphql.common.domain.ResultResponse;
 import com.rains.graphql.common.exception.SysException;
 import com.rains.graphql.common.properties.RainsGraphqlProperties;
 import com.rains.graphql.common.utils.DateUtil;
+import com.rains.graphql.common.utils.IPUtil;
 import com.rains.graphql.common.utils.MD5Util;
 import com.rains.graphql.common.utils.SysUtil;
 import com.rains.graphql.system.domain.LoginLog;
@@ -26,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 @Validated
 @RestController
@@ -64,17 +64,14 @@ public class LoginController {
         // 更新用户登录时间
         this.userService.updateLoginTime(username);
         // 保存登录记录
-        String agent = request.getHeader("User-Agent");
-        StringTokenizer st = new StringTokenizer(agent, ";");
-        st.nextToken();
-        //得到用户的浏览器名  
-        String userbrowser = st.nextToken();
-        //得到用户的操作系统名 
-        String useros = st.nextToken();
+
+
         LoginLog loginLog = new LoginLog();
         loginLog.setUsername(username);
-        loginLog.setBrowser(userbrowser);
-        loginLog.setSystem(useros);
+        String agent = request.getHeader("User-Agent");
+        loginLog.setSystem(agent);
+        String ip = IPUtil.getIpAddr(request);
+        loginLog.setIp(ip);
         this.loginLogService.saveLoginLog(loginLog);
 
         String token = SysUtil.encryptToken(JWTUtil.sign(username, password));
@@ -86,6 +83,7 @@ public class LoginController {
         Map<String, Object> userInfo = this.generateUserInfo(jwtToken, user);
         return new ResultResponse().message("认证成功").data(userInfo);
     }
+
 
     /**
      * 生成前端需要的用户信息，包括：

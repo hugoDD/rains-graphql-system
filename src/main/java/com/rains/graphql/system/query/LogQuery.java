@@ -27,9 +27,8 @@ public class LogQuery implements GraphQLQueryResolver {
     @GetMapping
     @RequiresPermissions("log:view")
     public PageData<Log> logPage(QueryRequest request, Log log) {
-         logService.query(request);
-        IPage<Log> page =logService.findLogs(request, log);
-        return new PageData<>(page.getTotal(),page.getRecords());
+        request.setData(log);
+        return logService.query(request);
     }
     @RequiresPermissions("log:detail")
     public Log logDetail(Log log){

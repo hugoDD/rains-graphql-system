@@ -56,8 +56,8 @@ public class GeneratorMutation implements GraphQLMutationResolver {
     public void generate( String database,String name, String remark, DataFetchingEnvironment env) throws Exception {
         GraphQLServletContext context = env.getContext();
         HttpServletResponse response = context.getHttpServletResponse();
-       // properties.getSchema().
-
+        List<String> schemas = properties.getSchema();
+        generatorService.getDatabases(GeneratorConstant.DATABASE_TYPE);
         GeneratorConfig generatorConfig = generatorConfigService.findGeneratorConfig();
         if (generatorConfig == null) {
             throw new SysException("代码生成配置为空");
@@ -67,9 +67,8 @@ public class GeneratorMutation implements GraphQLMutationResolver {
         if (GeneratorConfig.TRIM_YES.equals(generatorConfig.getIsTrim())) {
             className = RegExUtils.replaceFirst(name, generatorConfig.getTrimValue(), StringUtils.EMPTY);
         }
-
         generatorConfig.setTableName(name);
-        generatorConfig.setClassName(SysUtil.camelToUnderscore(className));
+        generatorConfig.setClassName(SysUtil.underlineToCamelCapitalize(className));
         generatorConfig.setTableComment(remark);
         // 生成代码到临时目录
         List<Column> columns = generatorService.getColumns(GeneratorConstant.DATABASE_TYPE, database, name);
@@ -78,7 +77,10 @@ public class GeneratorMutation implements GraphQLMutationResolver {
         generatorHelper.generateMapperXmlFile(columns, generatorConfig);
         generatorHelper.generateServiceFile(columns, generatorConfig);
         generatorHelper.generateServiceImplFile(columns, generatorConfig);
-        generatorHelper.generateControllerFile(columns, generatorConfig);
+        generatorHelper.generateGraphQLQueryFile(columns, generatorConfig);
+        generatorHelper.generateGraphQLMutationFile(columns, generatorConfig);
+        generatorHelper.generateGraphQLFile(columns, generatorConfig);
+
         // 打包
         String zipFile = System.currentTimeMillis() + SUFFIX;
         FileUtil.compress(GeneratorConstant.TEMP_PATH + "src", zipFile);

@@ -14,4 +14,6 @@ public interface IBaseService<T> extends IService<T> {
 
 
     void export(QueryRequest<T> request, DataFetchingEnvironment env);
+
+    boolean baseOpt(QueryRequest request);
 }

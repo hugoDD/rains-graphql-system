@@ -78,6 +78,21 @@ public class FileUtil {
                 delete(filePath);
         }
     }
+    public static void download(byte[] data, String fileName,  HttpServletResponse response) throws Exception {
+
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + java.net.URLEncoder.encode(fileName, RainsConstant.UTF8));
+        response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
+        response.setCharacterEncoding(RainsConstant.UTF8);
+        try (InputStream inputStream = new ByteArrayInputStream(data); OutputStream os = response.getOutputStream()) {
+            byte[] b = new byte[2048];
+            int length;
+            while ((length = inputStream.read(b)) > 0) {
+                os.write(b, 0, length);
+            }
+        } finally {
+
+        }
+    }
 
     /**
      * 递归删除文件或目录

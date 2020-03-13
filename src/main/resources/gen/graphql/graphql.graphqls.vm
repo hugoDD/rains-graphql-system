@@ -1,0 +1,25 @@
+# tableComment 查询参数
+type ${ClassName} {
+    $pkColumn.javaField: ID
+#foreach ($column in $columns)
+    $column.javaField: $column.graphqlType
+#end
+}
+
+# tableComment 分页返回
+type ${ClassName}s {
+    data: [${ClassName}!]!
+    total: Int
+}
+
+extend type Query {
+    # tableComment 分页
+    ${className}Page(page: QueryRequest): ${ClassName}s
+}
+extend type Mutation {
+    # tableComment 编辑 包括新增、修改、删除
+    # opt:insert表示新增
+    # opt:update表示修改
+    # opt:delete表示删除
+    ${className}BaseMutation(request: QueryRequest): Boolean
+}

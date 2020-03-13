@@ -1,0 +1,32 @@
+package ${packageName}.query;
+
+
+import ${packageName}.domain.${ClassName};
+import ${packageName}.service.I${ClassName}Service;
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.system.domain.PageData;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+/**
+ *  ${functionName} QueryResolver
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Slf4j
+@Component
+public class ${ClassName}Query implements GraphQLQueryResolver {
+
+    @Autowired
+    private I${ClassName}Service ${className}Service;
+
+    @RequiresPermissions("${className}:view")
+    public PageData<${ClassName}> ${className}Page(QueryRequest request) {
+        return ${className}Service.query(request);
+    }
+
+
+}

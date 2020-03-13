@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Component
@@ -80,7 +81,7 @@ public class UserResolvers implements GraphQLResolver<User> {
 
     public Set<String> getPermissions(User user){
         List<Menu> permissionList= menuService.findUserPermissions(user.getUsername());
-        return permissionList.stream().map(Menu::getPerms).collect(Collectors.toSet());
+        return permissionList.stream().map(Menu::getPerms).flatMap(e-> Stream.of(e.split(","))).collect(Collectors.toSet());
     }
 
 }
