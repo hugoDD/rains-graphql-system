@@ -53,9 +53,9 @@ spring:
     time-zone: GMT+8
 
   redis:
-    host: 172.26.223.109
+    host: localhost
     port: 6379
-    password: mp123
+    password:
     lettuce:
       pool:
         # 连接池中的最大空闲连接 默认8
