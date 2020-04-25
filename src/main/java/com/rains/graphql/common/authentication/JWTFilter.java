@@ -1,8 +1,9 @@
 package com.rains.graphql.common.authentication;
 
-import com.rains.graphql.common.utils.SysUtil;
-import com.rains.graphql.common.utils.SpringContextUtil;
 import com.oembedler.moon.graphql.boot.GraphQLServletProperties;
+import com.rains.graphql.common.utils.SpringContextUtil;
+import com.rains.graphql.common.utils.StringUtils;
+import com.rains.graphql.common.utils.SysUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -22,6 +23,7 @@ import java.io.PrintWriter;
 public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     private static final String TOKEN = "Authentication";
+    private static final String AUTHORIZATION = "Authorization";
 
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
@@ -34,11 +36,11 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
 //
 //        boolean match = false;
 //        for (String u : anonUrl) {
-            if (httpServletRequest.getRequestURI().equals(graphQLServletProperties.getMapping() )){
-               return  executeLogin(request, response);
-             }else{
-                return true;
-            }
+        if (httpServletRequest.getRequestURI().equals(graphQLServletProperties.getMapping())) {
+            return executeLogin(request, response);
+        } else {
+            return true;
+        }
 
 
     }
@@ -54,6 +56,9 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(TOKEN);
+        if (StringUtils.isEmpty(token)) {
+            token = httpServletRequest.getHeader(AUTHORIZATION);
+        }
         JWTToken jwtToken = new JWTToken(SysUtil.decryptToken(token));
         try {
             getSubject(request, response).login(jwtToken);

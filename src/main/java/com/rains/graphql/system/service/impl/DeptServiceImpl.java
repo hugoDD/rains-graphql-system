@@ -1,17 +1,16 @@
 package com.rains.graphql.system.service.impl;
 
-import com.rains.graphql.common.domain.RainsConstant;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.domain.Tree;
 import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.common.utils.TreeUtil;
 import com.rains.graphql.system.dao.DeptMapper;
 import com.rains.graphql.system.domain.Dept;
 import com.rains.graphql.system.service.DeptService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,9 @@ import java.util.*;
 @Slf4j
 @Service("deptService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
+public class DeptServiceImpl extends BaseService<DeptMapper, Dept> implements DeptService {
 
-    public Tree<Dept> findRoot(QueryRequest request, Dept dept){
+    public Tree<Dept> findRoot(QueryRequest request, Dept dept) {
         List<Dept> depts = findDepts(dept, request);
         List<Tree<Dept>> trees = new ArrayList<>();
         buildTrees(trees, depts);
@@ -56,15 +55,15 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     public List<Dept> findDepts(Dept dept, QueryRequest request) {
         QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
 
-        if (dept!=null &&StringUtils.isNotBlank(dept.getDeptName())){
+        if (dept != null && StringUtils.isNotBlank(dept.getDeptName())) {
             queryWrapper.lambda().eq(Dept::getDeptName, dept.getDeptName());
         }
 
-        if (dept!=null && StringUtils.isNotBlank(dept.getCreateTimeFrom()) && StringUtils.isNotBlank(dept.getCreateTimeTo()))
-            queryWrapper.lambda()
-                    .ge(Dept::getCreateTime, dept.getCreateTimeFrom())
-                    .le(Dept::getCreateTime, dept.getCreateTimeTo());
-        if(!Objects.isNull(request)){
+//        if (dept!=null && StringUtils.isNotBlank(dept.getCreateTimeFrom()) && StringUtils.isNotBlank(dept.getCreateTimeTo()))
+//            queryWrapper.lambda()
+//                    .ge(Dept::getCreateTime, dept.getCreateTimeFrom())
+//                    .le(Dept::getCreateTime, dept.getCreateTimeTo());
+        if (!Objects.isNull(request)) {
             SortUtil.handleWrapperSort(request, queryWrapper, "orderNum", RainsConstant.ORDER_ASC, true);
         }
         return this.baseMapper.selectList(queryWrapper);

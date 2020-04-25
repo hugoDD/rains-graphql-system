@@ -4,12 +4,11 @@ package com.rains.graphql.system.service;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.domain.Tree;
 import com.rains.graphql.system.domain.Dept;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
 
-public interface DeptService extends IService<Dept> {
+public interface DeptService extends IBaseService<Dept> {
 
     Tree<Dept> findRoot(QueryRequest request, Dept dept);
 

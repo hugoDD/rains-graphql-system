@@ -6,7 +6,9 @@
   "defaultValue": [],
   "span": 24,
   "labelWidth": null,
-  "style": { "width": "100%" },
+  "style": {
+    "width": "100%"
+  },
   "props": {
     "props": {
       "multiple": false
@@ -17,16 +19,20 @@
   "clearable": true,
   "filterable": false,
   "required": true,
-  "options": [{
-    "id": 1,
-    "value": 1,
-    "label": "选项1",
-    "children": [{
-      "id": 2,
-      "value": 2,
-      "label": "选项1-1"
-    }]
-  }],
+  "options": [
+    {
+      "id": 1,
+      "value": 1,
+      "label": "选项1",
+      "children": [
+        {
+          "id": 2,
+          "value": 2,
+          "label": "选项1-1"
+        }
+      ]
+    }
+  ],
   "dataType": "dynamic",
   "labelKey": "label",
   "valueKey": "value",

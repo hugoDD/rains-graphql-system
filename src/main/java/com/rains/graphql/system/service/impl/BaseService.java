@@ -18,34 +18,33 @@ import com.wuwenze.poi.ExcelKit;
 import graphql.schema.DataFetchingEnvironment;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unchecked")
 public class BaseService<S extends BaseMapper<T>, T> extends ServiceImpl<BaseMapper<T>, T> implements IBaseService<T> {
 
+    public Function<QueryRequest, List<T>> optReq = (QueryRequest request) -> BeanMapUtils.objToBeans(request.getDatas(), currentModelClass());
     @Autowired
     protected S baseMapper;
-
     Consumer<QueryRequest<T>> inser = q -> {
     };
+    ExpressionParser parser = new SpelExpressionParser();
+    //  public Function<List<T>,Boolean> optSvc=( datas) ->BeanMapUtils.objToBeans(request.getDatas(), currentModelClass());
+    EvaluationContext context2 = new StandardEvaluationContext();
 
     @Override
     public S getBaseMapper() {
         return baseMapper;
     }
-
-    public Function<QueryRequest,List<T>> optReq=(QueryRequest request) ->BeanMapUtils.objToBeans(request.getDatas(), currentModelClass());
-  //  public Function<List<T>,Boolean> optSvc=( datas) ->BeanMapUtils.objToBeans(request.getDatas(), currentModelClass());
-
 
     public boolean baseOpt(QueryRequest request) {
 
@@ -84,14 +83,42 @@ public class BaseService<S extends BaseMapper<T>, T> extends ServiceImpl<BaseMap
         }
 
         if (request.getChild() != null) {
-            Map<String, QueryRequest> childs = request.getChild();
-            childs.forEach((k, v) -> {
-                IBaseService baseService = SpringContextUtil.getBean(k + "ServiceImpl", IBaseService.class);
+            for (int i = 0; i < listData.size(); i++) {
+                if (i == 0) {
+                    context2.setVariable("data", listData.get(0));
+                }
+                context2.setVariable("data" + i, listData.get(i));
+            }
+            context2.setVariable("listdata", listData);
+            List<QueryRequest> childes = request.getChild();
+            childes.stream().sorted(Comparator.comparing(QueryRequest::getRunOrder));
+            childes.stream().sorted(Comparator.comparing(QueryRequest::getRunOrder)).forEach((v) -> {
+                String svc = v.getSvc();
+                System.out.println("当前的服务:" + svc + " opt=" + v.getOpt());
+                if (com.rains.graphql.common.utils.StringUtils.isEmpty(svc)) {
+                    return;
+                }
+                svc = svc.contains("Service") ? svc : svc + "ServiceImpl";
+                Object[] objs = v.getDatas();
+                if (objs != null && objs.length > 0) {
+                    objs = Stream.of(objs).filter(e -> e instanceof Map).map(e -> transform((Map<String, Object>) e, context2)).toArray();
+                }
+                IBaseService baseService = SpringContextUtil.getBean(svc, IBaseService.class);
                 baseService.baseOpt(v);
             });
         }
 
         return true;
+    }
+
+    public Map<String, Object> transform(Map<String, Object> e, EvaluationContext context2) {
+        e.forEach((k, v) -> {
+            if (v instanceof String && ((String) v).contains("#")) {
+                v = parser.parseExpression((String) v).getValue(context2, String.class);
+                e.put(k, v);
+            }
+        });
+        return e;
     }
 
     public PageData<T> query(QueryRequest request) {

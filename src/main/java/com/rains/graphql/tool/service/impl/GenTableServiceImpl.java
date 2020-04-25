@@ -1,6 +1,7 @@
 package com.rains.graphql.tool.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.rains.graphql.common.domain.QueryRequest;
@@ -13,25 +14,21 @@ import com.rains.graphql.common.utils.StringUtils;
 import com.rains.graphql.common.utils.SysUtil;
 import com.rains.graphql.system.domain.GeneratorConfig;
 import com.rains.graphql.system.service.GeneratorConfigService;
+import com.rains.graphql.system.service.impl.BaseService;
 import com.rains.graphql.tool.entity.GenTable;
 import com.rains.graphql.tool.entity.GenTableColumn;
 import com.rains.graphql.tool.mapper.GenTableColumnMapper;
 import com.rains.graphql.tool.mapper.GenTableMapper;
 import com.rains.graphql.tool.service.IGenTableService;
-import com.rains.graphql.system.service.impl.BaseService;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import java.io.StringWriter;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 代码生成业务表 Service实现
@@ -82,12 +79,37 @@ public class GenTableServiceImpl extends BaseService<GenTableMapper, GenTable> i
                     }
                 }
             } catch (Exception e) {
-                log.error("表名 " + table.getTableName() + " 导入失败：" , e);
+                log.error("表名 " + table.getTableName() + " 导入失败：", e);
                 return false;
             }
         }
         return true;
     }
+
+    public List<Map<String, Object>> preViewUI(Long tableId, Map<String, Map<String, Object>> uiMap) {
+        List<Map<String, Object>> drawinglist = new ArrayList<>();
+        // 查询列信息
+        LambdaQueryWrapper<GenTableColumn> columnQuery = Wrappers.lambdaQuery();
+        List<GenTableColumn> columns = genTableColumnMapper.selectList(columnQuery.eq(GenTableColumn::getTableId, tableId));
+        columns.stream().filter(GenTableColumn::isUIEdit).forEach(column -> {
+            String tag = column.getHtmlType();
+            Map<String, Object> ui = uiMap.get(tag);
+            Map<String, Object> destUi = new HashMap<>();
+            ui.forEach((k, v) -> destUi.put(k, v));
+
+            destUi.put("vModel", column.getJavaField());
+            destUi.put("label", column.getColumnComment());
+            destUi.put("span", 12);
+            destUi.put("formId", column.getColumnId());
+            destUi.put("required", column.getIsRequired());
+            destUi.put("placeholder", "请输入" + column.getColumnComment());
+            destUi.put("renderKey", System.nanoTime());
+            drawinglist.add(destUi);
+        });
+
+        return drawinglist;
+    }
+
 
     /**
      * 预览代码

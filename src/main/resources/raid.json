@@ -11,13 +11,16 @@
   "size": "medium",
   "disabled": false,
   "required": true,
-  "options": [{
-    "label": "选项一",
-    "value": 1
-  }, {
-    "label": "选项二",
-    "value": 2
-  }],
+  "options": [
+    {
+      "label": "选项一",
+      "value": 1
+    },
+    {
+      "label": "选项二",
+      "value": 2
+    }
+  ],
   "regList": [],
   "changeTag": true,
   "document": "https://element.eleme.cn/#/zh-CN/component/radio"

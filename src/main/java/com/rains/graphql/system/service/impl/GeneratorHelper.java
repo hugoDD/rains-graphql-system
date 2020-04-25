@@ -1,15 +1,15 @@
 package com.rains.graphql.system.service.impl;
 
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.io.Files;
 import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.generator.GeneratorConstant;
 import com.rains.graphql.common.utils.AddressUtil;
 import com.rains.graphql.common.utils.SysUtil;
 import com.rains.graphql.system.domain.Column;
 import com.rains.graphql.system.domain.GeneratorConfig;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.io.Files;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -34,7 +34,7 @@ public class GeneratorHelper {
 
     private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface) {
 
-        String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath()+
+        String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
                 packageConvertPath(configure.getBasePackage() + "." + packagePath);
         if (serviceInterface) {
             filePath += "I";
@@ -43,11 +43,11 @@ public class GeneratorHelper {
         return filePath;
     }
 
-    private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface,boolean isResource) {
-        String filePath = GeneratorConstant.TEMP_PATH +configure.getJavaPath() +
+    private static String getFilePath(GeneratorConfig configure, String packagePath, String suffix, boolean serviceInterface, boolean isResource) {
+        String filePath = GeneratorConstant.TEMP_PATH + configure.getJavaPath() +
                 packageConvertPath(configure.getBasePackage() + "." + packagePath);
-        if(isResource){
-            filePath =  GeneratorConstant.TEMP_PATH +configure.getResourcesPath() +"/"+ packagePath+"/";
+        if (isResource) {
+            filePath = GeneratorConstant.TEMP_PATH + configure.getResourcesPath() + "/" + packagePath + "/";
         }
 
         if (serviceInterface) {
@@ -72,12 +72,12 @@ public class GeneratorHelper {
         columns.forEach(c -> {
             c.setField(SysUtil.underlineToCamel(StringUtils.lowerCase(c.getName())));
             try {
-            if (StringUtils.containsAny(c.getType(), "date", "datetime", "timestamp")) {
+                if (StringUtils.containsAny(c.getType(), "date", "datetime", "timestamp")) {
                     data.put("hasDate", true);
-            }
-            if (StringUtils.containsAny(c.getType(), "decimal", "numeric")) {
-                data.put("hasBigDecimal", true);
-            }
+                }
+                if (StringUtils.containsAny(c.getType(), "decimal", "numeric")) {
+                    data.put("hasBigDecimal", true);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -121,7 +121,7 @@ public class GeneratorHelper {
     public void generateGraphQLQueryFile(List<Column> columns, GeneratorConfig configure) throws Exception {
         String suffix = GeneratorConstant.GRAPHQLQUERY_FILE_SUFFIX;
 
-       // String path = getFilePath(configure, configure.getControllerPackage(), suffix, false);
+        // String path = getFilePath(configure, configure.getControllerPackage(), suffix, false);
         String path = getFilePath(configure, "query", suffix, false);
         String templateName = GeneratorConstant.GRAPHQLQUERY_TEMPLATE;
         File queryFile = new File(path);
@@ -138,7 +138,7 @@ public class GeneratorHelper {
 
     public void generateGraphQLFile(List<Column> columns, GeneratorConfig configure) throws Exception {
         String suffix = GeneratorConstant.GRAPHQL_FILE_SUFFIX;
-        String path = getFilePath(configure, "graphql", suffix, false,true);
+        String path = getFilePath(configure, "graphql", suffix, false, true);
         String templateName = GeneratorConstant.GRAPHQL_TEMPLATE;
         File qlFile = new File(path);
         JSONObject data = toJSONObject(configure);
@@ -149,7 +149,7 @@ public class GeneratorHelper {
 
     public void generateMapperXmlFile(List<Column> columns, GeneratorConfig configure) throws Exception {
         String suffix = GeneratorConstant.MAPPERXML_FILE_SUFFIX;
-        String path = getFilePath(configure, configure.getMapperXmlPackage(), suffix, false,true);
+        String path = getFilePath(configure, configure.getMapperXmlPackage(), suffix, false, true);
         String templateName = GeneratorConstant.MAPPERXML_TEMPLATE;
         File mapperXmlFile = new File(path);
         JSONObject data = toJSONObject(configure);

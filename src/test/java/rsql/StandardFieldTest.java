@@ -31,7 +31,7 @@ public class StandardFieldTest extends TestBase {
 
         Condition<GeneralQueryBuilder> condition = pipeline.apply("firstName==Paul,firstName==asc", User.class);
 
-        assertMybatisPlus(condition, Wrappers.query(User.class).nested(i->i.eq("firstName","Paul")).orderByAsc("firstName"),"firstName==Paul,firstName==asc");
+        assertMybatisPlus(condition, Wrappers.query(User.class).nested(i -> i.eq("firstName", "Paul")).orderByAsc("firstName"), "firstName==Paul,firstName==asc");
 
     }
 
@@ -40,7 +40,7 @@ public class StandardFieldTest extends TestBase {
 
         Condition<GeneralQueryBuilder> condition = pipeline.apply("firstName==Paul", User.class);
 
-        assertMybatisPlus(condition, Wrappers.query(User.class).eq("firstName","Paul"),"firstName==Paul");
+        assertMybatisPlus(condition, Wrappers.query(User.class).eq("firstName", "Paul"), "firstName==Paul");
 
         assertPredicate(condition, new User().setFirstName("Paul"));
 
@@ -65,7 +65,7 @@ public class StandardFieldTest extends TestBase {
         Condition<GeneralQueryBuilder> condition1 = pipeline.apply("firstName=re=.*Paul$", User.class);
 
 
-        assertMybatisPlus(condition1, Wrappers.query(User.class).apply("firstName REGEXP {0}",".*Paul$"),"firstName=re=.*Paul$");
+        assertMybatisPlus(condition1, Wrappers.query(User.class).apply("firstName REGEXP {0}", ".*Paul$"), "firstName=re=.*Paul$");
 
         assertPredicate(condition1, new User().setFirstName("Paul"));
 
@@ -90,7 +90,7 @@ public class StandardFieldTest extends TestBase {
 
         Condition<GeneralQueryBuilder> condition = pipeline.apply("age==23", User.class);
 
-        assertMybatisPlus(condition, Wrappers.query(User.class).eq("age",23),"age==23");
+        assertMybatisPlus(condition, Wrappers.query(User.class).eq("age", 23), "age==23");
 
 
         assertPredicate(condition, new User().setAge(23));
@@ -115,7 +115,7 @@ public class StandardFieldTest extends TestBase {
 
         Condition<GeneralQueryBuilder> condition = pipeline.apply("enabled==true", User.class);
 
-        assertMybatisPlus(condition, Wrappers.query(User.class).eq("enabled",true),"enabled==true");
+        assertMybatisPlus(condition, Wrappers.query(User.class).eq("enabled", true), "enabled==true");
 
         assertPredicate(condition, new User().setEnabled(true));
 
@@ -138,11 +138,11 @@ public class StandardFieldTest extends TestBase {
     public void nestedQuery() {
 
         Condition<GeneralQueryBuilder> condition = pipeline.apply("comments=q='comment==\"This is my first comment\"';timestamp=ex=true", User.class);
-        assertRsql(condition,"(comments=q='comment==\"This is my first comment\"';timestamp=ex=\"true\")");
+        assertRsql(condition, "(comments=q='comment==\"This is my first comment\"';timestamp=ex=\"true\")");
 //        MergeQueryWrapper<User> mw =new MergeQueryWrapper<>();
 //        QueryWrapper<User> q = new QueryWrapper<User>().exists("timestamp");
 //        mw.mergeNested(q);
-        assertMybatisPlus(condition,new QueryWrapper<User>().nested(i->i.exists("timestamp")),"comments=q='comment==\"This is my first comment\"';timestamp=ex=true");
+        assertMybatisPlus(condition, new QueryWrapper<User>().nested(i -> i.exists("timestamp")), "comments=q='comment==\"This is my first comment\"';timestamp=ex=true");
     }
 
 }

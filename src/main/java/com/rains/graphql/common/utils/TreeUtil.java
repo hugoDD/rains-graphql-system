@@ -8,11 +8,11 @@ import java.util.List;
 
 public class TreeUtil {
 
+    private final static String TOP_NODE_ID = "0";
+
     protected TreeUtil() {
 
     }
-
-    private final static String TOP_NODE_ID = "0";
 
     /**
      * 用于构建菜单或部门树
@@ -65,14 +65,14 @@ public class TreeUtil {
      *
      * @param routes routes
      * @param <T>    T
-     * @return ArrayList<VueRouter<T>>
+     * @return ArrayList<VueRouter < T>>
      */
     public static <T> List<VueRouter<T>> buildVueRouter(List<VueRouter<T>> routes) {
         if (routes == null) {
             return null;
         }
         List<VueRouter<T>> topRoutes = new ArrayList<>();
-       // VueRouter<T> router = new VueRouter<>();
+        // VueRouter<T> router = new VueRouter<>();
         routes.forEach(route -> {
             String parentId = route.getParentId();
             if (parentId == null || TOP_NODE_ID.equals(parentId)) {

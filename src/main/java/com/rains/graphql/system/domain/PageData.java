@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageData<T> {
-    private final List<T> data ;
+    private final List<T> data;
     private long total;
 
     public PageData() {
-        data  = new ArrayList<>();
+        data = new ArrayList<>();
     }
 
-    public PageData(long total, List<T> data ) {
+    public PageData(long total, List<T> data) {
         this.total = total;
         this.data = data;
     }

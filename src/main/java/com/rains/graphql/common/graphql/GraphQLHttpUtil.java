@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class GraphQLHttpUtil {
 
-    public static HttpServletResponse getResponse(DataFetchingEnvironment env){
+    public static HttpServletResponse getResponse(DataFetchingEnvironment env) {
         GraphQLServletContext context = env.getContext();
         HttpServletResponse response = context.getHttpServletResponse();
         return response;
     }
 
-    public static HttpServletRequest getRequest(DataFetchingEnvironment env){
+    public static HttpServletRequest getRequest(DataFetchingEnvironment env) {
         GraphQLServletContext context = env.getContext();
         HttpServletRequest request = context.getHttpServletRequest();
         return request;

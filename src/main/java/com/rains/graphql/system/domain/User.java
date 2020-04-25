@@ -1,10 +1,10 @@
 package com.rains.graphql.system.domain;
 
-import com.rains.graphql.common.converter.TimeConverter;
-import com.rains.graphql.common.domain.RegexpConstant;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rains.graphql.common.converter.TimeConverter;
+import com.rains.graphql.common.domain.RegexpConstant;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -21,28 +21,21 @@ import java.util.Date;
 @Excel("用户信息表")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -4852732617765810959L;
     /**
      * 账户状态
      */
     public static final String STATUS_VALID = "1";
-
     public static final String STATUS_LOCK = "0";
-
     public static final String DEFAULT_AVATAR = "default.jpg";
-
     /**
      * 性别
      */
     public static final String SEX_MALE = "0";
-
     public static final String SEX_FEMALE = "1";
-
     public static final String SEX_UNKNOW = "2";
-
     // 默认密码
     public static final String DEFAULT_PASSWORD = "1234qwer";
-
+    private static final long serialVersionUID = -4852732617765810959L;
     @TableId(value = "USER_ID", type = IdType.AUTO)
     private Long userId;
 
@@ -67,7 +60,7 @@ public class User implements Serializable {
     private String mobile;
 
     @NotBlank(message = "{required}")
-    @ExcelField(value = "状态", writeConverterExp = "0=锁定,1=有效")
+    @ExcelField(value = "状态", writeConverterExp = "0=锁定,1=有效", readConverterExp = "锁定=0,有效=1")
     private String status;
 
     @ExcelField(value = "创建时间", writeConverter = TimeConverter.class)
@@ -79,7 +72,7 @@ public class User implements Serializable {
     private Date lastLoginTime;
 
     @NotBlank(message = "{required}")
-    @ExcelField(value = "性别", writeConverterExp = "0=男,1=女,2=保密")
+    @ExcelField(value = "性别", writeConverterExp = "0=男,1=女,2=保密", readConverterExp = "男=0,女=1,保密=2")
     private String sex;
 
     @Size(max = 100, message = "{noMoreThan}")
@@ -92,6 +85,21 @@ public class User implements Serializable {
     private transient String roleId;
     @ExcelField(value = "角色")
     private transient String roleName;
+
+    private String nickName;
+
+    private String userType;
+
+    private Boolean delFlag;
+
+    private String loginIp;
+
+    private Date loginDate;
+
+    private String createBy;
+
+    private String modifyBy;
+
 
     // 排序字段
     private transient String sortField;

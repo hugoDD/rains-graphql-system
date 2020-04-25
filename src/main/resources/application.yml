@@ -1,5 +1,5 @@
 server:
-  port: 9527
+  port: 8880
 
 graphql:
   servlet:
@@ -30,7 +30,7 @@ spring:
     password: 123456
     #driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://localhost:3306/febs?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:p6spy:mysql://localhost:3306/rains?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     #url: jdbc:mysql://172.26.223.28:3306/dmsx?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     hikari:
       pool-name: GRAPHQL_HikariCP
@@ -91,6 +91,8 @@ management:
 rains:
   # 是否异步记录用户操作日志
   openAopLog: true
+  # 文件上传的保存路径
+  profile: E:/resources/
   # 单次最大批量入库数量
   max:
     batch:

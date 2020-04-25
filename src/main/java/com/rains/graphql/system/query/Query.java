@@ -18,13 +18,8 @@
 
 package com.rains.graphql.system.query;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
-import com.rains.graphql.common.domain.QueryRequest;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Root Query Resolver.
@@ -34,7 +29,6 @@ import java.util.function.Consumer;
 @Component
 public class Query implements GraphQLQueryResolver {
     private String version = "6.0";
-
 
 
 }

@@ -1,10 +1,10 @@
 package com.rains.graphql.system.domain;
 
-import com.rains.graphql.common.converter.TimeConverter;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rains.graphql.common.converter.TimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -84,6 +84,15 @@ public class Log implements Serializable {
     @ExcelField(value = "操作地点")
     private String location;
 
-    private transient String createTimeFrom;
-    private transient String createTimeTo;
+    /**
+     * 业务类型（0其它 1新增 2修改 3删除）
+     */
+    @ExcelField(value = "业务类型", writeConverterExp = "0=其它,1=新增,2=修改,3=删除")
+    private int type;
+
+    /**
+     * 登录状态（0成功 1失败）
+     */
+    @ExcelField(value = "登录状态", writeConverterExp = "1=成功,0=失败")
+    private String status;
 }

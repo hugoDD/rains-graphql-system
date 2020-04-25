@@ -1,46 +1,51 @@
 type Log {
-	#日志ID 
+	#日志ID
 	id: ID!
-	#操作用户 
+	#操作用户
 	username: String
-	#操作内容 
+	#操作内容
 	operation: String
-	#耗时 
+	#耗时
 	time: Float
-	#操作方法 
+	#操作方法
 	method: String
-	#方法参数 
+	#方法参数
 	params: String
-	#操作者IP 
+	#操作者IP
 	ip: String
-	#创建时间 
+	#创建时间
 	createTime: Date
-	#操作地点 
+	#操作地点
 	location: String
+	#业务类型
+	type:Int
+	#登录状态
+	status:String
+
 }
 input LogCondition {
-	#日志ID 
+	#日志ID
 	id: ID
-	#操作用户 
+	#操作用户
 	username: String
-	#操作内容 
+	#操作内容
 	operation: String
-	#耗时 
+	#耗时
 	time: Float
-	#操作方法 
+	#操作方法
 	method: String
-	#方法参数 
+	#方法参数
 	params: String
-	#操作者IP 
+	#操作者IP
 	ip: String
-	#创建时间 
+	#创建时间
 	createTime: Date
-	#操作地点 
+	#操作地点
 	location: String
 }
 type Logs {
-    data: [Log!]!
-    total: Int
+	data: [Log!]!
+	total: Int
 }
 
 type LoginLog{
@@ -51,8 +56,8 @@ type LoginLog{
 	ip: String
 	system: String
 	browser: String
-	loginTimeFrom: String
-	loginTimeTo: String
+	status: String
+	msg: String
 }
 
 input LoginLogCondition{
@@ -74,13 +79,14 @@ type LoginLogs {
 
 extend type Query {
 	logDetail(entity: LogCondition): Log
-	logPage(page: QueryRequest,condition: LogCondition): Logs
-	loginLogPage(page: QueryRequest,condition: LoginLogCondition): LoginLogs
+	logPage(page: QueryRequest): Logs
+	loginLogPage(page: QueryRequest): LoginLogs
 }
 extend type Mutation {
 	deleteLoginLogs(ids: [String!]!): Boolean
 	deleteLogs(ids: [String!]!): Boolean
 	exportLogs(page: QueryRequest,entity: LogCondition):Boolean
 	exportLoginLogs(page: QueryRequest,entity: LoginLogCondition):Boolean
-	logBaseMutation(request: QueryRequest,entity: LogCondition): Boolean
+	optLogBaseMutation(request: QueryRequest): Boolean
+	loginLogBaseMutation(request: QueryRequest): Boolean
 }

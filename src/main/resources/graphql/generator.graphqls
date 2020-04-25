@@ -19,27 +19,27 @@ type GeneratorConfig {
 }
 
 type Table{
-	
+
 	# 名称
-	 name: String
+	name: String
 	# 备注
 	remark: String
 	# 数据量（行）
-	 dataRows: Int
+	dataRows: Int
 	# 创建时间
 	createTime: String
 	# 修改时间
-    updateTime: String
+	updateTime: String
 }
 
 type Column {
 	#名称
 	name: String
 	#是否为主键
-	 isKey: Boolean
+	isKey: Boolean
 	#类型
 	type: String
- 	# 注释
+	# 注释
 	remark: String
 	#属性名称
 	field: String

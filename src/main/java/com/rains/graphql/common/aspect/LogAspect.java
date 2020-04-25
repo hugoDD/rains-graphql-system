@@ -39,7 +39,7 @@ import java.lang.reflect.Method;
 public class LogAspect {
     private final SpelExpressionParser parser = new SpelExpressionParser();
     private final ParameterNameDiscoverer paramNameDiscoverer = new DefaultParameterNameDiscoverer();
-    private final TemplateParserContext templateParserContext = new TemplateParserContext("[","]");
+    private final TemplateParserContext templateParserContext = new TemplateParserContext("[", "]");
 
     @Autowired
     private RainsGraphqlProperties rainsGraphqlProperties;

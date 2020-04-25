@@ -1,49 +1,66 @@
 type Dept {
-	#部门ID 
-	deptId: ID!
-	#上级部门ID 
-	parentId: Int
-	#部门名称 
+	#部门ID
+	deptId: Long!
+	#上级部门ID
+	parentId: Long
+	#祖级列表
+	ancestors: String
+	#部门名称
 	deptName: String
-	#排序 
+	#排序
 	orderNum: Float
-	#创建时间 
+	#负责人
+	leader: String
+	#联系电话
+	phone: String
+	#邮箱
+	email: String
+	#部门状态（0正常 1停用）
+	status: String
+	#删除标志（0代表存在 2代表删除）
+	delFlag: String
+	# 创建者
+	createBy: String
+	#创建时间
 	createTime: Date
-	#修改时间 
+	#修改时间
 	modifyTime: Date
-	id: ID
-	pId: ID
-	title: String
+	#更新者
+	modifyBy: String
+	id: Long
+	label: String
 	key: String
 	value: String
 }
 input DeptCondition {
-	#部门ID 
+	#部门ID
 	deptId: ID
-	#上级部门ID 
+	#上级部门ID
 	parentId: Int
-	#部门名称 
+	#部门名称
 	deptName: String
-	#排序 
+	#排序
 	orderNum: Float
-	#创建时间 
+	#创建时间
 	createTime: Date
-	#修改时间 
+	#修改时间
 	modifyTime: Date
 
 	createTimeFrom: String
 	createTimeTo:  String
 }
 type Depts {
-    data: [Dept!]!
-    total: Int
+	data: [Dept!]!
+	total: Int
 }
 extend type Query {
 	deptDetail(entity: DeptCondition): Dept
 	deptPage(page: QueryRequest,condition: DeptCondition): Depts
+	deptPageQuery(page: QueryRequest): Depts
 
-	}
+}
 extend type Mutation {
+	deptBaseMutation(page: QueryRequest):Boolean
 	addDept(entity: DeptCondition): Dept
 	updateDept(entity: DeptCondition): Dept
 	deleteDepts(deptIds: [String!]!): Boolean

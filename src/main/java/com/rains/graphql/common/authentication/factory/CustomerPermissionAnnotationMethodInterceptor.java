@@ -7,8 +7,6 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.aop.AuthorizingAnnotationHandler;
 import org.apache.shiro.authz.aop.AuthorizingAnnotationMethodInterceptor;
 
-
-import javax.annotation.Resource;
 import java.lang.annotation.Annotation;
 
 
@@ -24,6 +22,7 @@ public class CustomerPermissionAnnotationMethodInterceptor extends AuthorizingAn
     public CustomerPermissionAnnotationMethodInterceptor(AnnotationResolver resolver) {
         super(new CustomerPermissionAnnotationHandler(), resolver);
     }
+
     @Override
     protected Annotation getAnnotation(MethodInvocation mi) {
         return this.getResolver().getAnnotation(mi, this.getHandler().getAnnotationClass());
@@ -32,10 +31,10 @@ public class CustomerPermissionAnnotationMethodInterceptor extends AuthorizingAn
     @Override
     public void assertAuthorized(MethodInvocation mi) throws AuthorizationException {
         try {
-            ((AuthorizingAnnotationHandler)this.getHandler()).assertAuthorized(this.getAnnotation(mi));
+            ((AuthorizingAnnotationHandler) this.getHandler()).assertAuthorized(this.getAnnotation(mi));
 
         } catch (AuthorizationException var3) {
-            if(var3.getCause() == null) {
+            if (var3.getCause() == null) {
                 var3.initCause(new AuthorizationException("Not authorized to invoke method: " + mi.getMethod()));
             }
             throw var3;

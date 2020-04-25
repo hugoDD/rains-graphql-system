@@ -23,8 +23,8 @@ public class CustomerPermissionAnnotationHandler extends PermissionAnnotationHan
             RequiresPermissions r = (RequiresPermissions) a;
             int rlength = r.value().length;
             if (r.value() != null && rlength > 0) {
-                String perms[] = r.value();
-                String insertPerms[] = new String[rlength];
+                String[] perms = r.value();
+                String[] insertPerms = new String[rlength];
                 Subject subject = SecurityUtils.getSubject();
                 if (perms.length == 1) {
                     insertPerms = perms;
@@ -59,7 +59,7 @@ public class CustomerPermissionAnnotationHandler extends PermissionAnnotationHan
                 for (int var10 = 0; var10 < var9; ++var10) {
                     String permissionStr = insertPerms[var10];
                     if (permissionStr != null) {
-                        String insertStr[] = permissionStr.split(":");
+                        String[] insertStr = permissionStr.split(":");
 
                     }
 

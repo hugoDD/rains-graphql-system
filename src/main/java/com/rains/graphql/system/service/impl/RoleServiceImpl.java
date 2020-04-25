@@ -1,5 +1,8 @@
 package com.rains.graphql.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.system.dao.RoleMapper;
@@ -8,10 +11,6 @@ import com.rains.graphql.system.domain.RoleMenu;
 import com.rains.graphql.system.service.RoleMenuServie;
 import com.rains.graphql.system.service.RoleService;
 import com.rains.graphql.system.service.UserRoleService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service("roleService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+public class RoleServiceImpl extends BaseService<RoleMapper, Role> implements RoleService {
 
 
     @Autowired
@@ -50,7 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             }
             Page<Role> page = new Page<>();
             SortUtil.handlePageSort(request, page, true);
-            return this.page(page,queryWrapper);
+            return this.page(page, queryWrapper);
         } catch (Exception e) {
             log.error("获取角色信息失败", e);
             return null;
@@ -90,7 +89,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         this.userRoleService.deleteUserRolesByRoleId(roleIds);
 
 
-
     }
 
     @Override
@@ -104,20 +102,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
         roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, role.getRoleId()));
 
-       // String[] menuIds = role.getMenuId().split(StringPool.COMMA);
+        // String[] menuIds = role.getMenuId().split(StringPool.COMMA);
         setRoleMenus(role);
 
     }
 
     private void setRoleMenus(Role role) {
-        if(role.getMenuIds()==null || role.getMenuIds().size()==0){
-            return ;
+        if (role.getMenuIds() == null || role.getMenuIds().size() == 0) {
+            return;
         }
-       List<RoleMenu> rmList= role.getMenuIds().stream().map(menuId -> {
+        List<RoleMenu> rmList = role.getMenuIds().stream().map(menuId -> {
             RoleMenu rm = new RoleMenu();
             rm.setMenuId(Long.valueOf(menuId));
             rm.setRoleId(role.getRoleId());
-            return  rm;
+            return rm;
         }).collect(Collectors.toList());
         roleMenuService.saveBatch(rmList);
 

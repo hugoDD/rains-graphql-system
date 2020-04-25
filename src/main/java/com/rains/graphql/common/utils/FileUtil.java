@@ -1,7 +1,7 @@
 package com.rains.graphql.common.utils;
 
-import com.rains.graphql.common.domain.RainsConstant;
 import com.google.common.base.Preconditions;
+import com.rains.graphql.common.domain.RainsConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +78,8 @@ public class FileUtil {
                 delete(filePath);
         }
     }
-    public static void download(byte[] data, String fileName,  HttpServletResponse response) throws Exception {
+
+    public static void download(byte[] data, String fileName, HttpServletResponse response) throws Exception {
 
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + java.net.URLEncoder.encode(fileName, RainsConstant.UTF8));
         response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);

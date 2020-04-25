@@ -7,9 +7,10 @@ public class ResultResponse implements Serializable {
     private static final long serialVersionUID = -8713837118340960775L;
     private String message;
     private Object data;
+    private Integer code = 200;
 
     public ResultResponse message(String message) {
-       this.message = message;
+        this.message = message;
         return this;
     }
 
@@ -18,13 +19,19 @@ public class ResultResponse implements Serializable {
         return this;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 
-    public Object getData(){
+    public Object getData() {
         return this.data;
     }
 
+    public Integer getCode() {
+        return code;
+    }
 
+    public void setCode(Integer code) {
+        this.code = code;
+    }
 }

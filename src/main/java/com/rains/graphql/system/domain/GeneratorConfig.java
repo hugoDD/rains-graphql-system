@@ -1,11 +1,11 @@
 package com.rains.graphql.system.domain;
 
 
-import com.rains.graphql.common.utils.DateUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rains.graphql.common.utils.DateUtil;
 import lombok.Data;
 
 import javax.validation.constraints.Size;

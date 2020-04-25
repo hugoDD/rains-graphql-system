@@ -8,10 +8,11 @@ import java.util.Objects;
 
 public class HttpContextUtil {
 
-	private HttpContextUtil(){
+    private HttpContextUtil() {
 
-	}
-	public static HttpServletRequest getHttpServletRequest() {
-		return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-	}
+    }
+
+    public static HttpServletRequest getHttpServletRequest() {
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    }
 }

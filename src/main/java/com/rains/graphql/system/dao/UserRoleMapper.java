@@ -1,7 +1,7 @@
 package com.rains.graphql.system.dao;
 
-import com.rains.graphql.system.domain.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.rains.graphql.system.domain.UserRole;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserRoleMapper extends BaseMapper<UserRole> {

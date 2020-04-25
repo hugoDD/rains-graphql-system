@@ -1,11 +1,8 @@
 package com.rains.graphql.tool.service;
 
-import com.rains.graphql.tool.entity.GenTable;
-
 import com.rains.graphql.common.domain.QueryRequest;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rains.graphql.system.service.IBaseService;
-
+import com.rains.graphql.tool.entity.GenTable;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +32,7 @@ public interface IGenTableService extends IBaseService<GenTable> {
     List<GenTable> selectDbTableList(QueryRequest request);
 
 
-    public boolean importGenTable(List<GenTable> tableList);
+    boolean importGenTable(List<GenTable> tableList);
 
     /**
      * 预览代码
@@ -43,5 +40,8 @@ public interface IGenTableService extends IBaseService<GenTable> {
      * @param tableId 表编号
      * @return 预览数据列表
      */
-    public Map<String, String> previewCode(Long tableId);
+    Map<String, String> previewCode(Long tableId);
+
+    List<Map<String, Object>> preViewUI(Long tableId, Map<String, Map<String, Object>> uiMap);
+
 }

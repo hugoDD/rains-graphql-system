@@ -1,12 +1,7 @@
 package com.rains.graphql.tool.service;
 
-import com.rains.graphql.tool.entity.GenTable;
-import com.rains.graphql.tool.entity.GenTableColumn;
-
-import com.rains.graphql.common.domain.QueryRequest;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rains.graphql.system.service.IBaseService;
-
+import com.rains.graphql.tool.entity.GenTableColumn;
 
 import java.util.List;
 
@@ -25,7 +20,6 @@ public interface IGenTableColumnService extends IBaseService<GenTableColumn> {
      * @return List<GenTableColumn>
      */
     List<GenTableColumn> findGenTableColumns(GenTableColumn genTableColumn);
-
 
 
 }

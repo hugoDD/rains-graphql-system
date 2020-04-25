@@ -1,14 +1,13 @@
 package com.rains.graphql.system.service;
 
-import com.rains.graphql.system.domain.Menu;
 import com.alicp.jetcache.anno.*;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.rains.graphql.system.domain.Menu;
 
 import java.util.List;
 import java.util.Map;
 
-public interface MenuService extends IService<Menu> {
-    @Cached(name="permCache-", key="#username",expire = 3600, cacheType = CacheType.BOTH)
+public interface MenuService extends IBaseService<Menu> {
+    @Cached(name = "permCache-", key = "#username", expire = 3600, cacheType = CacheType.BOTH)
     @CacheRefresh(refresh = 1800, stopRefreshAfterLastAccess = 3600)
     @CachePenetrationProtect
     List<Menu> findUserPermissions(String username);
@@ -22,7 +21,7 @@ public interface MenuService extends IService<Menu> {
 
     void createMenu(Menu menu);
 
-    @CacheInvalidate(name="permCache-")
+    @CacheInvalidate(name = "permCache-")
     void updateMenu(Menu menu) throws Exception;
 
     /**
@@ -30,7 +29,7 @@ public interface MenuService extends IService<Menu> {
      *
      * @param menuIds menuIds
      */
-    @CacheInvalidate(name="permCache-")
+    @CacheInvalidate(name = "permCache-")
     void deleteMeuns(String[] menuIds) throws Exception;
 
 }

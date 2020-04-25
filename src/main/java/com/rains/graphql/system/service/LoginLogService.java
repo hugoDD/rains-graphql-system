@@ -1,15 +1,14 @@
 package com.rains.graphql.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.system.domain.LoginLog;
 import com.rains.graphql.system.domain.User;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
 
-public interface LoginLogService extends IService<LoginLog> {
+public interface LoginLogService extends IBaseService<LoginLog> {
 
     /**
      * 获取登录日志分页信息

@@ -1,31 +1,15 @@
 package com.rains.graphql.tool.mutation;
 
 
-import com.rains.graphql.common.utils.BeanMapUtils;
-import com.rains.graphql.tool.entity.GenTable;
-import com.rains.graphql.tool.entity.GenTableColumn;
-import com.rains.graphql.tool.service.IGenTableColumnService;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.annotation.Log;
 import com.rains.graphql.common.domain.QueryRequest;
-import com.rains.graphql.system.mutation.BaseMutation;
+import com.rains.graphql.tool.service.IGenTableColumnService;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * 代码生成业务表字段 Mutation

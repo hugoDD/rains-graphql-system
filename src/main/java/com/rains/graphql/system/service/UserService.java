@@ -1,13 +1,12 @@
 package com.rains.graphql.system.service;
 
-import com.rains.graphql.common.domain.QueryRequest;
-import com.rains.graphql.system.domain.User;
 import com.alicp.jetcache.anno.*;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.system.domain.User;
 
 
-public interface UserService extends IService<User> {
+public interface UserService extends IBaseService<User> {
 
     /**
      * 通过用户名查找用户
@@ -15,7 +14,7 @@ public interface UserService extends IService<User> {
      * @param username username
      * @return user
      */
-    @Cached(name="userCache-", key="#username",expire = 3600, cacheType = CacheType.BOTH)
+    @Cached(name = "userCache-", key = "#username", expire = 3600, cacheType = CacheType.BOTH)
     @CacheRefresh(refresh = 1800, stopRefreshAfterLastAccess = 3600)
     @CachePenetrationProtect
     User findByName(String username);
@@ -23,7 +22,7 @@ public interface UserService extends IService<User> {
     /**
      * 查询用户详情，包括基本信息，用户角色，用户部门
      *
-     * @param user user
+     * @param user         user
      * @param queryRequest queryRequest
      * @return IPage
      */
@@ -48,7 +47,7 @@ public interface UserService extends IService<User> {
      *
      * @param user user
      */
-    @CacheUpdate(name="userCache-", key="#user.username", value="#user")
+    @CacheUpdate(name = "userCache-", key = "#user.username", value = "#user")
     void updateUser(User user) throws Exception;
 
     /**
@@ -56,8 +55,8 @@ public interface UserService extends IService<User> {
      *
      * @param userIds 用户 id数组
      */
-    @CacheInvalidate(name="userCache-")
-    @CacheInvalidate(name="userConfigCache-",key = "#userIds",multi = true)
+    @CacheInvalidate(name = "userCache-")
+    @CacheInvalidate(name = "userConfigCache-", key = "#userIds", multi = true)
     void deleteUsers(String[] userIds) throws Exception;
 
     /**
@@ -65,7 +64,7 @@ public interface UserService extends IService<User> {
      *
      * @param user 个人信息
      */
-    @CacheUpdate(name="userCache-", key="#user.username", value="#user")
+    @CacheUpdate(name = "userCache-", key = "#user.username", value = "#user")
     void updateProfile(User user) throws Exception;
 
     /**

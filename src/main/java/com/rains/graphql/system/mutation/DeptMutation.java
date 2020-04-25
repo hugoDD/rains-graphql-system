@@ -1,12 +1,12 @@
 package com.rains.graphql.system.mutation;
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.annotation.Log;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.exception.SysException;
 import com.rains.graphql.common.graphql.GraphQLHttpUtil;
 import com.rains.graphql.system.domain.Dept;
 import com.rains.graphql.system.service.DeptService;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.wuwenze.poi.ExcelKit;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 @Validated
@@ -26,9 +27,20 @@ import java.util.List;
 public class DeptMutation implements GraphQLMutationResolver {
 
 
-
     @Autowired
     private DeptService deptService;
+
+    @Log("部门[#request.opt]操作系统日志")
+    @RequiresPermissions("system:menu:[#request.opt]")
+    public boolean deptBaseMutation(QueryRequest request, DataFetchingEnvironment env) {
+        if ("export".equals(request.getOpt())) {
+            Consumer<QueryRequest> exportOpt = q -> deptService.export(q, env);
+            request.opt("export", exportOpt);
+        }
+
+        return deptService.baseOpt(request);
+
+    }
 
 
     @Log("新增部门")
@@ -38,7 +50,7 @@ public class DeptMutation implements GraphQLMutationResolver {
         try {
             this.deptService.createDept(dept);
         } catch (Exception e) {
-            String  message = "新增部门失败";
+            String message = "新增部门失败";
             log.error(message, e);
             throw new SysException(message);
         }
@@ -46,14 +58,14 @@ public class DeptMutation implements GraphQLMutationResolver {
     }
 
     @Log("删除部门")
-  //  @DeleteMapping("/{deptIds}")
+    //  @DeleteMapping("/{deptIds}")
     @RequiresPermissions("dept:delete")
-    public boolean deleteDepts( String[] deptIds) throws SysException {
+    public boolean deleteDepts(String[] deptIds) throws SysException {
         try {
-          //  String[] ids = deptIds.split(StringPool.COMMA);
+            //  String[] ids = deptIds.split(StringPool.COMMA);
             this.deptService.deleteDepts(deptIds);
         } catch (Exception e) {
-            String  message = "删除部门失败";
+            String message = "删除部门失败";
             log.error(message, e);
             throw new SysException(message);
         }
@@ -67,7 +79,7 @@ public class DeptMutation implements GraphQLMutationResolver {
         try {
             this.deptService.updateDept(dept);
         } catch (Exception e) {
-            String  message = "修改部门失败";
+            String message = "修改部门失败";
             log.error(message, e);
             throw new SysException(message);
         }

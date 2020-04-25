@@ -4,8 +4,9 @@ public enum Order {
     ASC("asc"),
     DES("des");
 
-    private String name="asc";
-    private Order(String name) {
+    private String name = "asc";
+
+    Order(String name) {
         this.name = name;
     }
 

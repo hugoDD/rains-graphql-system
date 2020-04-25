@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan(value = {"com.rains.graphql.**.dao","com.rains.graphql.**.mapper"})
+@MapperScan(value = {"com.rains.graphql.**.dao", "com.rains.graphql.**.mapper"})
 public class MybatisPlusConfig {
 
     /**
@@ -19,7 +19,7 @@ public class MybatisPlusConfig {
     }
 
     @Bean
-    public MetaObjectHandler metaObjectHandler(){
+    public MetaObjectHandler metaObjectHandler() {
         return new MetaObjectHandlerConfig();
     }
 

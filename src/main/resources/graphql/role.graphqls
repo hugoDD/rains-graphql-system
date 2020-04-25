@@ -1,16 +1,25 @@
-
 type Roles {
 	data: [Role!]!
 	total: Int
 }
 
 type Role {
-	roleId: ID!
+	roleId: ID
 	roleName: String
-	remark: String
+	roleKey: String
+	roleSort: Int
+	dataScope: String
+	status: String
+	delFlag: String
+	createBy: String
 	createTime: Date
+	modifyBy: String
 	modifyTime: Date
-	menuIds:[String]
+	menuIds:[Long]
+	menus:[Menu]
+	deptIds:[Long]
+	depts:[Dept]
+	remark:String
 
 }
 input RoleCondition {
@@ -30,10 +39,13 @@ extend type Query {
 	roleDetail(roleName: String!): Role
 	#获取角色分页
 	rolePage(page: QueryRequest,role: RoleCondition): Roles
+	#获取角色分页
+	rolePageQuery(page: QueryRequest): Roles
 
 }
 
 extend type Mutation {
+	roleBaseMutation(page: QueryRequest):Boolean
 	#增加角色
 	addRole(role: RoleCondition): Role
 	#更新角色属性与用户关系、菜单关系

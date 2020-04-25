@@ -1,9 +1,12 @@
 package com.rains.graphql.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
-import com.rains.graphql.common.domain.RainsConstant;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.utils.MD5Util;
 import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.system.dao.UserMapper;
@@ -13,11 +16,6 @@ import com.rains.graphql.system.manager.UserManager;
 import com.rains.graphql.system.service.UserConfigService;
 import com.rains.graphql.system.service.UserRoleService;
 import com.rains.graphql.system.service.UserService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service("userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends BaseService<UserMapper, User> implements UserService {
 
     @Autowired
     private UserConfigService userConfigService;
@@ -44,13 +43,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User findByName(String username) {
-       return  baseMapper.findDetail(username);
+        return baseMapper.findDetail(username);
     }
 
 
     @Override
     public IPage<User> findUserDetail(User user, QueryRequest request) {
         try {
+            if (Objects.isNull(user)) {
+                user = new User();
+            }
             Page<User> page = new Page<>();
             SortUtil.handlePageSort(request, page, "userId", RainsConstant.ORDER_ASC, false);
             return this.baseMapper.findUserDetail(page, user);
@@ -98,7 +100,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setModifyTime(new Date());
         updateById(user);
 
-        userRoleService.deleteUserRolesByUserId(new String[]{user.getUserId()+""});
+        userRoleService.deleteUserRolesByUserId(new String[]{user.getUserId() + ""});
         //userRoleMapper.delete(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getUserId()));
 
         String[] roles = user.getRoleId().split(StringPool.COMMA);

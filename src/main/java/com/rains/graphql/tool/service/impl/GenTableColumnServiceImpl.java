@@ -1,14 +1,12 @@
 package com.rains.graphql.tool.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.rains.graphql.system.service.impl.BaseService;
 import com.rains.graphql.tool.entity.GenTableColumn;
 import com.rains.graphql.tool.mapper.GenTableColumnMapper;
 import com.rains.graphql.tool.service.IGenTableColumnService;
-import com.rains.graphql.system.service.impl.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import java.util.List;
 
@@ -24,9 +22,9 @@ public class GenTableColumnServiceImpl extends BaseService<GenTableColumnMapper,
 
     @Override
     public List<GenTableColumn> findGenTableColumns(GenTableColumn genTableColumn) {
-	    LambdaQueryWrapper<GenTableColumn> queryWrapper = new LambdaQueryWrapper<>();
-		// TODO 设置查询条件
-		return this.baseMapper.selectList(queryWrapper);
+        LambdaQueryWrapper<GenTableColumn> queryWrapper = new LambdaQueryWrapper<>();
+        // TODO 设置查询条件
+        return this.baseMapper.selectList(queryWrapper);
     }
 
 

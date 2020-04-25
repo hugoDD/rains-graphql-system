@@ -1,16 +1,15 @@
 package com.rains.graphql.system.mutation;
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.exception.SysException;
 import com.rains.graphql.common.generator.GeneratorConstant;
-import com.rains.graphql.common.properties.RainsGraphqlProperties;
-import com.rains.graphql.common.utils.SysUtil;
 import com.rains.graphql.common.utils.FileUtil;
+import com.rains.graphql.common.utils.SysUtil;
 import com.rains.graphql.system.domain.Column;
 import com.rains.graphql.system.domain.GeneratorConfig;
 import com.rains.graphql.system.service.GeneratorConfigService;
 import com.rains.graphql.system.service.GeneratorService;
 import com.rains.graphql.system.service.impl.GeneratorHelper;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.servlet.context.GraphQLServletContext;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +27,9 @@ import java.util.List;
 @Slf4j
 @Component
 public class GeneratorMutation implements GraphQLMutationResolver {
+    private static final String SUFFIX = "_code.zip";
     @Autowired
     private GeneratorConfigService generatorConfigService;
-
-    private static final String SUFFIX = "_code.zip";
-
     @Autowired
     private GeneratorService generatorService;
 
@@ -45,7 +42,7 @@ public class GeneratorMutation implements GraphQLMutationResolver {
 
     @RequiresPermissions("gen:config:update")
     public GeneratorConfig updateGeneratorConfig(GeneratorConfig generatorConfig) throws SysException {
-        if (generatorConfig.getId()==null){
+        if (generatorConfig.getId() == null) {
             throw new SysException("配置id不能为空");
         }
         this.generatorConfigService.updateGeneratorConfig(generatorConfig);
@@ -53,7 +50,7 @@ public class GeneratorMutation implements GraphQLMutationResolver {
     }
 
     @RequiresPermissions("gen:generate:gen")
-    public void generate( String database,String name, String remark, DataFetchingEnvironment env) throws Exception {
+    public void generate(String database, String name, String remark, DataFetchingEnvironment env) throws Exception {
         GraphQLServletContext context = env.getContext();
         HttpServletResponse response = context.getHttpServletResponse();
         List<String> schemas = properties.getSchema();

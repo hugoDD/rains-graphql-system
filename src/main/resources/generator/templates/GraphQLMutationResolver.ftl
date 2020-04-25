@@ -14,24 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * ${tableComment} Mutation
- *
- * @author ${author}
- * @date ${date}
- */
+* ${tableComment} Mutation
+*
+* @author ${author}
+* @date ${date}
+*/
 @Slf4j
 @Component
 public class ${className}Mutation implements GraphQLMutationResolver {
-    @Autowired
-    private BaseMutation mutation;
+@Autowired
+private BaseMutation mutation;
 
-    @Autowired
-    private I${className}Service ${className?uncap_first}Service;
+@Autowired
+private I${className}Service ${className?uncap_first}Service;
 
-    @Log("[#request.opt]操作系统日志")
-    @RequiresPermissions("${className?uncap_first}:[#request.opt]")
-    public boolean ${className?uncap_first}BaseMutation(QueryRequest request, ${className} entity, DataFetchingEnvironment env) {
-        request.setData(entity);
-        return mutation.baseMutation(request, env,${className?uncap_first}Service);
-    }
+@Log("[#request.opt]操作系统日志")
+@RequiresPermissions("${className?uncap_first}:[#request.opt]")
+public boolean ${className?uncap_first}BaseMutation(QueryRequest request, ${className} entity, DataFetchingEnvironment env) {
+request.setData(entity);
+return mutation.baseMutation(request, env,${className?uncap_first}Service);
+}
 }

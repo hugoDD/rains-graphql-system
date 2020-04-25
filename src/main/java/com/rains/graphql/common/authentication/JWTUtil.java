@@ -1,14 +1,12 @@
 package com.rains.graphql.common.authentication;
 
-import com.rains.graphql.common.properties.RainsGraphqlProperties;
-import com.rains.graphql.common.utils.SysUtil;
-import com.rains.graphql.common.utils.MD5Util;
-import com.rains.graphql.common.utils.SpringContextUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.rains.graphql.common.properties.RainsGraphqlProperties;
+import com.rains.graphql.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,9 +63,9 @@ public class JWTUtil {
     public static String sign(String username, String secret) {
         try {
             RainsGraphqlProperties prop = SpringContextUtil.getBean(RainsGraphqlProperties.class);
-             long EXPIRE_TIME =0;
-            if(Objects.nonNull(prop)){
-                EXPIRE_TIME =prop.getShiro().getJwtTimeOut() * 1000;
+            long EXPIRE_TIME = 0;
+            if (Objects.nonNull(prop)) {
+                EXPIRE_TIME = prop.getShiro().getJwtTimeOut() * 1000;
             }
             username = StringUtils.lowerCase(username);
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);

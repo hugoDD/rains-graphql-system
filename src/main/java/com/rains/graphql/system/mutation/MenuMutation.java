@@ -1,11 +1,12 @@
 package com.rains.graphql.system.mutation;
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.annotation.Log;
+import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.exception.SysException;
 import com.rains.graphql.common.graphql.GraphQLHttpUtil;
 import com.rains.graphql.system.domain.Menu;
 import com.rains.graphql.system.service.MenuService;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.wuwenze.poi.ExcelKit;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,25 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 @Component
-public class MenuMutation  implements GraphQLMutationResolver {
+public class MenuMutation implements GraphQLMutationResolver {
     @Autowired
     private MenuService menuService;
+
+    @Log("菜单[#request.opt]操作系统日志")
+    @RequiresPermissions("system:menu:[#request.opt]")
+    public boolean menuBaseMutation(QueryRequest request, DataFetchingEnvironment env) {
+        if ("export".equals(request.getOpt())) {
+            Consumer<QueryRequest> exportOpt = q -> menuService.export(q, env);
+            request.opt("export", exportOpt);
+        }
+
+        return menuService.baseOpt(request);
+
+    }
 
     @Log("新增菜单/按钮")
     //@PostMapping
@@ -41,7 +55,7 @@ public class MenuMutation  implements GraphQLMutationResolver {
     @Log("删除菜单/按钮")
     //@DeleteMapping("/{menuIds}")
     @RequiresPermissions("menu:delete")
-    public void deleteMenus(@NotBlank(message = "{required}")  String[] menuIds) throws SysException {
+    public void deleteMenus(@NotBlank(message = "{required}") String[] menuIds) throws SysException {
         try {
             //String[] ids = menuIds.split(StringPool.COMMA);
             this.menuService.deleteMeuns(menuIds);
@@ -66,7 +80,7 @@ public class MenuMutation  implements GraphQLMutationResolver {
         return menu;
     }
 
-    public void menuExport(Menu menu,  DataFetchingEnvironment env) throws SysException {
+    public void menuExport(Menu menu, DataFetchingEnvironment env) throws SysException {
         try {
             List<Menu> menus = this.menuService.findMenuList(menu);
             ExcelKit.$Export(Menu.class, GraphQLHttpUtil.getResponse(env)).downXlsx(menus, false);

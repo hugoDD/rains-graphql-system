@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 @Validated
@@ -33,11 +34,26 @@ public class LogMutation implements GraphQLMutationResolver {
     @Autowired
     private BaseMutation mutation;
 
-    @Log("操作系统日志")
+    @Log("[#request.opt]操作系统日志")
     @RequiresPermissions("log:[#request.opt]")
-    public boolean logBaseMutation(QueryRequest request,com.rains.graphql.system.domain.Log lg, DataFetchingEnvironment env) {
-        request.setData(lg);
-        return mutation.baseMutation(request, env,logService);
+    public boolean optLogBaseMutation(QueryRequest request, DataFetchingEnvironment env) {
+        if ("export".equals(request.getOpt())) {
+            Consumer<QueryRequest> exportOpt = q -> logService.export(q, env);
+            request.opt("export", exportOpt);
+        }
+
+        return logService.baseOpt(request);
+    }
+
+    @Log("[#request.opt]操作登录日志")
+    @RequiresPermissions("loglogin:[#request.opt]")
+    public boolean loginLogBaseMutation(QueryRequest request, DataFetchingEnvironment env) {
+        if ("export".equals(request.getOpt())) {
+            Consumer<QueryRequest> exportOpt = q -> loginLogService.export(q, env);
+            request.opt("export", exportOpt);
+        }
+
+        return loginLogService.baseOpt(request);
     }
 
 

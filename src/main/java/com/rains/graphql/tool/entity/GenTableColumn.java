@@ -1,13 +1,13 @@
 package com.rains.graphql.tool.entity;
 
-import java.util.Date;
-
-import com.rains.graphql.common.utils.StringUtils;
-import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rains.graphql.common.utils.StringUtils;
+import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 代码生成业务表字段 Entity
@@ -154,17 +154,7 @@ public class GenTableColumn {
     @TableField("update_time")
     private Date updateTime;
 
-    public boolean isSuperColumn()
-    {
-        return isSuperColumn(this.javaField);
-    }
-
-    public  boolean isPkColumn(){
-        return this.isPk;
-    }
-
-    public static boolean isSuperColumn(String javaField)
-    {
+    public static boolean isSuperColumn(String javaField) {
         return StringUtils.equalsAnyIgnoreCase(javaField,
                 // BaseEntity
                 "createBy", "createTime", "updateBy", "updateTime", "remark",
@@ -172,15 +162,25 @@ public class GenTableColumn {
                 "parentName", "parentId", "orderNum", "ancestors");
     }
 
-    public boolean isUsableColumn()
-    {
-        return isUsableColumn(javaField);
-    }
-
-    public static boolean isUsableColumn(String javaField)
-    {
+    public static boolean isUsableColumn(String javaField) {
         // isSuperColumn()中的名单用于避免生成多余Domain属性，若某些属性在生成页面时需要用到不能忽略，则放在此处白名单
         return StringUtils.equalsAnyIgnoreCase(javaField, "parentId", "orderNum");
+    }
+
+    public boolean isUIEdit() {
+        return this.isEdit || this.isInsert;
+    }
+
+    public boolean isSuperColumn() {
+        return isSuperColumn(this.javaField);
+    }
+
+    public boolean isPkColumn() {
+        return this.isPk;
+    }
+
+    public boolean isUsableColumn() {
+        return isUsableColumn(javaField);
     }
 
 

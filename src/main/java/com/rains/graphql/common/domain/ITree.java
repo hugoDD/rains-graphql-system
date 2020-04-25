@@ -1,17 +1,16 @@
 package com.rains.graphql.common.domain;
 
 public interface ITree<ID> {
-     ID getId();
+    ID getId();
 
-     ID getPId();
 
-     String getTitle();
+    String getLabel();
 
-    default String getKey(){
-        return getId()==null?null:getId()+"";
+    default String getKey() {
+        return getId() == null ? null : getId() + "";
     }
 
-     default String getValue(){
-         return getId()==null?null:getId()+"";
-     }
+    default String getValue() {
+        return getId() == null ? null : getId() + "";
+    }
 }

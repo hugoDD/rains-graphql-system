@@ -1,9 +1,9 @@
 package com.rains.graphql.tool.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.rains.graphql.tool.entity.GenTable;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -23,7 +23,7 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
      * @return 数据库表集合
      */
     @Select("select table_name, table_comment, create_time, update_time from information_schema.tables  ${ew.customSqlSegment}")
-    public List<GenTable> selectDbTableList(@Param(Constants.WRAPPER) Wrapper<GenTable> genTableWrapper);
+    List<GenTable> selectDbTableList(@Param(Constants.WRAPPER) Wrapper<GenTable> genTableWrapper);
 
 
 }

@@ -45,7 +45,7 @@ public class Tree<T> {
 
     private Date modifyTime;
 
-    public void initChildren(){
+    public void initChildren() {
         this.children = new ArrayList<>();
     }
 

@@ -1,12 +1,12 @@
 package com.rains.graphql.system.mutation;
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.annotation.Log;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.exception.SysException;
 import com.rains.graphql.common.graphql.GraphQLHttpUtil;
 import com.rains.graphql.system.domain.Dict;
 import com.rains.graphql.system.service.DictService;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.wuwenze.poi.ExcelKit;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
@@ -75,12 +75,12 @@ public class DictMutation implements GraphQLMutationResolver {
     }
 
     @RequiresPermissions("dict:export")
-    public void dictExport(QueryRequest request, Dict dict,  DataFetchingEnvironment env) throws SysException {
+    public void dictExport(QueryRequest request, Dict dict, DataFetchingEnvironment env) throws SysException {
         try {
             List<Dict> dicts = this.dictService.findDicts(request, dict).getRecords();
             ExcelKit.$Export(Dict.class, GraphQLHttpUtil.getResponse(env)).downXlsx(dicts, false);
         } catch (Exception e) {
-           String message = "导出Excel失败";
+            String message = "导出Excel失败";
             log.error(message, e);
             throw new SysException(message);
         }

@@ -1,9 +1,9 @@
 package com.rains.graphql.tool.mutation;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.rains.graphql.common.domain.RainsConstant;
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.rains.graphql.common.annotation.Log;
+import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.generator.GenConstants;
 import com.rains.graphql.common.generator.VelocityUtils;
 import com.rains.graphql.common.graphql.GraphQLHttpUtil;
@@ -11,29 +11,19 @@ import com.rains.graphql.common.utils.BeanMapUtils;
 import com.rains.graphql.common.utils.FileUtil;
 import com.rains.graphql.common.utils.StringUtils;
 import com.rains.graphql.tool.entity.GenTable;
-import com.rains.graphql.tool.entity.GenTableColumn;
 import com.rains.graphql.tool.service.IGenTableService;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.rains.graphql.common.annotation.Log;
-import com.rains.graphql.common.domain.QueryRequest;
-import com.rains.graphql.system.mutation.BaseMutation;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.servlet.context.GraphQLServletContext;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -51,12 +41,11 @@ public class GenTableMutation implements GraphQLMutationResolver {
 
     @Autowired
     private IGenTableService genTableService;
-    private Consumer<QueryRequest> exportOpt;
-
     Consumer<QueryRequest> importTable = q -> {
         List<GenTable> listData = BeanMapUtils.objToBeans(q.getDatas(), GenTable.class);
         genTableService.importGenTable(listData);
     };
+    private Consumer<QueryRequest> exportOpt;
 
     @Log("[#request.opt]操作系统日志")
     @RequiresPermissions("tool:gen:[#request.opt]")
@@ -70,7 +59,7 @@ public class GenTableMutation implements GraphQLMutationResolver {
             try {
                 FileUtil.download(data, "rains_code.zip", response);
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         };
 //        if ("genCode".equals(request.getOpt())) {
@@ -106,7 +95,7 @@ public class GenTableMutation implements GraphQLMutationResolver {
 
         try {
             byte[] data = generatorCode(request.getIds());
-            FileUtil.download(data,"rains_code.zip",response);
+            FileUtil.download(data, "rains_code.zip", response);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -140,7 +129,6 @@ public class GenTableMutation implements GraphQLMutationResolver {
             try {
                 // 添加到zip
                 String fileName = VelocityUtils.getFileName(code.getKey(), genTable);
-                System.out.println("filename:" + fileName);
                 if (StringUtils.isEmpty(fileName)) {
                     continue;
                 }

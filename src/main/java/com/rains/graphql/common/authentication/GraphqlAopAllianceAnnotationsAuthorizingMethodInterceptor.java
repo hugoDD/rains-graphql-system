@@ -15,7 +15,7 @@ public class GraphqlAopAllianceAnnotationsAuthorizingMethodInterceptor extends A
 
     public GraphqlAopAllianceAnnotationsAuthorizingMethodInterceptor() {
         List<AuthorizingAnnotationMethodInterceptor> interceptors = new ArrayList(5);
-        AnnotationResolver resolver =new SpringAnnotationResolver();
+        AnnotationResolver resolver = new SpringAnnotationResolver();
         interceptors.add(new RoleAnnotationMethodInterceptor(resolver));
         interceptors.add(new GraphqlPermissionAnnotationMethodInterceptor(resolver));
         interceptors.add(new AuthenticatedAnnotationMethodInterceptor(resolver));

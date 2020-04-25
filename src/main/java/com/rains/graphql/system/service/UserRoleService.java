@@ -2,15 +2,14 @@ package com.rains.graphql.system.service;
 
 
 import com.rains.graphql.system.domain.UserRole;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface UserRoleService extends IService<UserRole> {
+public interface UserRoleService extends IBaseService<UserRole> {
 
-	void deleteUserRolesByRoleId(String[] roleIds);
+    void deleteUserRolesByRoleId(String[] roleIds);
 
-	void deleteUserRolesByUserId(String[] userIds);
+    void deleteUserRolesByUserId(String[] userIds);
 
-	List<String> findUserIdsByRoleId(String[] roleIds);
+    List<String> findUserIdsByRoleId(String[] roleIds);
 }

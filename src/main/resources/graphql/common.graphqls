@@ -20,41 +20,43 @@ scalar LocalDateTime
 scalar LocalTime
 scalar OffsetDateTime
 
+scalar Long
+
 scalar Object
 # 树children类型
 scalar TreeNode
 
 schema {
-    query: Query
-    mutation: Mutation
+	query: Query
+	mutation: Mutation
 }
 
 #Root node
 type Query {
-    version: String
+	version: String
 }
 
 type Mutation {
-    version: String
+	version: String
 
 }
 
 type Tree {
-    id: String
-    key: String
-    icon: String
-    title: String
-    value: String
-    text: String
-    permission:String
-    type: String
-    order: Int
-    path: String
-    component: String
-    children: TreeNode
-    parentId: String
-    hasParent: Boolean
-    hasChildren: Boolean
+	id: String
+	key: String
+	icon: String
+	title: String
+	value: String
+	text: String
+	permission:String
+	type: String
+	order: Int
+	path: String
+	component: String
+	children: TreeNode
+	parentId: String
+	hasParent: Boolean
+	hasChildren: Boolean
 
 }
 
@@ -77,70 +79,71 @@ type Tree {
 #       2017-11-08 9:00 -> 2017-11-08 19:00
 #       there are 11 time points (hours) in the time span.
 input Duration {
-    start: String!
-    end: String!
-    step: Step!
+	start: String!
+	end: String!
+	step: Step!
 }
 
 enum Step {
-    MONTH
-    DAY
-    HOUR
-    MINUTE
-    SECOND
+	MONTH
+	DAY
+	HOUR
+	MINUTE
+	SECOND
 }
 
 enum Order {
-    ASC
-    DES
+	ASC
+	DES
 }
 
 input Pagination {
-    # pageNum starts in 1, the default is 1.
-    pageNum: Int  = 1
-    pageSize: Int = 10
-    # default false
-    needTotal: Boolean
+	# pageNum starts in 1, the default is 1.
+	pageNum: Int  = 1
+	pageSize: Int = 10
+	# default false
+	needTotal: Boolean
 }
 
 input QueryRequest {
+	#run order
+	runOrder: Int = 0
+	# pageNum starts in 1, the default is 1.
+	pageNum: Int = 1
+	pageSize: Int = 10
 
-
-    # pageNum starts in 1, the default is 1.
-    pageNum: Int = 1
-    pageSize: Int = 10
-
-    sortField: String
-    sortOrder: String = "desc"
-    #rsql filter
-    filter: String
-    opt: String
-    ids:[ID]
-    datas:[Object]
-    child:Object
+	sortField: String
+	sortOrder: String = "desc"
+	#rsql filter
+	filter: String
+	opt: String
+	svc: String
+	ids:[ID]
+	datas:[Object]
+	child:Object
 }
 
 enum Language {
-    # For not language based agent, the language is impossible to tell.
-    UNKNOWN
-    JAVA
-    DOTNET
-    NODEJS
-    PYTHON
-    RUBY
+	# For not language based agent, the language is impossible to tell.
+	UNKNOWN
+	JAVA
+	DOTNET
+	NODEJS
+	PYTHON
+	RUBY
 }
 
 enum Scope {
-    Service
-    ServiceInstance
-    Endpoint
-    ServiceRelation
-    ServiceInstanceRelation
-    EndpointRelation
+	Service
+	ServiceInstance
+	Endpoint
+	ServiceRelation
+	ServiceInstanceRelation
+	EndpointRelation
 }
 
 enum DetectPoint {
-    CLIENT
-    SERVER
-    PROXY
+	CLIENT
+	SERVER
+	PROXY
 }

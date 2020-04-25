@@ -2,11 +2,6 @@ package com.rains.graphql.system.service;
 
 import com.rains.graphql.system.domain.DictType;
 
-import com.rains.graphql.common.domain.QueryRequest;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.rains.graphql.system.service.IBaseService;
-
-
 import java.util.List;
 
 /**

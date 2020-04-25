@@ -22,29 +22,29 @@ public class JWTUtilTest {
         String token = JWT.create()
                 .withClaim("username", username)
                 .sign(algorithm);
-        System.out.println("pwd: "+secret);
-        System.out.println("before token:"+token);
+        System.out.println("pwd: " + secret);
+        System.out.println("before token:" + token);
         String encryptToken = SysUtil.encryptToken(token);
-        System.out.println("encryptToken: "+encryptToken);
+        System.out.println("encryptToken: " + encryptToken);
 
-       String decryptToken = SysUtil.decryptToken(encryptToken);
-        Assert.assertEquals(token,decryptToken);
+        String decryptToken = SysUtil.decryptToken(encryptToken);
+        Assert.assertEquals(token, decryptToken);
 
-       String curusername = JWTUtil.getUsername(decryptToken);
-       Assert.assertNotNull(curusername);
-       System.out.println("username:"+curusername);
-       Assert.assertEquals(username,curusername);
+        String curusername = JWTUtil.getUsername(decryptToken);
+        Assert.assertNotNull(curusername);
+        System.out.println("username:" + curusername);
+        Assert.assertEquals(username, curusername);
 
 
     }
 
 
     @Test
-    public void testpwd(){
-        String pwdExpress="^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*<>?:])[a-zA-Z0-9!@#$%^&*<>?:]{8,50}$";
-        String strPwd="123Abc!@#";
+    public void testpwd() {
+        String pwdExpress = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*<>?:])[a-zA-Z0-9!@#$%^&*<>?:]{8,50}$";
+        String strPwd = "123Abc!@#";
         Pattern pattern = Pattern.compile(pwdExpress);
-		Matcher matcher = pattern.matcher(strPwd);
+        Matcher matcher = pattern.matcher(strPwd);
         System.out.println(matcher.matches());
     }
 }

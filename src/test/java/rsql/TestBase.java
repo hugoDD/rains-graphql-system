@@ -10,12 +10,10 @@ package rsql;/*
 
 import com.baomidou.mybatisplus.core.conditions.ISqlSegment;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.github.rutledgepaulv.qbuilders.conditions.Condition;
 import com.github.rutledgepaulv.qbuilders.visitors.*;
-
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,11 +27,6 @@ import static org.junit.Assert.*;
 public abstract class TestBase {
 
     public static RunMode MODE = RunMode.PRINT;
-
-    public enum RunMode {
-        TEST,
-        PRINT
-    }
 
     public void assertElasticsearch(Condition<?> condition, String expected) {
         QueryBuilder criteria = condition.query(new ElasticsearchVisitor(), new ElasticsearchVisitor.Context());
@@ -59,23 +52,23 @@ public abstract class TestBase {
 
     public void assertRsql(Condition<?> condition, Object object) {
         String pred = condition.query(new RSQLVisitor());
-        assertEquals(pred,object);
+        assertEquals(pred, object);
     }
 
     public void assertMybatisPlus(Condition<?> condition, QueryWrapper object, String rsql) {
-        MybatisPlusQueryVisitor<User> visitor= new MybatisPlusQueryVisitor<>();
-        MybatisPlusQueryVisitor.Context<User> context =new  MybatisPlusQueryVisitor.Context<>();
-        Wrapper<User> rootWrapper= condition.query(visitor, context);
+        MybatisPlusQueryVisitor<User> visitor = new MybatisPlusQueryVisitor<>();
+        MybatisPlusQueryVisitor.Context<User> context = new MybatisPlusQueryVisitor.Context<>();
+        Wrapper<User> rootWrapper = condition.query(visitor, context);
         Wrapper<User> converted = context.getWrapper().mergeNested(rootWrapper);
-        logSqlSegment("rsql："+rsql, converted);
-        logParams((QueryWrapper<User>)converted);
-        assertEquals(StringUtils.deleteWhitespace(converted.getSqlSegment()),StringUtils.deleteWhitespace(object.getSqlSegment()));
-        assertEquals(((QueryWrapper<User>)converted).getParamNameValuePairs(),object.getParamNameValuePairs());
+        logSqlSegment("rsql：" + rsql, converted);
+        logParams((QueryWrapper<User>) converted);
+        assertEquals(StringUtils.deleteWhitespace(converted.getSqlSegment()), StringUtils.deleteWhitespace(object.getSqlSegment()));
+        assertEquals(((QueryWrapper<User>) converted).getParamNameValuePairs(), object.getParamNameValuePairs());
     }
 
     private void logSqlSegment(String explain, ISqlSegment sqlSegment) {
         System.out.println(String.format(" ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓   ->[%s]<-   ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓", explain));
-        System.out.println("where:  "+sqlSegment.getSqlSegment());
+        System.out.println("where:  " + sqlSegment.getSqlSegment());
     }
 
     private <T> void logParams(QueryWrapper<T> wrapper) {
@@ -83,13 +76,18 @@ public abstract class TestBase {
                 System.out.println("key: '" + k + "'\t\tvalue: '" + v + StringPool.SINGLE_QUOTE));
     }
 
-
     public void doOrPrint(Runnable doMe, String printMe) {
-        if(MODE == RunMode.TEST) {
+        if (MODE == RunMode.TEST) {
             doMe.run();
         } else {
             System.out.println(printMe);
         }
+    }
+
+
+    public enum RunMode {
+        TEST,
+        PRINT
     }
 
 }

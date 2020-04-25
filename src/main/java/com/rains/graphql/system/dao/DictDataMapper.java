@@ -1,7 +1,7 @@
 package com.rains.graphql.system.dao;
 
-import com.rains.graphql.system.domain.DictData;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.rains.graphql.system.domain.DictData;
 
 /**
  * 字典数据表 Mapper

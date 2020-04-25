@@ -23,6 +23,11 @@ public class VelocityUtils {
     private static final String MYBATIS_PATH = "main/resources/mybatis";
 
     /**
+     * graphql 路径
+     */
+    private static final String GRAPHQL_PATH = "main/resources/graphql";
+
+    /**
      * 设置模板变量信息
      *
      * @return 模板列表
@@ -35,23 +40,23 @@ public class VelocityUtils {
         String functionName = genTable.getFunctionName();
 
         VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("tplCategory" , genTable.getTplCategory());
-        velocityContext.put("tableName" , genTable.getTableName());
-        velocityContext.put("functionName" , StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
-        velocityContext.put("ClassName" , genTable.getClassName());
-        velocityContext.put("className" , StringUtils.uncapitalize(genTable.getClassName()));
-        velocityContext.put("moduleName" , genTable.getModuleName());
-        velocityContext.put("BusinessName" , StringUtils.capitalize(genTable.getBusinessName()));
-        velocityContext.put("businessName" , genTable.getBusinessName());
-        velocityContext.put("basePackage" , getPackagePrefix(packageName));
-        velocityContext.put("packageName" , packageName);
-        velocityContext.put("author" , genTable.getFunctionAuthor());
-        velocityContext.put("datetime" , DateUtil.getDate());
-        velocityContext.put("pkColumn" , genTable.getPkColumn());
-        velocityContext.put("importList" , getImportList(genTable.getColumns()));
-        velocityContext.put("permissionPrefix" , getPermissionPrefix(moduleName, businessName));
-        velocityContext.put("columns" , genTable.getColumns().subList(1,genTable.getColumns().size()-1));
-        velocityContext.put("table" , genTable);
+        velocityContext.put("tplCategory", genTable.getTplCategory());
+        velocityContext.put("tableName", genTable.getTableName());
+        velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
+        velocityContext.put("ClassName", genTable.getClassName());
+        velocityContext.put("className", StringUtils.uncapitalize(genTable.getClassName()));
+        velocityContext.put("moduleName", genTable.getModuleName());
+        velocityContext.put("BusinessName", StringUtils.capitalize(genTable.getBusinessName()));
+        velocityContext.put("businessName", genTable.getBusinessName());
+        velocityContext.put("basePackage", getPackagePrefix(packageName));
+        velocityContext.put("packageName", packageName);
+        velocityContext.put("author", genTable.getFunctionAuthor());
+        velocityContext.put("datetime", DateUtil.getDate());
+        velocityContext.put("pkColumn", genTable.getPkColumn());
+        velocityContext.put("importList", getImportList(genTable.getColumns()));
+        velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
+        velocityContext.put("columns", genTable.getColumns().subList(1, genTable.getColumns().size() - 1));
+        velocityContext.put("table", genTable);
         if (GenConstants.TPL_TREE.equals(tplCategory)) {
             setTreeVelocityContext(velocityContext, genTable);
         }
@@ -65,15 +70,15 @@ public class VelocityUtils {
         String treeParentCode = getTreeParentCode(paramsObj);
         String treeName = getTreeName(paramsObj);
 
-        context.put("treeCode" , treeCode);
-        context.put("treeParentCode" , treeParentCode);
-        context.put("treeName" , treeName);
-        context.put("expandColumn" , getExpandColumn(genTable));
+        context.put("treeCode", treeCode);
+        context.put("treeParentCode", treeParentCode);
+        context.put("treeName", treeName);
+        context.put("expandColumn", getExpandColumn(genTable));
         if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE)) {
-            context.put("tree_parent_code" , paramsObj.getString(GenConstants.TREE_PARENT_CODE));
+            context.put("tree_parent_code", paramsObj.getString(GenConstants.TREE_PARENT_CODE));
         }
         if (paramsObj.containsKey(GenConstants.TREE_NAME)) {
-            context.put("tree_name" , paramsObj.getString(GenConstants.TREE_NAME));
+            context.put("tree_name", paramsObj.getString(GenConstants.TREE_NAME));
         }
     }
 
@@ -113,28 +118,32 @@ public class VelocityUtils {
         // 业务名称
         String businessName = genTable.getBusinessName();
 
-        String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, "." , "/");
+        String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
         String vuePath = "vue";
 
         if (template.contains("domain.java.vm")) {
-            fileName = StringUtils.format("{}/domain/{}.java" , javaPath, className);
+            fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
         } else if (template.contains("mapper.java.vm")) {
-            fileName = StringUtils.format("{}/mapper/{}Mapper.java" , javaPath, className);
+            fileName = StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
         } else if (template.contains("service.java.vm")) {
-            fileName = StringUtils.format("{}/service/I{}Service.java" , javaPath, className);
+            fileName = StringUtils.format("{}/service/I{}Service.java", javaPath, className);
         } else if (template.contains("serviceImpl.java.vm")) {
-            fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java" , javaPath, className);
-        } else if (template.contains("controller.java.vm")) {
-            fileName = StringUtils.format("{}/controller/{}Controller.java" , javaPath, className);
+            fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+        } else if (template.contains("GraphQLMutationResolver.java.vm")) {
+            fileName = StringUtils.format("{}/mutation/{}Mutation.java", javaPath, className);
+        } else if (template.contains("GraphQLQueryResolver.java.vm")) {
+            fileName = StringUtils.format("{}/query/{}Query.java", javaPath, className);
         } else if (template.contains("mapper.xml.vm")) {
-            fileName = StringUtils.format("{}/{}Mapper.xml" , mybatisPath, className);
+            fileName = StringUtils.format("{}/{}Mapper.xml", mybatisPath, className);
+        } else if (template.contains("graphql.graphqls.vm")) {
+            fileName = StringUtils.format("{}/{}.graphqls", GRAPHQL_PATH, className);
         } else if (template.contains("sql.vm")) {
             fileName = businessName + "Menu.sql";
         } else if (template.contains("js.vm")) {
-            fileName = StringUtils.format("{}/api/{}/{}.js" , vuePath, moduleName, businessName);
+            fileName = StringUtils.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
         } else if (template.contains("vue.vm")) {
-            fileName = StringUtils.format("{}/views/{}/{}/index.vue" , vuePath, moduleName, businessName);
+            fileName = StringUtils.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
         }
         return fileName;
     }
@@ -177,7 +186,7 @@ public class VelocityUtils {
      * @return 返回权限前缀
      */
     public static String getPermissionPrefix(String moduleName, String businessName) {
-        return StringUtils.format("{}:{}" , moduleName, businessName);
+        return StringUtils.format("{}:{}", moduleName, businessName);
 
     }
 

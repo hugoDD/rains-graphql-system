@@ -1,7 +1,7 @@
 package com.rains.graphql.system.service;
 
-import com.rains.graphql.system.domain.GeneratorConfig;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rains.graphql.system.domain.GeneratorConfig;
 
 /**
  * @author hugoDD

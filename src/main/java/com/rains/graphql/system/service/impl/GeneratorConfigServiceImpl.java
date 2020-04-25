@@ -1,10 +1,10 @@
 package com.rains.graphql.system.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.rains.graphql.system.dao.GeneratorConfigMapper;
 import com.rains.graphql.system.domain.GeneratorConfig;
 import com.rains.graphql.system.service.GeneratorConfigService;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

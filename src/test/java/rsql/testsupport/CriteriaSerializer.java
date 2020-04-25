@@ -37,16 +37,17 @@ public class CriteriaSerializer implements Function<Criteria, String> {
                 object.put(key, object.get(key) instanceof Enum<?> ?
                         object.get(key).toString() : object.get(key) instanceof DBObject ?
                         applyInternal((DBObject) object.get(key)) : object.get(key) instanceof Collection<?> ?
-                        applyList((Collection<?>)object.get(key)) : object.get(key)));
+                        applyList((Collection<?>) object.get(key)) : object.get(key)));
 
         return object;
     }
+
     private DBObject applyInternal(DBObject object) {
         object.keySet().stream().forEach(key ->
                 object.put(key, object.get(key) instanceof Enum<?> ?
                         object.get(key).toString() : object.get(key) instanceof DBObject ?
                         applyInternal((DBObject) object.get(key)) : object.get(key) instanceof Collection<?> ?
-                        applyList((Collection<?>)object.get(key)) : object.get(key)));
+                        applyList((Collection<?>) object.get(key)) : object.get(key)));
 
         return object;
     }
@@ -58,6 +59,7 @@ public class CriteriaSerializer implements Function<Criteria, String> {
                 return Objects.toString(item);
             } else {
                 return item;
-            }}).collect(Collectors.toList());
+            }
+        }).collect(Collectors.toList());
     }
 }

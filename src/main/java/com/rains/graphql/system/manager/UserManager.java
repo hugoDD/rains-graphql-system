@@ -1,5 +1,9 @@
 package com.rains.graphql.system.manager;
 
+import com.alicp.jetcache.anno.CachePenetrationProtect;
+import com.alicp.jetcache.anno.CacheRefresh;
+import com.alicp.jetcache.anno.CacheType;
+import com.alicp.jetcache.anno.Cached;
 import com.rains.graphql.common.domain.router.RouterMeta;
 import com.rains.graphql.common.domain.router.VueRouter;
 import com.rains.graphql.common.utils.TreeUtil;
@@ -11,10 +15,6 @@ import com.rains.graphql.system.service.MenuService;
 import com.rains.graphql.system.service.RoleService;
 import com.rains.graphql.system.service.UserConfigService;
 import com.rains.graphql.system.service.UserService;
-import com.alicp.jetcache.anno.CachePenetrationProtect;
-import com.alicp.jetcache.anno.CacheRefresh;
-import com.alicp.jetcache.anno.CacheType;
-import com.alicp.jetcache.anno.Cached;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +52,7 @@ public class UserManager {
     @CacheRefresh(refresh = 1800, stopRefreshAfterLastAccess = 3600, timeUnit = TimeUnit.SECONDS)
     @CachePenetrationProtect
     public User getUser(String username) {
-        return  userService.findByName(username);
+        return userService.findByName(username);
 
     }
 
@@ -63,8 +63,8 @@ public class UserManager {
      * @return 角色集合
      */
     public Set<String> getUserRoles(String username) {
-        List<Role> roleList =this.roleService.findUserRole(username);
-        return roleList.stream().map(Role::getRoleName).collect(Collectors.toSet());
+        List<Role> roleList = this.roleService.findUserRole(username);
+        return roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet());
     }
 
     /**
@@ -74,8 +74,8 @@ public class UserManager {
      * @return 权限集合
      */
     public Set<String> getUserPermissions(String username) {
-        List<Menu> permissionList =this.menuService.findUserPermissions(username);
-        return permissionList.stream().map(Menu::getPerms).flatMap(e-> Stream.of(e.split(","))).collect(Collectors.toSet());
+        List<Menu> permissionList = this.menuService.findUserPermissions(username);
+        return permissionList.stream().map(Menu::getPerms).flatMap(e -> Stream.of(e.split(","))).collect(Collectors.toSet());
     }
 
     /**
@@ -110,9 +110,6 @@ public class UserManager {
     public UserConfig getUserConfig(String userId) {
         return userConfigService.findByUserId(userId);
     }
-
-
-
 
 
 }

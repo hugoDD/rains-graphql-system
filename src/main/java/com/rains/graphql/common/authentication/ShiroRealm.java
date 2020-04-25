@@ -13,6 +13,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -21,6 +22,15 @@ import java.util.Set;
  * @author MrBird
  */
 public class ShiroRealm extends AuthorizingRealm {
+    /**
+     * 所有权限标识
+     */
+    private static final String ALL_PERMISSION = "*:*:*";
+
+    /**
+     * 管理员角色权限标识
+     */
+    private static final String SUPER_ADMIN = "admin";
 
     @Autowired
     private UserManager userManager;
@@ -30,7 +40,8 @@ public class ShiroRealm extends AuthorizingRealm {
         return token instanceof JWTToken;
     }
 
-    /**`
+    /**
+     * `
      * 授权模块，获取用户角色和权限
      *
      * @param token token
@@ -45,6 +56,14 @@ public class ShiroRealm extends AuthorizingRealm {
         // 获取用户角色集
         Set<String> roleSet = userManager.getUserRoles(username);
         simpleAuthorizationInfo.setRoles(roleSet);
+
+        if (roleSet.contains(SUPER_ADMIN)) {
+            // 获取用户权限集
+            Set<String> permissionSet = new HashSet<>();
+            permissionSet.add(ALL_PERMISSION);
+            simpleAuthorizationInfo.setStringPermissions(permissionSet);
+            return simpleAuthorizationInfo;
+        }
 
         // 获取用户权限集
         Set<String> permissionSet = userManager.getUserPermissions(username);

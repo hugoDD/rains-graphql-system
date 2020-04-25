@@ -4,13 +4,15 @@
 
     <resultMap id="${className?uncap_first}" type="${basePackage}.${entityPackage}.${className}">
         <#if columns??>
-        <#list columns as column>
-            <#if column.isKey = true>
-        <id column="${column.name}" jdbcType="${column.type?upper_case}" property="${column.field?uncap_first}"/>
-            <#else>
-        <result column="${column.name}" jdbcType="${column.type?upper_case}" property="${column.field?uncap_first}"/>
-            </#if>
-        </#list>
+            <#list columns as column>
+                <#if column.isKey = true>
+                    <id column="${column.name}" jdbcType="${column.type?upper_case}"
+                        property="${column.field?uncap_first}"/>
+                <#else>
+                    <result column="${column.name}" jdbcType="${column.type?upper_case}"
+                            property="${column.field?uncap_first}"/>
+                </#if>
+            </#list>
         </#if>
     </resultMap>
 </mapper>

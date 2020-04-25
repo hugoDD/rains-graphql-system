@@ -11,15 +11,9 @@ import java.util.Locale;
 //日期转换器
 @Slf4j
 public class DateTimeConverter implements Converter {
-    private static final String DATE      = "yyyy-MM-dd";
-    private static final String DATETIME  = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE = "yyyy-MM-dd";
+    private static final String DATETIME = "yyyy-MM-dd HH:mm:ss";
     private static final String TIMESTAMP = "yyyy-MM-dd HH:mm:ss.SSS";
-
-    @Override
-    public Object convert(Class type, Object value) {
-        // TODO Auto-generated method stub
-        return toDate(type, value);
-    }
 
     public static Object toDate(Class type, Object value) {
         if (value == null || "".equals(value))
@@ -43,11 +37,17 @@ public class DateTimeConverter implements Converter {
                         return formatter.parse(dateValue);
                     }
                 } catch (Exception e) {
-                    log.error(e.getMessage(),e);
+                    log.error(e.getMessage(), e);
                 }
             }
         }
         return value;
+    }
+
+    @Override
+    public Object convert(Class type, Object value) {
+        // TODO Auto-generated method stub
+        return toDate(type, value);
     }
 }
 

@@ -1,9 +1,9 @@
 package ${packageName}.domain;
 
 import java.io.Serializable;
-#foreach ($import in $importList)
-import ${import};
-#end
+    #foreach ($import in $importList)
+    import ${import};
+    #end
 
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,33 +11,34 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.rains.graphql.common.domain.BaseEntity;
-
+import lombok.EqualsAndHashCode;
 
 
 /**
  * ${functionName}对象 ${tableName}
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("${tableName}")
 public class ${ClassName} extends BaseEntity{
-    private static final long serialVersionUID = 1L;
+private static final long serialVersionUID=1L;
 
-    /** ${pkColumn.columnComment} */
-    @TableId(value = "${pkColumn.columnName}", type = IdType.AUTO)
-    private $pkColumn.javaType $pkColumn.javaField;
+/** ${pkColumn.columnComment} */
+@TableId(value = "${pkColumn.columnName}", type = IdType.AUTO)
+private $pkColumn.javaType $pkColumn.javaField;
 
 #foreach ($column in $columns)
-#if(!$table.isSuperColumn($column.javaField))
+    #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
-    #if($column.isPkColumn)
-    @TableId(value = "${column.columnName}", type = IdType.AUTO)
-    #end
+        #if($column.isPkColumn)
+        @TableId(value = "${column.columnName}", type = IdType.AUTO)
+        #end
     @TableField("$column.columnName")
     private $column.javaType $column.javaField;
-#end
+    #end
 #end
 
 }

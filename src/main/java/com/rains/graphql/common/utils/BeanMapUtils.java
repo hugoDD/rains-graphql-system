@@ -10,7 +10,10 @@ import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.springframework.cglib.beans.BeanMap;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -84,7 +87,7 @@ public final class BeanMapUtils {
         if (maps == null || maps.length == 0) {
             return Collections.emptyList();
         }
-         Stream.of(maps).filter(e -> e.getClass().isAssignableFrom(clazz)).collect(toList());
+        Stream.of(maps).filter(e -> e.getClass().isAssignableFrom(clazz)).collect(toList());
         return Stream.of(maps).filter(e -> e instanceof Map).map(e -> mapToBean((Map<String, Object>) e, clazz)).collect(toList());
     }
 

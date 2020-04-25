@@ -1,10 +1,10 @@
 package com.rains.graphql.system.service;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.system.domain.Column;
 import com.rains.graphql.system.domain.TableDomain;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.util.List;
 

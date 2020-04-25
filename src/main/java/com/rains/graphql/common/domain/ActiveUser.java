@@ -1,7 +1,7 @@
 package com.rains.graphql.common.domain;
 
-import com.rains.graphql.common.utils.DateUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rains.graphql.common.utils.DateUtil;
 import lombok.Data;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -25,7 +25,7 @@ public class ActiveUser implements Serializable {
     // token(加密后)
     private String token;
     // 登录时间
-    private String loginTime = DateUtil.formatFullTime(LocalDateTime.now(),DateUtil.FULL_TIME_SPLIT_PATTERN);
+    private String loginTime = DateUtil.formatFullTime(LocalDateTime.now(), DateUtil.FULL_TIME_SPLIT_PATTERN);
     // 登录地点
     private String loginAddress;
 }

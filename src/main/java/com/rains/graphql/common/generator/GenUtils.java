@@ -6,7 +6,6 @@ import com.rains.graphql.system.domain.GeneratorConfig;
 import com.rains.graphql.tool.entity.GenTable;
 import com.rains.graphql.tool.entity.GenTableColumn;
 import org.apache.commons.lang3.RegExUtils;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Arrays;
 
@@ -57,7 +56,7 @@ public class GenUtils {
             column.setHtmlType(GenConstants.HTML_INPUT);
 
             // 如果是浮点型
-            String[] str = StringUtils.split(StringUtils.substringBetween(column.getColumnType(), "(" , ")"), ",");
+            String[] str = StringUtils.split(StringUtils.substringBetween(column.getColumnType(), "(", ")"), ",");
             if (str != null && str.length == 2 && Integer.parseInt(str[1]) > 0) {
                 column.setJavaType(GenConstants.TYPE_DOUBLE);
                 column.setGraphqlType(GenConstants.TYPE_FLOAT);
@@ -72,13 +71,11 @@ public class GenUtils {
                 column.setJavaType(GenConstants.TYPE_LONG);
                 column.setGraphqlType(GenConstants.TYPE_INT);
             }
-        }else if(arraysContains(GenConstants.COLUMNTYPE_BIT,dataType)){
+        } else if (arraysContains(GenConstants.COLUMNTYPE_BIT, dataType)) {
             column.setHtmlType(GenConstants.HTML_CHECKBOX);
             column.setJavaType(GenConstants.TYPE_BOOLEAN);
             column.setGraphqlType(GenConstants.TYPE_BOOLEAN);
         }
-
-
 
 
         // 插入字段（默认所有字段都需要插入）
@@ -173,7 +170,7 @@ public class GenUtils {
      * @return 替换后的名字
      */
     public static String replaceText(String text) {
-        return RegExUtils.replaceAll(text, "(?:表|若依)" , "");
+        return RegExUtils.replaceAll(text, "(?:表|若依)", "");
     }
 
     /**
@@ -198,7 +195,7 @@ public class GenUtils {
      */
     public static Integer getColumnLength(String columnType) {
         if (StringUtils.indexOf(columnType, "(") > 0) {
-            String length = StringUtils.substringBetween(columnType, "(" , ")");
+            String length = StringUtils.substringBetween(columnType, "(", ")");
             return Integer.valueOf(length);
         } else {
             return 0;

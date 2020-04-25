@@ -1,9 +1,9 @@
 package com.rains.graphql.system.service;
 
-import com.rains.graphql.common.domain.QueryRequest;
-import com.rains.graphql.system.domain.Dict;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.system.domain.Dict;
 
 
 public interface DictService extends IService<Dict> {

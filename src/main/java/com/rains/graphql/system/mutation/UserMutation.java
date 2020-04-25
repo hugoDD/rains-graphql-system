@@ -1,5 +1,6 @@
 package com.rains.graphql.system.mutation;
 
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.rains.graphql.common.annotation.Log;
 import com.rains.graphql.common.domain.QueryRequest;
 import com.rains.graphql.common.exception.SysException;
@@ -9,7 +10,6 @@ import com.rains.graphql.system.domain.UserConfig;
 import com.rains.graphql.system.service.RoleService;
 import com.rains.graphql.system.service.UserConfigService;
 import com.rains.graphql.system.service.UserService;
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.wuwenze.poi.ExcelKit;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 @Component
@@ -32,6 +33,19 @@ public class UserMutation implements GraphQLMutationResolver {
     private UserConfigService userConfigService;
     @Autowired
     private RoleService roleService;
+
+
+    @Log("[#request.opt]操作系统日志")
+    @RequiresPermissions("user:[#request.opt]")
+    public boolean userBaseMutation(QueryRequest request, DataFetchingEnvironment env) {
+        if ("importTable".equals(request.getOpt())) {
+            Consumer<QueryRequest> exportOpt = q -> userService.export(q, env);
+            request.opt("importTable", exportOpt);
+        }
+
+
+        return userService.baseOpt(request);
+    }
 
     @Log("新增用户")
     // @PostMapping
@@ -65,7 +79,7 @@ public class UserMutation implements GraphQLMutationResolver {
     @Log("删除用户")
     // @DeleteMapping("/{userIds}")
     @RequiresPermissions("user:delete")
-    public boolean deleteUsers(@NotBlank(message = "{required}")  String[] userIds) throws SysException {
+    public boolean deleteUsers(@NotBlank(message = "{required}") String[] userIds) throws SysException {
         try {
             //String[] ids = userIds.split(StringPool.COMMA);
             this.userService.deleteUsers(userIds);
@@ -148,7 +162,7 @@ public class UserMutation implements GraphQLMutationResolver {
     }
 
     @RequiresPermissions("user:export")
-    public void userExport(QueryRequest queryRequest, User user,  DataFetchingEnvironment env) throws SysException {
+    public void userExport(QueryRequest queryRequest, User user, DataFetchingEnvironment env) throws SysException {
         try {
             List<User> users = this.userService.findUserDetail(user, queryRequest).getRecords();
             ExcelKit.$Export(User.class, GraphQLHttpUtil.getResponse(env)).downXlsx(users, false);

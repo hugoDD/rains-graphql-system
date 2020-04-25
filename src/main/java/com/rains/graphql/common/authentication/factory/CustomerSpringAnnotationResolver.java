@@ -1,21 +1,14 @@
 package com.rains.graphql.common.authentication.factory;
 
 
-import com.rains.graphql.common.domain.QueryRequest;
 import lombok.SneakyThrows;
 import org.apache.shiro.aop.MethodInvocation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.spring.aop.SpringAnnotationResolver;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Map;
-import java.util.Objects;
 
 
 /**

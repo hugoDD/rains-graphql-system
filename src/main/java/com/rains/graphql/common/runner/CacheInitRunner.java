@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.stereotype.Component;
 
 
@@ -28,19 +27,17 @@ public class CacheInitRunner implements ApplicationRunner {
     private ConfigurableApplicationContext context;
 
 
-
     @Override
     public void run(ApplicationArguments args) {
         try {
             log.info("Redis连接中 ······");
 
-            testCache.put("test","test");
-            if("test".equals(testCache.get("test"))){
+            testCache.put("test", "test");
+            if ("test".equals(testCache.get("test"))) {
                 log.info("Redis连接成功 ······");
-            }else{
+            } else {
                 log.error("Redis连接失败              ");
             }
-
 
 
         } catch (Exception e) {

@@ -13,6 +13,7 @@
         <result column="PERMS" jdbcType="VARCHAR" property="perms"/>
         <result column="ICON" jdbcType="VARCHAR" property="icon"/>
         <result column="TYPE" jdbcType="CHAR" property="type"/>
+        <result property="isFrame" column="is_frame"/>
         <result column="ORDER_NUM" jdbcType="DOUBLE" property="orderNum"/>
         <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime"/>
@@ -45,11 +46,8 @@
     </select>
 
     <select id="findUserIdsByMenuId" parameterType="string" resultType="string">
-        SELECT
-            user_id
-        FROM
-            t_user_role
-        WHERE
-            role_id IN ( SELECT rm.role_id FROM t_role_menu rm WHERE rm.menu_id = #{menuId} )
+        SELECT user_id
+        FROM t_user_role
+        WHERE role_id IN (SELECT rm.role_id FROM t_role_menu rm WHERE rm.menu_id = #{menuId})
     </select>
 </mapper>

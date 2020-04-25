@@ -13,21 +13,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import java.util.List;
 
 /**
- * ${tableComment} Service实现
- *
- * @author ${author}
- * @date ${date}
- */
+* ${tableComment} Service实现
+*
+* @author ${author}
+* @date ${date}
+*/
 @Service
 @Transactional
-public class ${className}ServiceImpl extends BaseService<${className}Mapper, ${className}> implements I${className}Service {
+public class ${className}ServiceImpl extends BaseService
+<${className}Mapper, ${className}> implements I${className}Service {
 
-    @Override
-    public List<${className}> find${className}s(${className} ${className?uncap_first}) {
-	    LambdaQueryWrapper<${className}> queryWrapper = new LambdaQueryWrapper<>();
-		// TODO 设置查询条件
-		return this.baseMapper.selectList(queryWrapper);
-    }
+@Override
+public List<${className}> find${className}s(${className} ${className?uncap_first}) {
+LambdaQueryWrapper<${className}> queryWrapper = new LambdaQueryWrapper<>();
+// TODO 设置查询条件
+return this.baseMapper.selectList(queryWrapper);
+}
 
 
 }

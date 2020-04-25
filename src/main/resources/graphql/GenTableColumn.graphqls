@@ -54,53 +54,6 @@ type GenTableColumns {
 	total: Int
 }
 
-# tableComment 编辑实体
-input GenTableColumnCondition {
-	# 编号
-	columnId: ID
-	# 归属表编号
-	tableId: String
-	# 列名称
-	columnName: String
-	# 列描述
-	columnComment: String
-	# 列类型
-	columnType: String
-	# JAVA类型
-	javaType: String
-	# JAVA字段名
-	javaField: String
-	# 是否主键（1是）
-	isPk: Boolean
-	# 是否自增（1是）
-	isIncrement: Boolean
-	# 是否必填（1是）
-	isRequired: Boolean
-	# 是否为插入字段（1是）
-	isInsert: Boolean
-	# 是否编辑字段（1是）
-	isEdit: Boolean
-	# 是否列表字段（1是）
-	isList: Boolean
-	# 是否查询字段（1是）
-	isQuery: Boolean
-	# 查询方式（等于、不等于、大于、小于、范围）
-	queryType: String
-	# 显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）
-	htmlType: String
-	# 字典类型
-	dictType: String
-	# 排序
-	sort: Int
-	# 创建者
-	createBy: String
-	# 创建时间
-	createTime: Date
-	# 更新者
-	updateBy: String
-	# 更新时间
-	updateTime: Date
-}
 
 extend type Query {
 	# tableComment 分页

@@ -1,18 +1,18 @@
 package com.rains.graphql.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.rains.graphql.common.domain.RainsConstant;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.rsql.RsqlToMybatisPlusWrapper;
 import com.rains.graphql.common.utils.AddressUtil;
 import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.system.dao.LogMapper;
 import com.rains.graphql.system.domain.Log;
 import com.rains.graphql.system.service.LogService;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -38,13 +38,13 @@ public class LogServiceImpl extends BaseService<LogMapper, Log> implements LogSe
     @Override
     public IPage<Log> findLogs(QueryRequest request, Log log) {
         try {
-            if(request == null){
+            if (request == null) {
                 request = new QueryRequest();
             }
-            if(log ==null){
+            if (log == null) {
                 log = new Log();
             }
-            Wrapper<Log> queryWrapper= RsqlToMybatisPlusWrapper.getInstance().rsqlToWrapper(request.getFilter(), Log.class);
+            Wrapper<Log> queryWrapper = RsqlToMybatisPlusWrapper.getInstance().rsqlToWrapper(request.getFilter(), Log.class);
 //            QueryWrapper<Log> queryWrapper1 = new QueryWrapper<>();
 //
 //            if (StringUtils.isNotBlank(log.getUsername())) {

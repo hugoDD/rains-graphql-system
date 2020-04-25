@@ -16,7 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,11 +25,14 @@ import java.util.stream.Collectors;
 
 public class CustomGraphQLHttpServlet extends GraphQLHttpServlet {
     private static final Logger log = LoggerFactory.getLogger(CustomGraphQLHttpServlet.class);
-    private GraphQLConfiguration configuration;
     private static final int STATUS_BAD_REQUEST = 400;
     private static final String APPLICATION_DOWNLOAD = "application/download";
-
+    private GraphQLConfiguration configuration;
     private HttpRequestHandler dowloadHandler;
+
+    public CustomGraphQLHttpServlet(GraphQLConfiguration configuration) {
+        this.configuration = Objects.requireNonNull(configuration, "configuration is required");
+    }
 
     public static GraphQLHttpServlet with(GraphQLSchema schema) {
         return new CustomGraphQLHttpServlet(GraphQLConfiguration.with(schema).build());
@@ -36,10 +40,6 @@ public class CustomGraphQLHttpServlet extends GraphQLHttpServlet {
 
     public static GraphQLHttpServlet with(GraphQLConfiguration configuration) {
         return new CustomGraphQLHttpServlet(configuration);
-    }
-
-    public CustomGraphQLHttpServlet(GraphQLConfiguration configuration) {
-        this.configuration = Objects.requireNonNull(configuration, "configuration is required");
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CustomGraphQLHttpServlet extends GraphQLHttpServlet {
 
             try {
                 GraphQLSingleInvocationInput invocationInput = invocationInputFactory.create(graphQLObjectMapper.readGraphQLRequest(request.getInputStream()), request, response);
-                 queryInvoker.query(invocationInput);
+                queryInvoker.query(invocationInput);
             } catch (Exception e) {
                 log.info("Bad POST request: parsing failed", e);
                 response.setStatus(STATUS_BAD_REQUEST);
@@ -68,13 +68,13 @@ public class CustomGraphQLHttpServlet extends GraphQLHttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String respType=resp.getContentType();
+        String respType = resp.getContentType();
         String reqType = req.getContentType();
-        if(APPLICATION_DOWNLOAD.equals(reqType)){
+        if (APPLICATION_DOWNLOAD.equals(reqType)) {
             init();
-            doRequest(req,resp,dowloadHandler,null);
-        }else{
-            super.doPost(req,resp);
+            doRequest(req, resp, dowloadHandler, null);
+        } else {
+            super.doPost(req, resp);
         }
 
 
@@ -108,6 +108,7 @@ public class CustomGraphQLHttpServlet extends GraphQLHttpServlet {
             }
         });
     }
+
     private <R> List<R> runListeners(Function<? super GraphQLServletListener, R> action) {
         return configuration.getListeners().stream()
                 .map(listener -> {

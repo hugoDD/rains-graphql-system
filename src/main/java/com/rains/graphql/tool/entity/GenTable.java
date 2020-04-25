@@ -1,12 +1,10 @@
 package com.rains.graphql.tool.entity;
 
-import java.util.Date;
-import java.util.List;
-
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
-import javax.validation.Valid;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 代码生成业务表 Entity
@@ -87,25 +85,25 @@ public class GenTable {
     /**
      * 创建者
      */
-    @TableField(value = "create_by",fill = FieldFill.INSERT)
+    @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
 
     /**
      * 创建时间
      */
-    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 更新者
      */
-    @TableField(value = "update_by",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_by", fill = FieldFill.INSERT_UPDATE)
     private String updateBy;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     /**
@@ -115,28 +113,36 @@ public class GenTable {
     private String remark;
 
 
-    /** 主键信息 */
+    /**
+     * 主键信息
+     */
     @TableField(exist = false)
     private GenTableColumn pkColumn;
 
-    /** 表列信息 */
+    /**
+     * 表列信息
+     */
     @TableField(exist = false)
     private List<GenTableColumn> columns;
 
 
-    /** 树编码字段 */
+    /**
+     * 树编码字段
+     */
     @TableField(exist = false)
     private String treeCode;
 
-    /** 树父编码字段 */
+    /**
+     * 树父编码字段
+     */
     @TableField(exist = false)
     private String treeParentCode;
 
-    /** 树名称字段 */
+    /**
+     * 树名称字段
+     */
     @TableField(exist = false)
     private String treeName;
-
-
 
 
 }

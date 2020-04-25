@@ -1,9 +1,9 @@
 package com.rains.graphql.system.dao;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.rains.graphql.system.domain.LoginLog;
 import com.rains.graphql.system.domain.User;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
 import java.util.Map;

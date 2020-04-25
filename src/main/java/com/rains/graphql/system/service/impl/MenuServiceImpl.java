@@ -1,14 +1,13 @@
 package com.rains.graphql.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.domain.Tree;
 import com.rains.graphql.common.utils.TreeUtil;
 import com.rains.graphql.system.dao.MenuMapper;
 import com.rains.graphql.system.domain.Menu;
 import com.rains.graphql.system.service.MenuService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import java.util.*;
 @Slf4j
 @Service("menuService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements MenuService {
 
 
     @Override

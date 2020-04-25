@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
 import java.util.Date;
+
 @Slf4j
 public class MetaObjectHandlerConfig implements MetaObjectHandler {
 
@@ -13,26 +14,26 @@ public class MetaObjectHandlerConfig implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         setFieldValByName("createTime", new Date(), metaObject);
         setFieldValByName("updateTime", new Date(), metaObject);
-        String curUserName ="none";
-        try{
-            curUserName =SysUtil.getCurrentUserName();
-        }catch (RuntimeException e){
-           log.warn("get current user name fail");
+        String curUserName = "none";
+        try {
+            curUserName = SysUtil.getCurrentUserName();
+        } catch (RuntimeException e) {
+            log.warn("get current user name fail");
         }
-        setFieldValByName("createBy", curUserName,metaObject);
-        setFieldValByName("updateBy", curUserName,metaObject);
+        setFieldValByName("createBy", curUserName, metaObject);
+        setFieldValByName("updateBy", curUserName, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("updateTime",new Date(), metaObject);
-        String curUserName ="none";
-        try{
-            curUserName =SysUtil.getCurrentUserName();
-        }catch (RuntimeException e){
+        this.setFieldValByName("updateTime", new Date(), metaObject);
+        String curUserName = "none";
+        try {
+            curUserName = SysUtil.getCurrentUserName();
+        } catch (RuntimeException e) {
             log.warn("get current user name fail");
         }
-        setFieldValByName("updateBy", curUserName,metaObject);
+        setFieldValByName("updateBy", curUserName, metaObject);
     }
 }
 

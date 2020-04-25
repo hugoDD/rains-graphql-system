@@ -10,6 +10,6 @@ import com.rains.graphql.system.service.IBaseService;
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service extends IBaseService<${ClassName}>{
+public interface I${ClassName}Service extends IBaseService<${ClassName}> {
 
 }

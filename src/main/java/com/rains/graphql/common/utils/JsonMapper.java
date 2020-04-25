@@ -5,9 +5,8 @@ import graphql.servlet.config.ObjectMapperConfigurer;
 import graphql.servlet.core.DefaultObjectMapperConfigurer;
 
 public class JsonMapper {
+    private final ObjectMapperConfigurer objectMapperConfigurer = new DefaultObjectMapperConfigurer();
     private volatile ObjectMapper mapper;
-
-    private final ObjectMapperConfigurer objectMapperConfigurer =new DefaultObjectMapperConfigurer();
 
     // Double-check idiom for lazy initialization of instance fields.
     public ObjectMapper getJacksonMapper() {
@@ -16,7 +15,7 @@ public class JsonMapper {
             synchronized (this) {
                 result = mapper;
                 if (result == null) { // Second check (with locking)
-                    mapper = result = new ObjectMapper() ;
+                    mapper = result = new ObjectMapper();
                     this.objectMapperConfigurer.configure(mapper);
                 }
             }

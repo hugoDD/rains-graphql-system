@@ -1,6 +1,5 @@
 package com.rains.graphql.common.authentication;
 
-import com.rains.graphql.common.authentication.factory.CustomerAuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -21,7 +20,7 @@ import java.util.LinkedHashMap;
 @Configuration
 public class ShiroConfig {
     @Bean
-    public FilterRegistrationBean delegatingFilterProxy(){
+    public FilterRegistrationBean delegatingFilterProxy() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         DelegatingFilterProxy proxy = new DelegatingFilterProxy();
         proxy.setTargetFilterLifecycle(true);
@@ -62,6 +61,7 @@ public class ShiroConfig {
         // 配置 Realm
         return new ShiroRealm();
     }
+
     /**
      * 实现注解的方式来配置权限
      */

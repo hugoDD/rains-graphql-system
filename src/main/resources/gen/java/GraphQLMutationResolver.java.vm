@@ -33,9 +33,9 @@ public class ${ClassName}Mutation implements GraphQLMutationResolver {
     @Log("[#request.opt]操作系统日志")
     @RequiresPermissions("${moduleName}:${className}:[#request.opt]")
     public boolean ${className}BaseMutation(QueryRequest request, DataFetchingEnvironment env) {
-        if(exportOpt==null){
+        if (exportOpt == null) {
             exportOpt = q -> genTableService.export(q, env);
-            request.opt("importTable",importTable);
+            request.opt("importTable", importTable);
         }
 
         return ${className}Service.baseOpt(request);

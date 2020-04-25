@@ -1,19 +1,16 @@
 package com.rains.graphql.system.service.impl;
 
-import com.rains.graphql.common.domain.RainsConstant;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.common.domain.RainsConstant;
 import com.rains.graphql.common.utils.AddressUtil;
-import com.rains.graphql.common.utils.HttpContextUtil;
-import com.rains.graphql.common.utils.IPUtil;
 import com.rains.graphql.common.utils.SortUtil;
 import com.rains.graphql.system.dao.LoginLogMapper;
 import com.rains.graphql.system.domain.LoginLog;
 import com.rains.graphql.system.domain.User;
 import com.rains.graphql.system.service.LoginLogService;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +25,7 @@ import java.util.Map;
 
 @Service("loginLogService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> implements LoginLogService {
+public class LoginLogServiceImpl extends BaseService<LoginLogMapper, LoginLog> implements LoginLogService {
 
     @Override
     public IPage<LoginLog> findLoginLogs(LoginLog loginLog, QueryRequest request) {
@@ -38,11 +34,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
         if (StringUtils.isNotBlank(loginLog.getUsername())) {
             queryWrapper.lambda().eq(LoginLog::getUsername, loginLog.getUsername().toLowerCase());
         }
-        if (StringUtils.isNotBlank(loginLog.getLoginTimeFrom()) && StringUtils.isNotBlank(loginLog.getLoginTimeTo())) {
-            queryWrapper.lambda()
-                    .ge(LoginLog::getLoginTime, loginLog.getLoginTimeFrom())
-                    .le(LoginLog::getLoginTime, loginLog.getLoginTimeTo());
-        }
+
 
         Page<LoginLog> page = new Page<>(request.getPageNum(), request.getPageSize());
         SortUtil.handlePageSort(request, page, "loginTime", RainsConstant.ORDER_DESC, true);
@@ -55,9 +47,9 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     @Async
     public void saveLoginLog(LoginLog loginLog) {
         loginLog.setLoginTime(new Date());
-        UserAgent userAgent= UserAgent.parseUserAgentString(loginLog.getSystem());
+        UserAgent userAgent = UserAgent.parseUserAgentString(loginLog.getSystem());
         loginLog.setLocation(AddressUtil.getCityInfo(loginLog.getIp()));
-        loginLog.setBrowser(userAgent.getBrowser().getName()+" "+userAgent.getBrowserVersion().getVersion());
+        loginLog.setBrowser(userAgent.getBrowser().getName() + " " + userAgent.getBrowserVersion().getVersion());
         loginLog.setSystem(userAgent.getOperatingSystem().getName());
         this.save(loginLog);
     }

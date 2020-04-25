@@ -1,5 +1,6 @@
 package com.rains.graphql.common.authentication;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.aop.AnnotationResolver;
 import org.apache.shiro.aop.MethodInvocation;
 import org.apache.shiro.authz.AuthorizationException;
@@ -17,26 +18,35 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.lang.annotation.Annotation;
 
+@Slf4j
 public class GraphqlPermissionAnnotationMethodInterceptor extends PermissionAnnotationMethodInterceptor {
 
     private final SpelExpressionParser parser = new SpelExpressionParser();
     private final ParameterNameDiscoverer paramNameDiscoverer = new DefaultParameterNameDiscoverer();
-    private final TemplateParserContext templateParserContext = new TemplateParserContext("[","]");
+    private final TemplateParserContext templateParserContext = new TemplateParserContext("[", "]");
+
     public GraphqlPermissionAnnotationMethodInterceptor(AnnotationResolver resolver) {
         super(resolver);
     }
+
     @Override
     public void assertAuthorized(MethodInvocation mi) throws AuthorizationException {
         Annotation annotation = super.getAnnotation(mi);
         RequiresPermissions permAnnotation = (RequiresPermissions) annotation;
         String[] perms = permAnnotation.value();
         EvaluationContext evaluationContext = new MethodBasedEvaluationContext(null, mi.getMethod(), mi.getArguments(), paramNameDiscoverer);
-        for (int i=0; i<perms.length; i++) {
+        for (int i = 0; i < perms.length; i++) {
             Expression expression = this.parser.parseExpression(perms[i], templateParserContext);
             //使用Spring EL表达式解析后的权限定义替换原来的权限定义
             perms[i] = expression.getValue(evaluationContext, String.class);
         }
         Subject subject = getSubject();
+        try {
+            subject.checkRole("admin");
+            return;
+        } catch (Exception e) {
+            log.info("It's not admin role");
+        }
         if (perms.length == 1) {
             subject.checkPermission(perms[0]);
             return;

@@ -1,10 +1,10 @@
 package com.rains.graphql.system.domain;
 
-import com.rains.graphql.common.converter.TimeConverter;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.rains.graphql.common.converter.TimeConverter;
 import com.wuwenze.poi.annotation.Excel;
 import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
@@ -69,8 +69,9 @@ public class LoginLog implements Serializable {
     @ExcelField("登录浏览器")
     private String browser;
 
-    private transient String loginTimeFrom;
-    private transient String loginTimeTo;
+    private String status;
+
+    private String msg;
 
     public void setSystemBrowserInfo(String ua) {
         try {
