@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-@TableName("t_role_menu")
+@TableName("sys_role_menu")
 @Data
 public class RoleMenu implements Serializable {
 

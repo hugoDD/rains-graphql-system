@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Slf4j
 @Data
-@TableName("t_login_log")
+@TableName("sys_login_log")
 @Excel("登录日志")
 public class LoginLog implements Serializable {
 

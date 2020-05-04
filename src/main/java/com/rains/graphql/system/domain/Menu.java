@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@TableName("t_menu")
+@TableName("sys_menu")
 @Excel("菜单信息表")
 public class Menu implements ITree<Long>, Serializable {
 

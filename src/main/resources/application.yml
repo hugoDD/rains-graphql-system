@@ -53,9 +53,9 @@ spring:
     time-zone: GMT+8
 
   redis:
-    host: localhost
+    host: 172.26.223.109
     port: 6379
-    password:
+    password: mp123
     lettuce:
       pool:
         # 连接池中的最大空闲连接 默认8
@@ -67,6 +67,15 @@ spring:
         # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认-1
         max-wait: -1
     timeout: 30000
+
+  jmx:
+    enabled: true
+
+  boot:
+    admin:
+      client:
+        url: http://localhost:8880
+
 
 #  main:
 #    lazy-initialization: false
@@ -85,9 +94,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: ['httptrace', 'metrics']
-
-
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
 rains:
   # 是否异步记录用户操作日志
   openAopLog: true

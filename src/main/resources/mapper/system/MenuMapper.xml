@@ -21,11 +21,11 @@
 
     <select id="findUserPermissions" resultMap="menu">
         select distinct m.perms
-        from t_role r
-                 left join t_user_role ur on (r.role_id = ur.role_id)
-                 left join t_user u on (u.user_id = ur.user_id)
-                 left join t_role_menu rm on (rm.role_id = r.role_id)
-                 left join t_menu m on (m.menu_id = rm.menu_id)
+        from sys_role r
+                 left join sys_user_role ur on (r.role_id = ur.role_id)
+                 left join sys_user u on (u.user_id = ur.user_id)
+                 left join sys_role_menu rm on (rm.role_id = r.role_id)
+                 left join sys_menu m on (m.menu_id = rm.menu_id)
         where u.username = #{userName}
           and m.perms is not null
           and m.perms &lt;&gt; ''
@@ -33,21 +33,21 @@
 
     <select id="findUserMenus" resultMap="menu">
         select m.*
-        from t_menu m
+        from sys_menu m
         where m.type &lt;&gt; 1
           and m.MENU_ID in
               (select distinct rm.menu_id
-               from t_role_menu rm
-                        left join t_role r on (rm.role_id = r.role_id)
-                        left join t_user_role ur on (ur.role_id = r.role_id)
-                        left join t_user u on (u.user_id = ur.user_id)
+               from sys_role_menu rm
+                        left join sys_role r on (rm.role_id = r.role_id)
+                        left join sys_user_role ur on (ur.role_id = r.role_id)
+                        left join sys_user u on (u.user_id = ur.user_id)
                where u.username = #{userName})
         order by m.order_num
     </select>
 
     <select id="findUserIdsByMenuId" parameterType="string" resultType="string">
         SELECT user_id
-        FROM t_user_role
-        WHERE role_id IN (SELECT rm.role_id FROM t_role_menu rm WHERE rm.menu_id = #{menuId})
+        FROM sys_user_role
+        WHERE role_id IN (SELECT rm.role_id FROM sys_role_menu rm WHERE rm.menu_id = #{menuId})
     </select>
 </mapper>

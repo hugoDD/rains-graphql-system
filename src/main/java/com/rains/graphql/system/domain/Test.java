@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("t_test")
+@TableName("sys_test")
 @Excel("测试导入导出数据")
 public class Test {
     private Long id;

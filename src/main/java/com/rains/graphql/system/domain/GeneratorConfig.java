@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @author MrBird
  */
 @Data
-@TableName("t_generator_config")
+@TableName("sys_gen_config")
 public class GeneratorConfig implements Serializable {
 
     public static final String TRIM_YES = "1";

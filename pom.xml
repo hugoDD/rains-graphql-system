@@ -52,10 +52,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.micrometer</groupId>-->
+<!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
+<!--        </dependency>-->
+<!--    -->
 
         <dependency>
             <groupId>eu.bitwalker</groupId>
@@ -314,15 +315,23 @@
             <artifactId>elasticsearch</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
-<!--    <repositories>-->
+
+
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
 <!--        <repository>-->
 <!--            <id>nexus-aliyun</id>-->
 <!--            <name>Nexus aliyun</name>-->
-<!--            <url>http://maven.aliyun.com/nexus/content/groups/public</url>-->
+<!--            <url>https://search.maven.org/</url>-->
 <!--        </repository>-->
-<!--    </repositories>-->
+    </repositories>
 
     <build>
         <plugins>

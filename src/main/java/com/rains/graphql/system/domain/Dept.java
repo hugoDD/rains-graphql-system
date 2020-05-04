@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("t_dept")
+@TableName("sys_dept")
 @Excel("部门信息表")
 public class Dept implements ITree<Long>, Serializable {
 

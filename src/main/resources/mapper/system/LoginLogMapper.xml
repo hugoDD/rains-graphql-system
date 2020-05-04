@@ -3,18 +3,18 @@
 <mapper namespace="com.rains.graphql.system.dao.LoginLogMapper">
     <select id="findTotalVisitCount" resultType="long">
         select count(1)
-        from t_login_log
+        from sys_login_log
     </select>
 
     <select id="findTodayVisitCount" resultType="long">
         select count(1)
-        from t_login_log
+        from sys_login_log
         where datediff(login_time, now()) = 0
     </select>
 
     <select id="findTodayIp" resultType="long">
         select count(distinct (ip))
-        from t_login_log
+        from sys_login_log
         where datediff(login_time, now()) = 0
     </select>
 
@@ -27,7 +27,7 @@
         select
         *
         from
-        t_login_log
+        sys_login_log
         where
         date_sub(curdate(), interval 10 day) &lt;= date(login_time)
         ) as l where 1 = 1

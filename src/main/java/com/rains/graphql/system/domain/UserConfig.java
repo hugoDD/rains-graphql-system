@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 
-@TableName("t_user_config")
+@TableName("sys_user_config")
 @Data
 public class UserConfig implements Serializable {
 

@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@TableName("t_role")
+@TableName("sys_role")
 @Excel("角色信息表")
 public class Role implements Serializable {
 

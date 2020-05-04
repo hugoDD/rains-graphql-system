@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("t_user")
+@TableName("sys_user")
 @Excel("用户信息表")
 public class User implements Serializable {
 

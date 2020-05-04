@@ -7,7 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-@TableName("t_user_role")
+@TableName("sys_user_role")
 @Data
 public class UserRole implements Serializable {
 
