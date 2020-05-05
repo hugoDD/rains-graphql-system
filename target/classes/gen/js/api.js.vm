@@ -1,0 +1,15 @@
+export const pageQuery = `query pageQuery($page: QueryRequest) {
+  pageData: ${className}Page(page:$page){
+    data{
+      ${pkColumn.javaField}
+    #foreach ($column in $columns)
+      $column.javaField
+    #end
+    }
+    total
+  }
+}`
+
+export const baseMutation = `mutation baseMutation($request:QueryRequest){
+  ${className}BaseMutation(request:$request)
+}`

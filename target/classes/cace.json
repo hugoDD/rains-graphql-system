@@ -1,0 +1,44 @@
+{
+  "label": "级联选择",
+  "tag": "el-cascader",
+  "tagIcon": "cascader",
+  "placeholder": "请选择",
+  "defaultValue": [],
+  "span": 24,
+  "labelWidth": null,
+  "style": {
+    "width": "100%"
+  },
+  "props": {
+    "props": {
+      "multiple": false
+    }
+  },
+  "show-all-levels": true,
+  "disabled": false,
+  "clearable": true,
+  "filterable": false,
+  "required": true,
+  "options": [
+    {
+      "id": 1,
+      "value": 1,
+      "label": "选项1",
+      "children": [
+        {
+          "id": 2,
+          "value": 2,
+          "label": "选项1-1"
+        }
+      ]
+    }
+  ],
+  "dataType": "dynamic",
+  "labelKey": "label",
+  "valueKey": "value",
+  "childrenKey": "children",
+  "separator": "/",
+  "regList": [],
+  "changeTag": true,
+  "document": "https://element.eleme.cn/#/zh-CN/component/cascader"
+}

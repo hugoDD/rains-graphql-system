@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rains.graphql.tool.mapper.GenTableMapper">
+
+    <resultMap id="genTable" type="com.rains.graphql.tool.entity.GenTable">
+        <id column="table_id" jdbcType="bigint" property="tableId"/>
+        <result column="table_name" jdbcType="varchar" property="tableName"/>
+        <result column="table_comment" jdbcType="varchar" property="tableComment"/>
+        <result column="class_name" jdbcType="varchar" property="className"/>
+        <result column="tpl_category" jdbcType="varchar" property="tplCategory"/>
+        <result column="package_name" jdbcType="varchar" property="packageName"/>
+        <result column="module_name" jdbcType="varchar" property="moduleName"/>
+        <result column="business_name" jdbcType="varchar" property="businessName"/>
+        <result column="function_name" jdbcType="varchar" property="functionName"/>
+        <result column="function_author" jdbcType="varchar" property="functionAuthor"/>
+        <result column="options" jdbcType="varchar" property="options"/>
+        <result column="create_by" jdbcType="varchar" property="createBy"/>
+        <result column="create_time" jdbcType="datetime" property="createTime"/>
+        <result column="update_by" jdbcType="varchar" property="updateBy"/>
+        <result column="update_time" jdbcType="datetime" property="updateTime"/>
+        <result column="remark" jdbcType="varchar" property="remark"/>
+    </resultMap>
+</mapper>

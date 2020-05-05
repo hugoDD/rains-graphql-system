@@ -1,0 +1,87 @@
+type Menu {
+	#菜单/按钮ID
+	menuId: ID!
+	#上级菜单ID
+	parentId: Int
+	#菜单/按钮名称
+	menuName: String
+	#对应路由path
+	path: String
+	#对应路由组件component
+	component: String
+	#权限标识
+	perms: String
+	#是否可见
+	visible: String
+	#图标
+	icon: String
+	#类型 0菜单 1按钮
+	type: String
+	#排序
+	orderNum: Float
+	#创建时间
+	createTime: Date
+	#修改时间
+	modifyTime: Date
+
+	id: Long
+	label: String
+
+}
+input MenuCondition {
+	#菜单/按钮ID
+	menuId: ID
+	#上级菜单ID
+	parentId: Int
+	#菜单/按钮名称
+	menuName: String
+	#对应路由path
+	path: String
+	#对应路由组件component
+	component: String
+	#权限标识
+	perms: String
+	#图标
+	icon: String
+	#类型 0菜单 1按钮
+	type: String
+	#排序
+	orderNum: Float
+	#创建时间
+	createTime: Date
+	#修改时间
+	modifyTime: Date
+
+
+	createTimeFrom: String
+
+	createTimeTo: String
+
+
+}
+type Menus {
+	data: [Menu!]!
+	total: Int
+}
+
+type MenuUI {
+	ids: [String]!
+	rows: [Tree]
+	root: Tree
+	total: Int
+
+}
+
+
+extend type Query {
+	list(condition: MenuCondition): [Menu!]!
+	#获取菜单分页
+	menuPageQuery(page: QueryRequest): Menus
+}
+extend type Mutation {
+	menuBaseMutation(page: QueryRequest):Boolean
+	addMenu(entity: MenuCondition): Menu
+	updateMenu(entity: MenuCondition): Menu
+	deleteMenus(menuIds: [String!]!): Boolean
+	menuExport(entity: MenuCondition):Boolean
+}

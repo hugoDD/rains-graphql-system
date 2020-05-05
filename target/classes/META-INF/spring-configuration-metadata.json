@@ -1,0 +1,93 @@
+{
+  "groups": [
+    {
+      "name": "project",
+      "type": "com.rains.graphql.common.config.ProjectConfig",
+      "sourceType": "com.rains.graphql.common.config.ProjectConfig"
+    },
+    {
+      "name": "project.project-info",
+      "type": "com.rains.graphql.common.domain.ProjectInfo",
+      "sourceType": "com.rains.graphql.common.config.ProjectConfig",
+      "sourceMethod": "getProjectInfo()"
+    },
+    {
+      "name": "rains",
+      "type": "com.rains.graphql.common.properties.RainsGraphqlProperties",
+      "sourceType": "com.rains.graphql.common.properties.RainsGraphqlProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "project.address-enabled",
+      "type": "java.lang.Boolean",
+      "description": "获取地址ip开关",
+      "sourceType": "com.rains.graphql.common.config.ProjectConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.demo-enabled",
+      "type": "java.lang.Boolean",
+      "description": "实例演示开关",
+      "sourceType": "com.rains.graphql.common.config.ProjectConfig",
+      "defaultValue": false
+    },
+    {
+      "name": "project.profile",
+      "type": "java.lang.String",
+      "description": "文件保存路径",
+      "sourceType": "com.rains.graphql.common.config.ProjectConfig",
+      "defaultValue": "\/resources\/"
+    },
+    {
+      "name": "project.project-info.copyright-company",
+      "type": "java.lang.String",
+      "description": "版权所属公司",
+      "sourceType": "com.rains.graphql.common.domain.ProjectInfo",
+      "defaultValue": "cnovel.club"
+    },
+    {
+      "name": "project.project-info.copyright-year",
+      "type": "java.lang.String",
+      "description": "版权年份",
+      "sourceType": "com.rains.graphql.common.domain.ProjectInfo",
+      "defaultValue": "2019"
+    },
+    {
+      "name": "project.project-info.name",
+      "type": "java.lang.String",
+      "description": "项目名称",
+      "sourceType": "com.rains.graphql.common.domain.ProjectInfo",
+      "defaultValue": "novel"
+    },
+    {
+      "name": "project.project-info.version",
+      "type": "java.lang.String",
+      "description": "系统版本号",
+      "sourceType": "com.rains.graphql.common.domain.ProjectInfo",
+      "defaultValue": "0.0.1"
+    },
+    {
+      "name": "rains.open-aop-log",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.rains.graphql.common.properties.RainsGraphqlProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "rains.profile",
+      "type": "java.lang.String",
+      "sourceType": "com.rains.graphql.common.properties.RainsGraphqlProperties"
+    },
+    {
+      "name": "rains.shiro",
+      "type": "com.rains.graphql.common.properties.ShiroProperties",
+      "sourceType": "com.rains.graphql.common.properties.RainsGraphqlProperties"
+    },
+    {
+      "name": "rains.swagger",
+      "type": "com.rains.graphql.common.properties.SwaggerProperties",
+      "sourceType": "com.rains.graphql.common.properties.RainsGraphqlProperties"
+    }
+  ],
+  "hints": []
+}

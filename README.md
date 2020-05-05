@@ -1,4 +1,5 @@
 ## 平台简介
+![Java](https://img.shields.io/badge/JDK-1.8-green.svg) [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.2.0.RELEASE-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
 看了很多优秀的开源项目。但是发现使用graphql开发的项目还是很少。特别是在解决权限和对于之前开发习惯，又方便开发的权限管理系统。所以，
 就在前人的管理系统基础实现一个基于graphql特点的集成graphql+rsql+shiro+springboot+mybatis plus的权限系统。
@@ -6,7 +7,6 @@
 
 参考后台模板[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
 
-前端使用了ruoYi-Vue项目[RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue.git)
 
 ## 内置功能
 
@@ -34,6 +34,20 @@
     8.redis
     9.mysql
     10.jjwt
+    
+## 安装步骤
+    1.初始化db目录的sql脚本
+```shell script
+2.编译后端服务
+git clone https://github.com/hugoDD/rains-graphql-system.git
+cd rains-graphql-system
+mvn clean pagckage -Dmaven.test.skip=true
+```    
+
+```shell script
+3.编译与运行前端
+
+```
 ## 演示图
 
  <table>
@@ -51,5 +65,7 @@
     </tr>
 </table>
 
-
+####  特别感谢以下优秀的开源项目
+- [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue.git)
+- [Mybatis-Plus](https://gitee.com/baomidou/mybatis-plus)
 

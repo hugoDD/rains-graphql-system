@@ -1,0 +1,39 @@
+type Dict {
+	#字典ID
+	dictId: ID!
+	#键
+	keyy: Int
+	#值
+	valuee: String
+	#字段名称
+	fieldName: String
+	#表名
+	tableName: String
+}
+input DictCondition {
+	#字典ID
+	dictId: ID!
+	#键
+	keyy: Int
+	#值
+	valuee: String
+	#字段名称
+	fieldName: String
+	#表名
+	tableName: String
+}
+type Dicts {
+	data: [Dict!]!
+	total: Int
+}
+extend type Query {
+	dictDetail(entity: DictCondition): Dict
+	dictPage(page: QueryRequest,condition: DictCondition): Dicts
+
+}
+extend type Mutation {
+	addDict(entity: DictCondition): Dict
+	updateDict(entity: DictCondition): Dict
+	deleteDicts(dictIds: [String!]!): Boolean
+	dictExport(page: QueryRequest,entity: DictCondition):Boolean
+}

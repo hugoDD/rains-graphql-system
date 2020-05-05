@@ -1,0 +1,39 @@
+# tableComment 查询参数
+type DictType {
+	# 创建者
+	createBy: String
+	# 创建时间
+	createTime: Date
+	# 字典主键
+	dictId: ID
+	# 字典名称
+	dictName: String
+	# 字典类型
+	dictType: String
+	# 备注
+	remark: String
+	# 状态（0正常 1停用）
+	status: String
+	# 更新者
+	updateBy: String
+	# 更新时间
+	updateTime: Date
+}
+
+# tableComment 分页返回
+type DictTypes {
+	data: [DictType!]!
+	total: Int
+}
+
+extend type Query {
+	# tableComment 分页
+	dictTypePage(page: QueryRequest): DictTypes
+}
+extend type Mutation {
+	# tableComment 编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	dictTypeBaseMutation(request: QueryRequest): Boolean
+}

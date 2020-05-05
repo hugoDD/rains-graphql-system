@@ -300,6 +300,8 @@
             <groupId>com.github.rutledgepaulv</groupId>
             <artifactId>q-builders</artifactId>
             <version>1.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/q-builders-1.8.jar</systemPath>
         </dependency>
 
         <!--velocity代码生成使用模板 -->
@@ -321,11 +323,11 @@
 
 
     <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>nexus-aliyun</id>-->
+<!--            <name>Nexus aliyun</name>-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public</url>-->
+<!--        </repository>-->
 <!--        <repository>-->
 <!--            <id>nexus-aliyun</id>-->
 <!--            <name>Nexus aliyun</name>-->

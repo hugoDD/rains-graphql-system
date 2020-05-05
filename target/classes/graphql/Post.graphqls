@@ -1,0 +1,31 @@
+# tableComment 查询参数
+type Post {
+	postId: ID
+	postCode: String
+	postName: String
+	postSort: Int
+	status: String
+	remark: String
+	createBy: String
+	createTime: Date
+	updateBy: String
+	updateTime: Date
+}
+
+# tableComment 分页返回
+type Posts {
+	data: [Post!]!
+	total: Int
+}
+
+extend type Query {
+	# tableComment 分页
+	postPage(page: QueryRequest): Posts
+}
+extend type Mutation {
+	# tableComment 编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	postBaseMutation(request: QueryRequest): Boolean
+}

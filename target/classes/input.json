@@ -1,0 +1,30 @@
+{
+  "label": "下拉选择",
+  "tag": "el-select",
+  "tagIcon": "select",
+  "placeholder": "请选择",
+  "defaultValue": "undefined",
+  "span": 24,
+  "labelWidth": null,
+  "style": {
+    "width": "100%"
+  },
+  "clearable": true,
+  "disabled": false,
+  "required": true,
+  "filterable": false,
+  "multiple": false,
+  "options": [
+    {
+      "label": "选项一",
+      "value": 1
+    },
+    {
+      "label": "选项二",
+      "value": 2
+    }
+  ],
+  "regList": [],
+  "changeTag": true,
+  "document": "https://element.eleme.cn/#/zh-CN/component/select"
+}

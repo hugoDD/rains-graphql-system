@@ -1,0 +1,15 @@
+package ${packageName}.service;
+
+import ${packageName}.domain.${ClassName};
+import com.rains.graphql.common.domain.QueryRequest;
+import com.rains.graphql.system.service.IBaseService;
+
+/**
+ * ${functionName}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${ClassName}Service extends IBaseService<${ClassName}> {
+
+}
