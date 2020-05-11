@@ -6,7 +6,13 @@
     <groupId>com.rains.graphql</groupId>
     <artifactId>rains-graphql-system</artifactId>
     <version>1.0.0-release</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>rains-graphql-common</module>
+        <module>rains-graphql-admin</module>
+        <module>rains-graphql-devopt</module>
+        <module>rains-boot</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>rains-graphql-system</name>
     <description>rains-graphql-system</description>
@@ -63,22 +69,7 @@
             <artifactId>UserAgentUtils</artifactId>
             <version>1.21</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>de.codecentric</groupId>-->
-<!--            <artifactId>spring-boot-admin-starter-server</artifactId>-->
-<!--            <version>2.2.0</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>de.codecentric</groupId>-->
-<!--            <artifactId>spring-boot-admin-starter-client</artifactId>-->
-<!--            <version>2.2.0</version>-->
-<!--        </dependency>-->
-        <!-- 动态数据源 -->
-<!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>-->
-<!--            <version>2.5.6</version>-->
-<!--        </dependency>-->
+
         <!-- mybatis-plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -114,13 +105,6 @@
             <version>${graphql-spring-boot-starter.version}</version>
         </dependency>
 
-
-
-<!--        <dependency>
-            <groupId>com.zhokhov.graphql</groupId>
-            <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-            <version>1.5.1</version>
-        </dependency>-->
 
         <!-- freemaker引擎 -->
         <dependency>
@@ -186,11 +170,7 @@
         <artifactId>spring-boot-starter-data-mongodb</artifactId>
         <scope>test</scope>
     </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.alicp.jetcache</groupId>-->
-<!--            <artifactId>jetcache-anno-api</artifactId>-->
-<!--            <version>${jetcache.version}</version>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -243,30 +223,7 @@
             <version>2.10.5</version>
         </dependency>
 
-  <!--      <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>-->
 
-        <!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger2</artifactId>-->
-<!--            <version>${swagger.ui}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.springfox</groupId>-->
-<!--            <artifactId>springfox-swagger-ui</artifactId>-->
-<!--            <version>${swagger.ui}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
@@ -284,25 +241,8 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.rutledgepaulv</groupId>
-            <artifactId>rest-query-engine</artifactId>
-            <version>0.7.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.github.rutledgepaulv</groupId>
-                    <artifactId>q-builders</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
-        <dependency>
-            <groupId>com.github.rutledgepaulv</groupId>
-            <artifactId>q-builders</artifactId>
-            <version>1.8</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/q-builders-1.8.jar</systemPath>
-        </dependency>
+
 
         <!--velocity代码生成使用模板 -->
         <dependency>
@@ -317,6 +257,7 @@
             <artifactId>elasticsearch</artifactId>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 

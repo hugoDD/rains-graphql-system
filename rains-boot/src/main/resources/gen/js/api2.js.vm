@@ -1,0 +1,32 @@
+import { addOpt, delOpt, getOne, listQuery, updateOpt } from '../commonApi'
+import {  ${BusinessName}PageQuery, ${BusinessName}BaseMutation } from '../../operation/noticeQuery'
+
+// 查询公告列表
+export function list${BusinessName}(query) {
+  return listQuery(query,${BusinessName}PageQuery)
+}
+
+// 查询公告详细
+export function get${BusinessName}(id) {
+  return getOne(id,${BusinessName}PageQuery)
+}
+
+// 新增公告
+export function add${BusinessName}(data) {
+  return addOpt(data,${BusinessName}BaseMutation)
+}
+
+// 修改公告
+export function update${BusinessName}(data) {
+  return updateOpt(data,${BusinessName}BaseMutation)
+}
+
+// 删除公告
+export function del${BusinessName}(id) {
+  return delOpt(id,${BusinessName}BaseMutation)
+}
+
+// 导出登录日志
+export function exportLogininfor(query) {
+  return exportExcel(query,${BusinessName}BaseMutation,'${BusinessName}')
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rains.graphql.system.dao.DictDataMapper">
+
+
+    <!--    <resultMap id="dictData" type="com.rains.graphql.system.domain.DictData">-->
+    <!--        <id column="dict_code" jdbcType="bigint" property="dictCode"/>-->
+    <!--        <result column="create_by" jdbcType="varchar" property="createBy"/>-->
+    <!--        <result column="create_time" jdbcType="datetime" property="createTime"/>-->
+    <!--        <result column="css_class" jdbcType="varchar" property="cssClass"/>-->
+    <!--        <result column="dict_label" jdbcType="varchar" property="dictLabel"/>-->
+    <!--        <result column="dict_sort" jdbcType="int" property="dictSort"/>-->
+    <!--        <result column="dict_type" jdbcType="varchar" property="dictType"/>-->
+    <!--        <result column="dict_value" jdbcType="varchar" property="dictValue"/>-->
+    <!--        <result column="is_default" jdbcType="char" property="isDefault"/>-->
+    <!--        <result column="list_class" jdbcType="varchar" property="listClass"/>-->
+    <!--        <result column="remark" jdbcType="varchar" property="remark"/>-->
+    <!--        <result column="status" jdbcType="char" property="status"/>-->
+    <!--        <result column="update_by" jdbcType="varchar" property="updateBy"/>-->
+    <!--        <result column="update_time" jdbcType="datetime" property="updateTime"/>-->
+    <!--    </resultMap>-->
+
+    <resultMap id="test" type="com.rains.graphql.system.domain.DictData">
+
+    </resultMap>
+</mapper>
