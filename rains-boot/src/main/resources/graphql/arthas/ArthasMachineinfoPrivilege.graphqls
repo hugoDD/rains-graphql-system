@@ -1,0 +1,28 @@
+# 查询参数
+type ArthasMachineinfoPrivilege {
+	id: Int
+	# 服务器ID
+	machineId: Int
+	# 用户ID
+	userId: Int
+	# 创建时间
+	createTime: Date
+}
+
+#  分页返回
+type ArthasMachineinfoPrivileges {
+	data: [ArthasMachineinfoPrivilege!]!
+	total: Int
+}
+
+extend type Query {
+	# 分页
+	arthasMachineinfoPrivilegePage(request: QueryRequest): ArthasMachineinfoPrivileges
+}
+extend type Mutation {
+	#  编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	arthasMachineinfoPrivilegeBaseMutation(request: QueryRequest): Boolean
+}

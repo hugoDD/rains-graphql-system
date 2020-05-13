@@ -1,0 +1,39 @@
+# 查询参数
+type ArthasRsa {
+	# 主键ID
+	id: Int
+	# 私钥名称
+	rsaName: String
+	# 私钥内容
+	rsaValue: String
+	# 私钥用户
+	rsaUsername: String
+	# 私钥密码
+	rsaPassword: String
+	# 状态
+	status: String
+	# 创建时间
+	createTime: Date
+	# 创建人员ID
+	createPersonId: String
+	# 创建人员姓名
+	createPersonName: String
+}
+
+#  分页返回
+type ArthasRsas {
+	data: [ArthasRsa!]!
+	total: Int
+}
+
+extend type Query {
+	# 分页
+	arthasRsaPage(request: QueryRequest): ArthasRsas
+}
+extend type Mutation {
+	#  编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	arthasRsaBaseMutation(request: QueryRequest): Boolean
+}

@@ -1,0 +1,52 @@
+# 查询参数
+type ArthasMachineinfo {
+	id: Int
+	# 机器名称
+	hostname: String
+	# 登录类型
+	loginType: String
+	# RSA
+	rsaId: Int
+	# 登陆账号
+	username: String
+	# 密码
+	password: String
+	# SSH端口号
+	port: Int
+	# agentIP
+	arthasIp: String
+	# agent端口
+	arthasPort: Int
+	# agentId
+	arthasAgentId: String
+	# 服务器连接状态
+	serverStatus: String
+	# 模块名称
+	moduleName: String
+	# 状态
+	status: String
+	# 创建时间
+	createTime: Date
+	# 创建人员ID
+	createPersonId: String
+	# 操作人员名称
+	createPersonName: String
+}
+
+#  分页返回
+type ArthasMachineinfos {
+	data: [ArthasMachineinfo!]!
+	total: Int
+}
+
+extend type Query {
+	# 分页
+	arthasMachineinfoPage(request: QueryRequest): ArthasMachineinfos
+}
+extend type Mutation {
+	#  编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	arthasMachineinfoBaseMutation(request: QueryRequest): Boolean
+}

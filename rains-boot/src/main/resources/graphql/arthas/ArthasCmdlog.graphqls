@@ -1,0 +1,34 @@
+# 查询参数
+type ArthasCmdlog {
+	id: Int
+	# 服务器地址
+	hostname: String
+	# 应用名称
+	appname: String
+	# 命令
+	cmd: String
+	# 操作人员ID
+	createPersonId: String
+	# 操作人员名称
+	createPersonName: String
+	# 创建时间
+	createTime: Date
+}
+
+#  分页返回
+type ArthasCmdlogs {
+	data: [ArthasCmdlog!]!
+	total: Int
+}
+
+extend type Query {
+	# 分页
+	arthasCmdlogPage(request: QueryRequest): ArthasCmdlogs
+}
+extend type Mutation {
+	#  编辑 包括新增、修改、删除
+	# opt:insert表示新增
+	# opt:update表示修改
+	# opt:delete表示删除
+	arthasCmdlogBaseMutation(request: QueryRequest): Boolean
+}
