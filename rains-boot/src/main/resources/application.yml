@@ -4,6 +4,8 @@ server:
 graphql:
   servlet:
     exception-handlers-enabled: true
+  tools:
+    schemaLocationPattern: "**/**.graphqls"
 graphiql:
   headers:
     Authorization: "b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070fb8ecbc97e6cdd6e46f6f14fe36f2979f9662e7046d04e194c1de772b074916d05928c33b7dbaf5e1ca93fe523a3d9be196ee7f8de4d694549e3f9339cb5c62ae2a02589d6fc6ea5aca37d3959e1e7f5ba1f2599920afe0a389ea3fe04e2ab6dcab0ba3a333c9111"
