@@ -28,9 +28,8 @@ type ArthasMachineinfo {
 	# 创建时间
 	createTime: Date
 	# 创建人员ID
-	createPersonId: String
-	# 操作人员名称
-	createPersonName: String
+	createBy: String
+
 }
 
 #  分页返回

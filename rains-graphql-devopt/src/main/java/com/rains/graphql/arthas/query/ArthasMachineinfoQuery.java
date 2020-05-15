@@ -27,7 +27,7 @@ public class ArthasMachineinfoQuery implements GraphQLQueryResolver {
     @Autowired
     private ArthasMachineinfoService arthasMachineinfoService;
 
-    @RequiresPermissions("arthasMachineinfo:view")
+    @RequiresPermissions("arthas:machineinfo:view")
     public PageData<ArthasMachineinfo> arthasMachineinfoPage(QueryRequest request) {
         return arthasMachineinfoService.query(request);
     }
