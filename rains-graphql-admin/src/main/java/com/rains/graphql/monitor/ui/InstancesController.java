@@ -40,15 +40,6 @@ public class InstancesController {
            uri = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+uri+"?tag="+tag;
        }
 
-
-         System.out.println(uri);
-
-//        SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory ) restTemplate.getRequestFactory().;
-//
-//        factory.setConnectTimeout(3000);//连接超时时间
-//
-//        factory.setReadTimeout(10000);//响应超时时间
-
         ClientHttpRequestInterceptor acceptHeader = new AcceptHeaderHttpRequestInterceptor(
                 Arrays.stream(actuatorMimeTypes).collect(Collectors.joining(",")));
 
@@ -57,16 +48,6 @@ public class InstancesController {
 
         return  restTemplate.getForEntity(uri,String.class);
 
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Accept", Arrays.stream(actuatorMimeTypes).collect(Collectors.joining(",")));
-//
-//        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-//
-//        return restTemplate.getForObject().exchange(uri, HttpMethod.resolve(request.getMethod()),entity,String.class);
-//
-//        restTemplate.getForEntity(uri,String.class);
-        //return  restTemplate.getForEntity(uri,String.class);
 
     }
 
