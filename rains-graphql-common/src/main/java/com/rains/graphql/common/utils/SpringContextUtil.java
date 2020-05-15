@@ -3,7 +3,12 @@ package com.rains.graphql.common.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Spring Context 工具类
@@ -36,6 +41,30 @@ public class SpringContextUtil implements ApplicationContextAware {
 
     public static Class<?> getType(String name) {
         return applicationContext.getType(name);
+    }
+
+    /**
+     * 获取resouce中文件
+     *
+     * @return
+     * @throws IOException
+     */
+    public static byte[] getResourceBytes(String resourcePath) throws IOException {
+        byte[] result = null;
+        ClassPathResource classPathResource = new ClassPathResource(resourcePath);
+        InputStream arthasInputStream = classPathResource.getInputStream();
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        byte[] buff = new byte[100]; //buff用于存放循环读取的临时数据
+        int rc = 0;
+        while ((rc = arthasInputStream.read(buff, 0, 100)) > 0) {
+            swapStream.write(buff, 0, rc);
+        }
+        arthasInputStream.close();
+        arthasInputStream = null;
+        result = swapStream.toByteArray();
+        swapStream.close();
+        swapStream = null;
+        return result;
     }
 
     @Override
