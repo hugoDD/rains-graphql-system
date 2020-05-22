@@ -9,8 +9,6 @@ import com.wuwenze.poi.annotation.ExcelField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
 
 /**
  * (ArthasMachineinfo)表实体类

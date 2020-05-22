@@ -176,7 +176,7 @@ public class SshTool {
                 if (null == unTarFileName || unTarFileName.trim().equals("")) {
                     unTarFileName = filename;
                 }
-                String cmdGet = "tar -xzvf " + filename + ".tar.gz " + unTarFileName;
+                String cmdGet = "tar -xzvf " + filename + ".tar.gz " ;
                 session.execCommand("cd " + remoteTargetDirectory + ";" + cmdGet);
                 stdout = new StreamGobbler(session.getStdout());
                 br = new BufferedReader(new InputStreamReader(stdout));
@@ -252,7 +252,7 @@ public class SshTool {
                 if (null == unTarFileName || unTarFileName.trim().equals("")) {
                     unTarFileName = filename.substring(0, filename.lastIndexOf(".tar"));
                 }
-                String cmdGet = "tar -xzvf " + filename + " " + unTarFileName;
+                String cmdGet = "tar -xzvf " + filename ;
                 session.execCommand("cd " + filepath + ";" + cmdGet);
                 stdout = new StreamGobbler(session.getStdout());
                 br = new BufferedReader(new InputStreamReader(stdout));

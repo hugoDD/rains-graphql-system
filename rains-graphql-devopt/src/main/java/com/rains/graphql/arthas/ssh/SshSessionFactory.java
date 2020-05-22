@@ -17,9 +17,9 @@ import java.util.UUID;
  * ssh - session  交互管理
  */
 public class SshSessionFactory {
-    public static List<SshSessionEntity> sshPool = new ArrayList<>();
     //最大开启session数量
     final static int num = 10;
+    public static List<SshSessionEntity> sshPool = new ArrayList<>();
 
     /**
      * 创建session
