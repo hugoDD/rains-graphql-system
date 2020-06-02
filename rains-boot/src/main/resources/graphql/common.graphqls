@@ -29,6 +29,7 @@ scalar TreeNode
 schema {
 	query: Query
 	mutation: Mutation
+	subscription: Subscription
 }
 
 #Root node
@@ -38,7 +39,10 @@ type Query {
 
 type Mutation {
 	version: String
+}
 
+type Subscription {
+	version: String
 }
 
 type Tree {
