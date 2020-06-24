@@ -1,18 +1,10 @@
-import com.baomidou.mybatisplus.extension.api.R;
-import com.rains.graphql.common.utils.StringUtils;
-import com.taobao.arthas.common.UsageRender;
-import com.taobao.middleware.cli.CLI;
-import com.taobao.middleware.cli.UsageMessageFormatter;
 import com.taobao.middleware.cli.annotations.*;
 import org.apache.commons.net.telnet.TelnetClient;
+import reactor.core.publisher.Flux;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Function;
 
 /**
@@ -89,13 +81,12 @@ public class TelnetConsole {
                 throw e;
             }
 
-            Function<List<String>, String> handler =  (rs)->{
-                System.out.println(rs);
-                return rs.get(rs.size()-1);
-            };
 
-            List<String> list = batchModeRun(telnet,"help");
-            System.out.println(list);
+            // List<String> list = batchModeRun(telnet,"watch  com.ly.mp.auth.service.LoginService sysconfig returnObj");
+
+            System.out.println("============start===============");
+            batchModeRun(telnet, rs -> rs, "dashboard -n 1","jvm").subscribe(System.out::print);
+            System.out.println("=============end==============");
             telnet.disconnect();
         } catch (Throwable e) {
 
@@ -104,73 +95,82 @@ public class TelnetConsole {
 
     }
 
-    private static List<String> batchModeRun(TelnetClient telnet, String... commands)
-            throws IOException, InterruptedException {
+    private static <T> Flux<T> batchModeRun(TelnetClient telnet, Function<String, T> transform, String... commands)
+            throws IOException {
         if (commands.length == 0) {
-            return new ArrayList<>();
+            return  Flux.empty();
         }
 
         final InputStream inputStream = telnet.getInputStream();
         final OutputStream outputStream = telnet.getOutputStream();
-        final List<String> rs = new ArrayList<>();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
+        Flux<T> flux = Flux.fromArray(commands).doOnNext(command -> {
+            try {
 
-        final BlockingQueue<String> receviedPromptQueue = new LinkedBlockingQueue<String>(1);
-        Thread printResultThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-
-                    StringBuilder line = new StringBuilder();
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-                    int b = -1;
-                    while (true) {
-                        b = in.read();
-                        if (b == -1) {
-                            break;
-                        }
-                        line.appendCodePoint(b);
-
-                        // 检查到有 [arthas@ 时，意味着可以执行下一个命令了
-                        int index = line.indexOf(PROMPT);
-                        if (index > 0) {
-                           String[] rsline =  line.toString().split("\n");
-                            rs.addAll(Arrays.asList(rsline));
-                            line.delete(0, index + PROMPT.length());
-                            receviedPromptQueue.put("");
-                        }
-                        System.out.print(Character.toChars(b));
-                    }
-                } catch (Exception e) {
-                    // ignore
-                }
-
+                //System.out.println("执行" + command);
+                outputStream.write((command + " | plaintext\n").getBytes());
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-
-        printResultThread.start();
-
-        for (String command : commands) {
-            if (command.trim().isEmpty()) {
-                continue;
-            }
-            receviedPromptQueue.take();
-            // send command to server
-            outputStream.write((command + " | plaintext\n").getBytes());
+        }).doFirst(() -> readOutStr(in)).map(cmd -> readOutStr(in)).map(transform).doOnComplete(()->{ try {
+           // System.out.println("退出quit");
+            outputStream.write("quit\n".getBytes());
             outputStream.flush();
-        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }});
+        //.doFinally((signalType)-> {
+//            try {
+//                in.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+//        for (String command : commands) {
+//            if (command.trim().isEmpty()) {
+//                continue;
+//            }
+//            receviedPromptQueue.take();
+//            // send command to server
+//            outputStream.write((command + " | plaintext\n").getBytes());
+//            outputStream.flush();
+//        }
 
         // 读到最后一个命令执行后的 prompt ，可以直接发 quit命令了。
-        receviedPromptQueue.take();
-        outputStream.write("quit\n".getBytes());
-        outputStream.flush();
+//        receviedPromptQueue.take();
 
-        return rs;
+
+        return flux;
 
     }
 
+    public static String readOutStr(final BufferedReader in) {
+
+        String lineStr = "";
+        try {
+            StringBuilder line = new StringBuilder();
+            int b = -1;
+            while (true) {
+                b = in.read();
+                //System.out.print(Character.toChars(b));
+                line.appendCodePoint(b);
+
+                if (b == -1 || line.indexOf(PROMPT) > 0) {
+                    lineStr = line.toString();
+                    line.setLength(0);
+                    //System.out.println("telnet 初始化结束");
+                    break;
+                    //return lineStr;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lineStr;
+    }
 
 
     @Option(shortName = "h", longName = "height")

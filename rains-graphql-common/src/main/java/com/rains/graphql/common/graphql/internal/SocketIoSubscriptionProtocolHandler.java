@@ -25,11 +25,12 @@ public class SocketIoSubscriptionProtocolHandler extends MySubscriptionProtocolH
     @Override
     public void onMessage(SocketIOClient session, WsSessionSubscriptions subscriptions, String text) throws Exception {
         GraphQLSingleInvocationInput graphQLSingleInvocationInput = createInvocationInput(session, text);
+        String eventId =graphQLSingleInvocationInput.getExecutionInput().getOperationName();
         subscribe(
                 session,
             input.getQueryInvoker().query(graphQLSingleInvocationInput),
             subscriptions,
-            UUID.randomUUID().toString()
+                eventId
         );
     }
 
@@ -46,6 +47,7 @@ public class SocketIoSubscriptionProtocolHandler extends MySubscriptionProtocolH
     @Override
     protected void sendDataMessage(SocketIOClient session, String id, Object payload) {
        //SocketIOClient client = session.getClient(UUID.fromString(id));
+        session.set("eventId",id);
         sender.send(session, payload);
     }
 

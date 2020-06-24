@@ -1,0 +1,70 @@
+extend type Subscription {
+	dashboard(machineId:Long) : Dashboard
+}
+
+type Dashboard {
+	command : String
+	threads : [TheadInfo]
+	memory : JvmMemory
+	runtimeInfo : RuntimeInfo
+	threadStatistical: ThreadStatistical
+}
+
+
+
+
+type  ThreadStatistical {
+	live: Long
+	peak: Long
+	daemon: Long
+}
+
+type TheadInfo {
+	id : Long
+	name: String
+	group: String
+	priority: Int
+	state: String
+	cpu: String
+	time: String
+	interrupted: Boolean
+	daemon: Boolean
+}
+
+type JvmMemory{
+	heap: Memory
+	edenSpace: Memory
+	survivorSpace: Memory
+	oldGen: Memory
+	nonheap: Memory
+	codeCache: Memory
+	metaspace: Memory
+	compressedClassSpace: Memory
+	direct: Memory
+	mapped: Memory
+	gc: GC
+}
+
+type Memory{
+	used: String
+	total: String
+	max: String
+	usage: String
+}
+
+type GC {
+	scavengeCount : Long
+	scavengeTime:Long
+	marksweepCount:Long
+	marksweepTime:Long
+}
+
+type RuntimeInfo{
+	osName:String
+	osVersion:String
+	javaVersion:String
+	javaHome:String
+	systemloadAverage:String
+	processors:String
+	uptime:String
+}

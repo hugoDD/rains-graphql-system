@@ -1,0 +1,33 @@
+type General{
+	key: String
+	value: String
+}
+type Bean {
+	name:String
+	codeSource:String
+	isInterface:Boolean
+	isAnnotation:Boolean
+	isEnum:Boolean
+	anonymousClass:Boolean
+	array:Boolean
+	localClass:Boolean
+	memberClass:Boolean
+	primitive:Boolean
+	synthetic:Boolean
+	simpleName:String
+	modifier:String
+	annotation:String
+	interfaces:String
+	superClass:String
+	classLoader:String
+	classLoaderHash:String
+}
+
+extend type Query{
+	generalCommand(machineId:Long ,cmd:String): [General]
+	scCommand(machineId:Long ,cmd:String): [Bean]
+}
+
+extend type Mutation {
+	postCommand(machineId:Long ,cmd:String): [General]
+}

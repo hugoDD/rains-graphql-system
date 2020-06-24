@@ -36,12 +36,13 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
 //
 //        boolean match = false;
 //        for (String u : anonUrl) {
-        if (httpServletRequest.getRequestURI().equals(graphQLServletProperties.getMapping())) {
-            return executeLogin(request, response);
-        } else {
-            return true;
-        }
+//        if (httpServletRequest.getRequestURI().equals(graphQLServletProperties.getMapping())) {
+//            return executeLogin(request, response);
+//        } else {
+//            return true;
+//        }
 
+        return true;
 
     }
 

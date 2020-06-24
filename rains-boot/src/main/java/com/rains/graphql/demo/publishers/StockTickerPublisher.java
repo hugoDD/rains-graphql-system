@@ -57,7 +57,6 @@ public class StockTickerPublisher {
 
     public Flux<StockPriceUpdate> getPublisher(List<String> stockCodes) {
         if (stockCodes != null) {
-
             return publisher.filter(stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
         }
         return publisher;

@@ -23,8 +23,8 @@ public class SocketIoSubscriptionSender {
                 log.error(e.getMessage(),e);
             }
         }
-
-        client.sendEvent("subMessage",payload);
+        String cmd = client.get("eventId");
+        client.sendEvent(cmd,payload);
            //Session session.getBasicRemote().sendText(objectMapper.writeValueAsString(payload));
 
     }

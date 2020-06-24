@@ -6,12 +6,12 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import com.rains.graphql.common.graphql.GraphQlSubscription;
 import com.rains.graphql.common.graphql.input.MyGraphQLInvocationInputFactory;
 import com.rains.graphql.common.graphql.internal.MySubscriptionHandlerInput;
 import com.rains.graphql.common.graphql.internal.MySubscriptionProtocolFactory;
 import com.rains.graphql.common.graphql.internal.MySubscriptionProtocolHandler;
 import com.rains.graphql.common.graphql.internal.SocketIoSubscriptionProtocolFactory;
-import graphql.servlet.GraphQLWebsocketServlet;
 import graphql.servlet.core.GraphQLObjectMapper;
 import graphql.servlet.core.GraphQLQueryInvoker;
 import graphql.servlet.core.SubscriptionConnectionListener;
@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PreDestroy;
 import java.io.EOFException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GraphQLSocketIoHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphQLWebsocketServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphQLSocketIoHandler.class);
 
     private static final String PROTOCOL_HANDLER_REQUEST_KEY = SubscriptionProtocolHandler.class.getName();
 
@@ -42,14 +43,15 @@ public class GraphQLSocketIoHandler {
 
     private final MySubscriptionProtocolFactory mySubscriptionProtocolFactory;
     private final MySubscriptionProtocolHandler subscriptionProtocolHandler;
-    private final Map<UUID, WsSessionSubscriptions> sessionSubscriptionCache = new ConcurrentHashMap<>();
     private final MySubscriptionHandlerInput subscriptionHandlerInput;
     private final AtomicBoolean isShuttingDown = new AtomicBoolean(false);
     private final AtomicBoolean isShutDown = new AtomicBoolean(false);
     private final Object cacheLock = new Object();
-
+    private volatile Map<UUID, WsSessionSubscriptions> sessionSubscriptionCache = new ConcurrentHashMap<>();
     @Autowired
     private SocketIOServer socketIOServer;
+    @Autowired
+    private List<GraphQlSubscription> graphQlSubscriptionList;
 
     public GraphQLSocketIoHandler(GraphQLQueryInvoker queryInvoker, MyGraphQLInvocationInputFactory invocationInputFactory, GraphQLObjectMapper graphQLObjectMapper) {
         this(queryInvoker, invocationInputFactory, graphQLObjectMapper, null);
@@ -70,12 +72,11 @@ public class GraphQLSocketIoHandler {
     @OnConnect
     public void onOpen(SocketIOClient client) {
         final WsSessionSubscriptions subscriptions = new WsSessionSubscriptions();
-        synchronized (cacheLock) {
-            if (isShuttingDown.get()) {
-                throw new IllegalStateException("Server is shutting down!");
-            }
-            sessionSubscriptionCache.put(client.getSessionId(), subscriptions);
+
+        if (isShuttingDown.get()) {
+            throw new IllegalStateException("Server is shutting down!");
         }
+        sessionSubscriptionCache.put(client.getSessionId(), subscriptions);
         log.info("Session opened: {}", client.getSessionId());
     }
 
@@ -98,14 +99,17 @@ public class GraphQLSocketIoHandler {
     @OnDisconnect
     public void onClose(SocketIOClient client) {
         log.info("Session closed: {}", client.getSessionId());
-        WsSessionSubscriptions subscriptions;
-        synchronized (cacheLock) {
-            subscriptions = sessionSubscriptionCache.remove(client.getSessionId());
-            client.disconnect();
+        if(graphQlSubscriptionList!=null){
+            graphQlSubscriptionList.forEach(GraphQlSubscription::close);
         }
+        log.info("before Session count: {}", sessionSubscriptionCache.size());
+        WsSessionSubscriptions subscriptions = sessionSubscriptionCache.remove(client.getSessionId());
         if (subscriptions != null) {
             subscriptions.close();
         }
+
+        client.disconnect();
+        log.info("after Session count: {}", sessionSubscriptionCache.size());
     }
 
 
@@ -127,34 +131,32 @@ public class GraphQLSocketIoHandler {
     }
 
 
-
     /**
      * Stops accepting connections and closes all existing connections
      */
     @PreDestroy
     public void beginShutDown() {
-        synchronized (cacheLock) {
-            try {
-                isShuttingDown.set(true);
-                Map<UUID, WsSessionSubscriptions> copy = new HashMap<>(sessionSubscriptionCache);
+        try {
+            isShuttingDown.set(true);
 
-                // Prevent comodification exception since #onClose() is called during session.close(), but we can't necessarily rely on that happening so we close subscriptions here anyway.
-                copy.forEach((session, wsSessionSubscriptions) -> {
-                    wsSessionSubscriptions.close();
-                    socketIOServer.getClient(session).disconnect();
-                });
+            // Prevent comodification exception since #onClose() is called during session.close(), but we can't necessarily rely on that happening so we close subscriptions here anyway.
+            sessionSubscriptionCache.forEach((session, wsSessionSubscriptions) -> {
+                wsSessionSubscriptions.close();
+                log.info("close sessionId:{}",session.toString());
+                socketIOServer.getClient(session).disconnect();
 
-                copy.clear();
+            });
 
-                if (!sessionSubscriptionCache.isEmpty()) {
-                    log.error("GraphQLWebsocketServlet did not shut down cleanly!");
-                    sessionSubscriptionCache.clear();
-                }
-            } finally {
-                socketIOServer.stop();
+
+            if (sessionSubscriptionCache!=null) {
+                log.info("sessionSubscriptionCache did not shut down cleanly!");
+                sessionSubscriptionCache.clear();
             }
+        } finally {
+            socketIOServer.stop();
+            isShutDown.set(true);
         }
-        isShutDown.set(true);
+
     }
 
     /**
