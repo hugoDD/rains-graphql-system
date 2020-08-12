@@ -29,12 +29,22 @@ public class CommandSubscription implements GraphQlSubscription {
    private ArthasTelnetConsole telnetConsole;
 
 
-    public Publisher<Dashboard> dashboard(long machineId) throws IOException, InterruptedException {
+    public Publisher<Dashboard> dashboard(long machineId) throws IOException {
         telnetConsole = initArthasTelnet(machineId);
         Flux<Dashboard> dashboard = telnetConsole.batchModeRun(dashboardResolve.transform(), "dashboard -i 6000");
 
         return dashboard;
     }
+
+    public Publisher<String> monitor(long machineId ,String cmd) throws IOException {
+        telnetConsole = initArthasTelnet(machineId);
+
+        Flux<String> monitor = telnetConsole.cmdRun(cmd).log();
+
+        return monitor;
+    }
+
+
 
     public ArthasTelnetConsole initArthasTelnet(long machineId) {
         ArthasMachineinfo machineInfo = machineService.getById(machineId);

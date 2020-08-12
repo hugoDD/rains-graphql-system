@@ -25,7 +25,9 @@ public class DashboardResolve extends BaseCmdResolve{
             threadInfo.setName(line.substring(index.get(names[1]), index.get(names[2]) - 1).trim());
             threadInfo.setGroup(line.substring(index.get(names[2]), index.get(names[3]) - 1).trim());
             threadInfo.setPriority(Integer.parseInt(line.substring(index.get(names[3]), index.get(names[4]) - 1).trim()));
-            threadInfo.setState(line.substring(index.get(names[4]), index.get(names[5]) - 1).trim());
+            String state = line.substring(index.get(names[4]), index.get(names[5]) - 1).trim();
+            state = "TIMED_WAI".equals(state)?"TIMED_WAITING":state;
+            threadInfo.setState(state);
             threadInfo.setCpu(line.substring(index.get(names[5]), index.get(names[6]) - 1).trim());
             threadInfo.setTime(line.substring(index.get(names[6]), index.get(names[7]) - 1).trim());
             threadInfo.setInterrupted(Boolean.valueOf(line.substring(index.get(names[7]), index.get(names[8]) - 1).trim()));

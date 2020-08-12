@@ -1,5 +1,6 @@
 extend type Subscription {
 	dashboard(machineId:Long) : Dashboard
+	monitor(machineId:Long,cmd:String) : String
 }
 
 type Dashboard {
@@ -29,6 +30,9 @@ type TheadInfo {
 	time: String
 	interrupted: Boolean
 	daemon: Boolean
+	inNative:Boolean
+	lockName: String
+	stackTrace: [String]
 }
 
 type JvmMemory{

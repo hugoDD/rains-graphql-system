@@ -1,19 +1,15 @@
-import com.rains.graphql.arthas.command.BaseCmdResolve;
-import com.rains.graphql.arthas.command.DashboardResolve;
-import com.rains.graphql.arthas.command.GeneralCommandResolve;
-import com.rains.graphql.arthas.command.ScResolve;
 import com.rains.graphql.arthas.entity.commands.*;
 import com.rains.graphql.arthas.ssh.ArthasTelnetConsole;
 import com.rains.graphql.common.utils.StringUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ArthasTelnetConsoleTest {
     private final static String REGEX = "\\s+";
@@ -22,14 +18,29 @@ public class ArthasTelnetConsoleTest {
     // java -jar arthas-client.jar -c 'dashboard -n 1' \n
     // java -jar arthas-client.jar -f batch.as 127.0.0.1\n"
     String ip = "172.25.191.228";
+  //  String ip = "172.26.239.129";
     private int port = 3658;
 
     @Test
     public void connect() throws IOException, InterruptedException {
         ArthasTelnetConsole telnetConsole = new ArthasTelnetConsole(ip);
-        //telnetConsole.batchModeRun(rs -> rs, "sysenv").subscribe(System.out::print);
+        telnetConsole.batchModeRun(rs -> rs, "mbean").subscribe(System.out::print);
         // System.out.println("=================================================黄金分割线==============================================================");
-        telnetConsole.batchModeRun( rs -> rs, "sc -d *MailController").subscribe(System.out::print);
+//        telnetConsole.cmdRun( "monitor -c 5 com.ly.mp.auth.service.LoginService sysconfig").subscribe(System.out::print);
+//        List<MBean> list = new ArrayList<>();
+//        telnetConsole.batchModeRun(rs -> {
+//            System.out.println(rs);
+//            rs.remove(rs.size() - 1);
+//            rs.remove(0);
+////            rs.stream().collect(Collectors.groupingBy(s -> s.split(":")[0], Collectors.mapping(t -> t.split(":")[1], Collectors.toList()))).forEach((k, v) -> {
+////                MBean bean = new MBean();
+////                bean.setMBeanPre(k);
+////                bean.setMBeanSuffix(v);
+////
+////            });
+//            return list;
+//        }, "mbean");
+//        System.out.println(list);
 
         telnetConsole.disconnect();
     }
@@ -38,28 +49,41 @@ public class ArthasTelnetConsoleTest {
     @Test
     public void runCmd() throws IOException {
         ArthasTelnetConsole telnetConsole = new ArthasTelnetConsole(ip);
-        BaseCmdResolve resolve = new ScResolve();
-        List<Bean> beans = new ArrayList<>();
-        Flux<List<Bean>> flux = telnetConsole.batchModeRun(rs -> {
+        List<General> list = new ArrayList<>();
+       // telnetConsole.simpleCmdRun("logger --name ROOT --level warn");
+        Flux<List<General>> flux = telnetConsole.batchModeRun(rs -> {
+            rs.remove(rs.size()-1);
             rs.remove(0);
-            rs.remove(rs.size()-1);
-            rs.remove(rs.size()-1);
 
-           for(String s : rs){
-               try {
-                   Bean bean = new Bean();
-                   bean.setName(s);
-                   bean.setSimpleName(s.substring(s.lastIndexOf(".")));
-                   beans.add(bean);
-               }catch (Exception e){
-                   System.out.println(e.getMessage());
-               }
-           }
-           return beans;
-        }, "sc *Controller");
-        List<Bean> list = new ArrayList<>();
+          Iterator<String> it =  rs.iterator();
+          String header = it.next();
+          List<Integer> headerIndex = chartHeaderPoit(header);
+
+          it.next();
+            General tmp =null;
+            while(it.hasNext()){
+              String s = it.next();
+              if(StringUtils.isEmpty(s)){
+                  continue;
+              }
+              General general = new General();
+
+              String key = s.substring(0,headerIndex.get(1)-1).trim();
+              if(StringUtils.isEmpty(key) && tmp!=null){
+                  general.setValue(tmp.getValue()+s.substring(headerIndex.get(1)).trim());
+              }else {
+                  tmp = general;
+                  general.setKey(s.substring(0,headerIndex.get(1)-1).trim());
+                  general.setValue(s.substring(headerIndex.get(1)).trim());
+              }
+
+              list.add(general);
+          }
+            return list;
+        }, "mbean com.alibaba.druid:type=DruidDataSource,id=mysql_mp");
+
         flux.subscribe();
-        System.out.println(beans);
+        System.out.println(list);
 
 //        System.out.println(list);
 //        fluxcmd.subscribe(c->{
@@ -67,6 +91,18 @@ public class ArthasTelnetConsoleTest {
 //        });
         telnetConsole.disconnect();
         //StepVerifier.create(dashboard).expectNext()
+
+    }
+
+    protected List<Integer> chartHeaderPoit(String header) {
+        String[] names = header.trim().split(REGEX);
+        List<Integer> poits = new ArrayList<>();
+        for (String name : names) {
+            int index = header.indexOf(name);
+            poits.add(index);
+
+        }
+        return poits;
 
     }
 
@@ -97,22 +133,21 @@ public class ArthasTelnetConsoleTest {
         //ID          NAME                                  GROUP                    PRIORITY    STATE       %CPU         TIME        INTERRUPTED  DAEMON
 
 
-
         ThreadInfo threadInfo = new ThreadInfo();
-        threadInfo.setId(Long.parseLong(line.substring(index.get(names[0]),index.get(names[1])-1).trim()));
-        threadInfo.setName(line.substring(index.get(names[1]),index.get(names[2])-1).trim());
-        threadInfo.setGroup(line.substring(index.get(names[2]),index.get(names[3])-1).trim());
-        threadInfo.setPriority(Integer.parseInt(line.substring(index.get(names[3]),index.get(names[4])-1).trim()));
-        threadInfo.setState(line.substring(index.get(names[4]),index.get(names[5])-1).trim());
-        threadInfo.setCpu(line.substring(index.get(names[5]),index.get(names[6])-1).trim());
-        threadInfo.setTime(line.substring(index.get(names[6]),index.get(names[7])-1).trim());
-        threadInfo.setInterrupted(Boolean.valueOf(line.substring(index.get(names[7]),index.get(names[8])-1).trim()));
+        threadInfo.setId(Long.parseLong(line.substring(index.get(names[0]), index.get(names[1]) - 1).trim()));
+        threadInfo.setName(line.substring(index.get(names[1]), index.get(names[2]) - 1).trim());
+        threadInfo.setGroup(line.substring(index.get(names[2]), index.get(names[3]) - 1).trim());
+        threadInfo.setPriority(Integer.parseInt(line.substring(index.get(names[3]), index.get(names[4]) - 1).trim()));
+        threadInfo.setState(line.substring(index.get(names[4]), index.get(names[5]) - 1).trim());
+        threadInfo.setCpu(line.substring(index.get(names[5]), index.get(names[6]) - 1).trim());
+        threadInfo.setTime(line.substring(index.get(names[6]), index.get(names[7]) - 1).trim());
+        threadInfo.setInterrupted(Boolean.valueOf(line.substring(index.get(names[7]), index.get(names[8]) - 1).trim()));
         threadInfo.setDaemon(Boolean.valueOf(line.substring(index.get(names[8])).trim()));
 
         return threadInfo;
     }
 
-    private JvmMemory resolveMemory( List<String[]> values) {
+    private JvmMemory resolveMemory(List<String[]> values) {
         JvmMemory jvmMemory = new JvmMemory();
 
         GC gc = new GC();
@@ -212,16 +247,16 @@ public class ArthasTelnetConsoleTest {
         Function<String, Dashboard> map = rs -> {
             Dashboard dashboard = new Dashboard();
             try {
-               // InputStream inputStream = IOUtils.toInputStream(rs, "UTF-8");
+                // InputStream inputStream = IOUtils.toInputStream(rs, "UTF-8");
                 StringReader strReader = new StringReader(rs);
 
-               // final BufferedReader reader = IOUtils.toBufferedReader(strReader);
+                // final BufferedReader reader = IOUtils.toBufferedReader(strReader);
                 List<String> lineList = IOUtils.readLines(strReader);
                 Iterator<String> lineIterator = lineList.iterator();
                 String line = lineIterator.next();
                 dashboard.setCommand(line);
                 line = lineIterator.next();
-                Map<String,Integer> threadIndex = chartPoit(line);
+                Map<String, Integer> threadIndex = chartPoit(line);
                 String[] names = line.split(REGEX);
                 List<ThreadInfo> threadList = new ArrayList<>();
                 List<String[]> memoryList = new ArrayList<>();
@@ -232,16 +267,16 @@ public class ArthasTelnetConsoleTest {
                 while (lineIterator.hasNext()) {
 
                     line = lineIterator.next();
-                    if(null ==line){
+                    if (null == line) {
                         break;
                     }
-                    if(StringUtils.isEmpty(line)){
+                    if (StringUtils.isEmpty(line)) {
                         continue;
                     }
                     if (line.startsWith("Process ends after")) {
                         break;
                     }
-                    if (line.startsWith("Memory")&& "Thread".equals(flag)) {
+                    if (line.startsWith("Memory") && "Thread".equals(flag)) {
                         names = line.split(REGEX);
                         line = lineIterator.next();
                         flag = "Memory";
@@ -253,7 +288,7 @@ public class ArthasTelnetConsoleTest {
                     String[] arr = line.split(REGEX);
                     switch (flag) {
                         case "Thread": {
-                            ThreadInfo threadInfo = resolveThead(names,threadIndex, line);
+                            ThreadInfo threadInfo = resolveThead(names, threadIndex, line);
                             threadList.add(threadInfo);
                             break;
                         }
@@ -268,7 +303,7 @@ public class ArthasTelnetConsoleTest {
 
 
                 }
-                JvmMemory jvmMemory = resolveMemory( memoryList);
+                JvmMemory jvmMemory = resolveMemory(memoryList);
                 RuntimeInfo runtimeInfo = resolveRuntime(runtimeList);
 
                 dashboard.setThreads(threadList);
@@ -283,12 +318,12 @@ public class ArthasTelnetConsoleTest {
         return map;
     }
 
-    private Map<String,Integer> chartPoit(String header){
+    private Map<String, Integer> chartPoit(String header) {
         String[] names = header.split(REGEX);
-        Map<String,Integer> indexMap = new HashMap<>();
-        for(String name : names){
-            int index =header.indexOf(name);
-            indexMap.put(name,index);
+        Map<String, Integer> indexMap = new HashMap<>();
+        for (String name : names) {
+            int index = header.indexOf(name);
+            indexMap.put(name, index);
 
         }
         return indexMap;

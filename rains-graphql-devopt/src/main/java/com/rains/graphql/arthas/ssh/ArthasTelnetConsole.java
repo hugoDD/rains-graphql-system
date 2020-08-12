@@ -1,5 +1,6 @@
 package com.rains.graphql.arthas.ssh;
 
+import com.rains.graphql.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
@@ -80,6 +81,7 @@ public class ArthasTelnetConsole {
 
     }
 
+
     public void reconnect() {
         if (telnet == null || !telnet.isAvailable()) {
             return;
@@ -112,6 +114,34 @@ public class ArthasTelnetConsole {
         } finally {
             telnet.disconnect();
         }
+    }
+
+    public synchronized void simpleCmdRun(String command)throws IOException {
+        final InputStream inputStream = telnet.getInputStream();
+        final OutputStream outputStream = telnet.getOutputStream();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        outputStream.write((command + " | plaintext\n").getBytes());
+        outputStream.flush();
+        readOutStr(in);
+    }
+
+
+    public synchronized Flux<String> cmdRun(String command)
+            throws IOException {
+        final InputStream inputStream = telnet.getInputStream();
+        final OutputStream outputStream = telnet.getOutputStream();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        if("CTRL_C".equals(command)){
+            outputStream.write(CTRL_C);
+            outputStream.flush();
+        }else{
+            outputStream.write((command + " | plaintext\n").getBytes());
+            outputStream.flush();
+        }
+
+        Flux<String> flux = Flux.create((FluxSink<String> emitter) -> emitterStr(emitter, in));
+
+        return flux;
     }
 
 
@@ -174,6 +204,21 @@ public class ArthasTelnetConsole {
             log.error(e.getMessage(), e);
         }
         return lineStr;
+    }
+
+    private synchronized void emitterStr(FluxSink<String> emitter, final BufferedReader in) {
+        BufferedReader bufferedReader = IOUtils.toBufferedReader(in);
+        try {
+            while (telnet.isConnected()) {
+                String line = bufferedReader.readLine();
+                if(StringUtils.isNotEmpty(line)){
+                    emitter.next(line);
+                }
+            }
+            System.out.println("退出监控方法");
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
 

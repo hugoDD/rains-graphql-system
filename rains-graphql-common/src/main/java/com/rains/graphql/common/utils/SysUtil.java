@@ -122,6 +122,35 @@ public class SysUtil {
         return com.baomidou.mybatisplus.core.toolkit.StringUtils.underlineToCamel(str);
     }
 
+    /**
+     * 字符串下划线转驼峰格式
+     *
+     * @param param 需要转换的字符串
+     * @return 转换好的字符串
+     */
+    public static String toCamel(String param,char special) {
+        if (StringUtils.isEmpty(param)) {
+            return StringUtils.EMPTY;
+        }
+        if(param.indexOf(special)==-1){
+            return param;
+        }
+        String temp = param.toLowerCase();
+        int len = temp.length();
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            char c = temp.charAt(i);
+            if (c == special) {
+                if (++i < len) {
+                    sb.append(Character.toUpperCase(temp.charAt(i)));
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
     public static String underlineToCamelCapitalize(final String str) {
         String param = com.baomidou.mybatisplus.core.toolkit.StringUtils.underlineToCamel(str);
         return com.baomidou.mybatisplus.core.toolkit.StringUtils.capitalize(param);

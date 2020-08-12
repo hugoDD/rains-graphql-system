@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.rains.graphql.common.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -46,6 +47,7 @@ public class ArthasCmdlog extends BaseEntity {
     /**
      * 创建时间
      */
+    @DateTimeFormat
     private Date createTime;
 
 }

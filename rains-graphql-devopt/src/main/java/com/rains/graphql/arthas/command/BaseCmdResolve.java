@@ -1,7 +1,7 @@
 package com.rains.graphql.arthas.command;
 
-import com.rains.graphql.arthas.entity.commands.Dashboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +20,18 @@ public abstract class BaseCmdResolve {
 
         }
         return indexMap;
+
+    }
+
+    protected List<Integer> chartHeaderPoit(String header) {
+        String[] names = header.trim().split(REGEX);
+        List<Integer> poits = new ArrayList<>();
+        for (String name : names) {
+            int index = header.indexOf(name);
+            poits.add(index);
+
+        }
+        return poits;
 
     }
 

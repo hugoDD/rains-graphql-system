@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Description("EXAMPLES:\n" + "  java -jar arthas-client.jar 127.0.0.1 3658\n"
         + "  java -jar arthas-client.jar -c 'dashboard -n 1' \n"
         + "  java -jar arthas-client.jar -f batch.as 127.0.0.1\n")
-public class TelnetConsole {
+class TelnetConsole {
     private static final String PROMPT = "[arthas@"; // [arthas@49603]$
     private static final int DEFAULT_CONNECTION_TIMEOUT = 5000; // 5000 ms
 

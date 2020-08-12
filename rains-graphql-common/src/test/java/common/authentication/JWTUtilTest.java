@@ -42,8 +42,10 @@ public class JWTUtilTest {
 
     @Test
     public void testpwd() {
-        String pwdExpress = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*<>?:])[a-zA-Z0-9!@#$%^&*<>?:]{8,50}$";
-        String strPwd = "123Abc!@#";
+       // String pwdExpress = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*<>?:])[a-zA-Z0-9!@#$%^&*<>?:]{8,50}$";
+        String pwdExpress = "(?=.*\\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}";
+       // String strPwd = "123Abc!@#";
+       String strPwd = "Camel123!!";
         Pattern pattern = Pattern.compile(pwdExpress);
         Matcher matcher = pattern.matcher(strPwd);
         System.out.println(matcher.matches());

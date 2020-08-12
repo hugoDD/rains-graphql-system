@@ -2,30 +2,46 @@ type General{
 	key: String
 	value: String
 }
-type Bean {
-	name:String
-	codeSource:String
-	isInterface:Boolean
-	isAnnotation:Boolean
-	isEnum:Boolean
-	anonymousClass:Boolean
-	array:Boolean
-	localClass:Boolean
-	memberClass:Boolean
-	primitive:Boolean
-	synthetic:Boolean
-	simpleName:String
+type Method {
+	declaringClass:String
+	methodName:String
 	modifier:String
 	annotation:String
-	interfaces:String
-	superClass:String
-	classLoader:String
+	parameters:[String]
+	returnObj:String
+	exceptions:String
 	classLoaderHash:String
+}
+type Bean {
+	name:String
+	simpleName:String
+	detail: String
+	methods:[Method]
+	methodSign:[String]
+}
+
+type LoggerBean {
+	 name:String
+	 level:[LoggerLevel]
+}
+
+type LoggerLevel {
+	configuredLevel:String
+	effectiveLevel:String
+	instanceId:String
+}
+
+type MBean {
+	mBeanPre: String
+	mBeanSuffix: [String]
 }
 
 extend type Query{
+	mbeanCommand(machineId:Long ,cmd:String): [MBean]
 	generalCommand(machineId:Long ,cmd:String): [General]
 	scCommand(machineId:Long ,cmd:String): [Bean]
+	loggerCommand(machineId:Long ,cmd:String): [LoggerBean]
+	threadInfo(machineId:Long ,cmd:String): [TheadInfo]
 }
 
 extend type Mutation {
